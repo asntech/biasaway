@@ -1,9 +1,9 @@
 =================
 BiasAway modules
 =================
-BiasAway provides three types of plots to visualize intersections of genomic regions and list sets. These are pairwise heatmap of N genomic region sets, classic Venn diagrams of genomic regions and list sets of up to 6-way and UpSet plots.
+BiasAway provides user with six approaches for generating a background sequence useful to enrichment analyses. These backgrounds derived from mono- and di- nucleotide shuffled sequences, and genomic sequences matched to the GC content of the target data
 
-.. note:: Hello this is a note!
+.. note:: BiasAway also comes with a Web App.
 
 
 Mono-nucleotide shuffling
@@ -83,6 +83,8 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
      "-h, --help","To show the help message and exit"
      "-f, --foreground","Foreground file in fasta format."
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
+     "-w, --winlen", "Window length (``default: 100``)"
+     "-s, --step",  "Sliding step (``default: 1``)"
 
 
 Di-nucleotide shuffling generator
@@ -124,7 +126,6 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
      "-f, --foreground","Foreground file in fasta format."
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
 
-
 Di-nucleotide shuffling within a sliding window
 ================================================
 
@@ -163,6 +164,8 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
      "-h, --help","To show the help message and exit"
      "-f, --foreground","Foreground file in fasta format."
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
+     "-w, --winlen", "Window length (``default: 100``)"
+     "-s, --step",  "Sliding step (``default: 1``)"
 
 %GC distribution-based background
 ==================================
@@ -185,13 +188,13 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
 
 .. code-block:: bash
 
-    biasaway g -f path/to/FASTA/file/my_fasta_file.fa
+    biasaway g -f path/to/FASTA/file/my_fasta_file.fa -b path/to/background.fa -r path/to/bgdirectory
 
 This will output the sequence as stdout. If you wish to save the sequences in a specific file, you can type:
 
 .. code-block:: bash
 
-    biasaway g -f path/to/FASTA/file/my_fasta_file.fa > path/to/output/FASTA/file/my_fasta_output.fa
+    biasaway g -f path/to/FASTA/file/my_fasta_file.fa -b path/to/background.fa -r path/to/bgdirectory > path/to/output/FASTA/file/my_fasta_output.fa
 
 **Summary of options**
 
@@ -202,6 +205,10 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
      "-h, --help","To show the help message and exit"
      "-f, --foreground","Foreground file in fasta format."
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
+     "-r, --bgdirectory", "Background directory"
+     "-b, --background", "Background file in fasta format"
+     "-l, --length", "Try to match the length as closely as possible (``not set by default``)"
+
 
 %GC distribution and %GC composition within a sliding window
 =============================================================
@@ -224,13 +231,13 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
 
 .. code-block:: bash
 
-    biasaway c -f path/to/FASTA/file/my_fasta_file.fa
+    biasaway c -f path/to/FASTA/file/my_fasta_file.fa -b path/to/background.fa -r path/to/bgdirectory
 
 This will output the sequence as stdout. If you wish to save the sequences in a specific file, you can type:
 
 .. code-block:: bash
 
-    biasaway c -f path/to/FASTA/file/my_fasta_file.fa > path/to/output/FASTA/file/my_fasta_output.fa
+    biasaway c -f path/to/FASTA/file/my_fasta_file.fa -b path/to/background.fa -r path/to/bgdirectory > path/to/output/FASTA/file/my_fasta_output.fa
 
 **Summary of options**
 
@@ -241,7 +248,9 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
      "-h, --help","To show the help message and exit"
      "-f, --foreground","Foreground file in fasta format."
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
-
-
-
-.. note::  The option ``--htype=tribar``.
+     "-r, --bgdirectory", "Background directory"
+     "-b, --background", "Background file in fasta format"
+     "-l, --length", "Try to match the length as closely as possible (``not set by default``)"
+     "-w, --winlen", "Window length (``default: 100``)"
+     "-s, --step", "Sliding step (``default: 1``)"
+     "-d, --deviation", "Deviation from the mean (``default: 2.6 for a threshold of mean + 2.6 * stdev``)"

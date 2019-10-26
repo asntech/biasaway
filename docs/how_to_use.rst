@@ -13,16 +13,16 @@ This will show the main help, which lists the three subcommands/modules: ``m``, 
 .. code-block:: bash
 
 	usage: biasaway <subcommand> [options]
-	    
-	positional arguments <subcommand>:
-		{m,f,d,w,g,c}
-			List of subcommands
-	m		mono-nucleotide shuffling generator
-	f		mono-nucleotide shuffling within a sliding window generator
-    	d		di-nucleotide shuffling generator
-    	w		di-nucleotide shuffling within a sliding window generator
-    	g		%GC distribution-based background chooser
-    	c		%GC distribution and %GC composition within a sliding window background chooser
+
+	positional arguments <subcommand>: {m,f,d,w,g,c}
+
+		List of subcommands
+		m 	mono-nucleotide shuffling generator
+		f 	mono-nucleotide shuffling within a sliding window generator
+		d 	di-nucleotide shuffling generator
+		w 	di-nucleotide shuffling within a sliding window generator
+		g 	%GC distribution-based background chooser
+		c 	GC distribution and %GC composition within a sliding window background chooser
 
 	optional arguments:
 	  -h, --help            show this help message and exit
