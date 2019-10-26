@@ -14,9 +14,9 @@ Prerequisites
 =============
 BiasAway requires the following Python modules:
 
-	* Python (2.7 ): https://www.python.org/
+	* Python (v2.7): https://www.python.org/
 	* Biopython: https://biopython.org
-	* Numpy: https://numpy.org
+	* Numpy (<=v1.16.5): https://numpy.org
 
 Install Biopython and Numpy
 ----------------------------

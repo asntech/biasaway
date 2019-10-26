@@ -1,2 +1,2 @@
 biopython
-numpy
+numpy==1.16.5
