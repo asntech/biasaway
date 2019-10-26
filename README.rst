@@ -1,7 +1,7 @@
 BiasAway
----------
+--------
 
-	a tool for background DNA sequence generation
+	a tool to generate composition-matched background sequence sets
 
 .. image:: https://travis-ci.org/asntech/biasaway.svg?branch=master
     :target: https://travis-ci.org/asntech/biasaway
@@ -111,14 +111,14 @@ This will show the main help, which lists the three subcommands/modules: ``m``, 
 	usage: biasaway <subcommand> [options]
 	    
 	positional arguments <subcommand>:
-	  {m,f,d,w,g,c}
-			List of subcommands
-	m		mono-nucleotide shuffling generator
-	f		mono-nucleotide shuffling within a sliding window generator
-    	d		di-nucleotide shuffling generator
-    	w		di-nucleotide shuffling within a sliding window generator
-    	g		%GC distribution-based background chooser
-    	c		%GC distribution and %GC composition within a sliding window background chooser
+	 {m,f,d,w,g,c}
+	 List of subcommands
+	 m		mono-nucleotide shuffling generator
+	 f		mono-nucleotide shuffling within a sliding window generator
+     d		di-nucleotide shuffling generator
+     w		di-nucleotide shuffling within a sliding window generator
+     g		%GC distribution-based background chooser
+     c		%GC distribution and %GC composition within a sliding window background chooser
 
 	optional arguments:
 	  -h, --help            show this help message and exit
@@ -151,8 +151,4 @@ The source code for the web app is available at https://github.com/asntech/BiasA
 Support
 ========
 If you have questions, or found any bug in the program, please write to us at ``aziz.khan[at]ncmm.uio.no``
-
-Cite Us
-=========
-If you use biasaway please cite us: ````
 

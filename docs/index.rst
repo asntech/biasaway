@@ -2,7 +2,7 @@
 BiasAway Documentation
 ======================
 
-Welcome to BiasAway - an open-source tool which provides six approaches for generating a background sequence useful to enrichment analyses.
+Welcome to BiasAway - an open-source tool which provides six models to generate composition-matched background sequence sets.
 
 
 .. image:: https://travis-ci.org/asntech/biasaway.svg?branch=master

@@ -40,13 +40,13 @@ def readme(fname):
 
 setup(
     name="biasaway",
-    description="A tool for background DNA sequence generation",
+    description="a tool to generate composition-matched background sequence sets",
     version=VERSION,
     author="Aziz Khan",
     license='MIT',
     platforms='linux/unix',
     author_email="azez.khan@gmail.com",
-    url="https://github.com/asntech/BiasAway",
+    url="https://github.com/asntech/biasaway",
     long_description=readme("README.rst"),
     package_dir={'biasaway': 'biasaway'},
 
