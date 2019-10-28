@@ -41,7 +41,6 @@ Quick installation using Conda
 
 	conda install -c bioconda biasaway
 
-This will install all the dependencies and you are ready to use BiasAway.
 
 Install using `pip`
 -------------------
@@ -51,24 +50,9 @@ Install from PyPi::
 
 	pip install biasaway
 
-Note: If you install using pip, make sure to install BEDTools and R packages listed below. 
+BiasAway is developed in Python (v2.7) with packages ``BioPython`` and ``Numpy (<=v1.16.5)``.
 
-BiasAway requires the following Python modules and R packages:
-
-	* Python (v2.7): https://www.python.org
-	* Biopython: https://biopython.org
-	* Numpy (<=v1.16.5): https://numpy.org
-
-A quick installation using ``pip``, you can also use conda.
-
-.. code-block:: bash
-
-    pip install biopython
-
-.. code-block:: bash
-
-    pip install numpy==1.16.5
-
+.. note:: Both ``pip`` and ``conda`` will install these dependencies and you are ready to use BiasAway.
 
 Install BiasAway from source
 =============================
