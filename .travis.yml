@@ -25,5 +25,5 @@ install:
 # command to run tests
 script:
   - biasaway --help
-  - biasaway c --helps
+  - biasaway c --help
   - biasaway g --help
