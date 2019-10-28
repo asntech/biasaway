@@ -67,7 +67,7 @@ A quick installation using ``pip``, you can also use conda.
 
 .. code-block:: bash
 
-    pip install numpy
+    pip install numpy==1.16.5
 
 
 Install BiasAway from source
@@ -104,7 +104,7 @@ Once you have installed biasaway, you can type:
 
 	biasaway --help
 
-This will show the main help, which lists the three subcommands/modules: ``m``, ``f``, ``d``, ``w``, ``g``, and ``c``.
+This will show the main help, which lists the six subcommands/modules: ``m``, ``f``, ``d``, ``w``, ``g``, and ``c``.
 
 .. code-block:: bash
 
@@ -125,7 +125,7 @@ This will show the main help, which lists the three subcommands/modules: ``m``, 
 	  -v, --version         show program's version number and exit
 
 
-to see the help for the three subcommands ``m``, ``f``, ``d``, ``w``, ``g``, and ``c`` type:
+to see the help for the six subcommands ``m``, ``f``, ``d``, ``w``, ``g``, and ``c`` type:
 
 .. code-block:: bash
 	
@@ -144,11 +144,10 @@ to see the help for the three subcommands ``m``, ``f``, ``d``, ``w``, ``g``, and
 
 Interactive Web App
 =====================
-BiasAway Web App is freely available at: 
+BiasAway Web App is freely available at: http://hfaistos.uio.no:8000/
 
-The source code for the web app is available at https://github.com/asntech/BiasAwayApp
 
 Support
 ========
-If you have questions, or found any bug in the program, please write to us at ``aziz.khan[at]ncmm.uio.no``
+If you have questions, or found any bug in the program, please write to us at ``azizk[at]uio.no`` or ``anthony.mathelier[at]ncmm.uio.no``
 

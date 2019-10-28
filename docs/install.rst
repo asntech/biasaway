@@ -30,7 +30,7 @@ BiasAway is using `biopython <https://biopython.org>`_ and `numpy <https://numpy
 
 .. code-block:: bash
 
-	pip install numpy
+	pip install numpy==1.16.5
 
 Install uisng Conda
 --------------------

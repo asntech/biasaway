@@ -8,7 +8,7 @@ Once you have installed BiasAway, you can type:
 
     biasaway --help
 
-This will show the main help, which lists the three subcommands/modules: ``m``, ``f``, ``d``, ``w``, ``g``, and ``c``.
+This will show the main help, which lists the six subcommands/modules: ``m``, ``f``, ``d``, ``w``, ``g``, and ``c``.
 
 .. code-block:: bash
 
@@ -22,13 +22,16 @@ This will show the main help, which lists the three subcommands/modules: ``m``, 
 		d 	di-nucleotide shuffling generator
 		w 	di-nucleotide shuffling within a sliding window generator
 		g 	%GC distribution-based background chooser
-		c 	GC distribution and %GC composition within a sliding window background chooser
+		c 	%GC distribution and %GC composition within a sliding window background chooser
 
 	optional arguments:
 	  -h, --help            show this help message and exit
 	  -v, --version         show program's version number and exit
 
 To view the help for the individual subcommands, please type:
+
+.. note:: Please check ``BiasAway modules`` to see a detailed summary of available **options**.
+
 
 To view ``m`` module help, type
 

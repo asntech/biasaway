@@ -3,7 +3,7 @@ BiasAway modules
 =================
 BiasAway provides user with six approaches for generating a background sequence useful to enrichment analyses. These backgrounds derived from mono- and di- nucleotide shuffled sequences, and genomic sequences matched to the GC content of the target data
 
-.. note:: BiasAway also comes with a Web App.
+.. note:: BiasAway also comes with a Web App available at http://hfaistos.uio.no:8000/.
 
 
 Mono-nucleotide shuffling
