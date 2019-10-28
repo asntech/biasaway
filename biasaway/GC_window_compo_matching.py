@@ -290,7 +290,7 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
             else:
                 gc_list.extend([percent] * nb)
             for r in sample:
-                print r.format("fasta"),
+                print (r.format("fasta")),
                 lengths.append(len(r.seq))
     return gc_list, lengths
 
@@ -424,6 +424,6 @@ def generate_len_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
                                                           nb_match))
             gc_list.extend([percent] * (nb_match))
             for r in sequences:
-                print "{0:s}".format(r.format("fasta")),
+                print ("{0:s}".format(r.format("fasta"))),
                 lengths.append(len(r))
     return gc_list, lengths

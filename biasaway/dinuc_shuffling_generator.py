@@ -4,7 +4,7 @@
 ################################################################################
 
 from biasaway.altschulEriksonDinuclShuffle import dinuclShuffle
-from Bio.SeqRecord import SeqRecord
+
 from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 from biasaway.utils import *
@@ -26,7 +26,7 @@ def generate_sequences(seqs, nfold):
           new_sequence += dinuclShuffle(sequence)
       new_seq = SeqRecord(Seq(new_sequence, generic_dna),
           id="background_seq_{0:d}".format(cpt), description=descr)
-      print new_seq.format("fasta"),
+      print (new_seq.format("fasta")),
       bg_gc_list.append(GC(new_sequence))
       bg_lengths.append(len(new_sequence))
       cpt += 1

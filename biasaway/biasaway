@@ -158,7 +158,7 @@ def mononuc_shuffling_arg_parsing(subparsers):
     parser_d.add_argument('-n', '--nfold', required=False, type=int,
                           dest="nfold", action="store", default=1,
                           help=help_str)
-    parser_d.set_defaults(func=mononuc_shuffling_generator)
+    parser_d.set_defaults(func = mononuc_shuffling_generator)
 
 
 def mononuc_window_shuffling_arg_parsing(subparsers):
@@ -297,12 +297,14 @@ def arg_parsing():
     parser = argparse.ArgumentParser(
         description=descr,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    subparsers = parser.add_subparsers(help="Choice of the generator/chooser",
+    subparsers = parser.add_subparsers(dest='generator/chooser. For more information, run the program again and type -h for help.',            #Added simple helpstring
+                                       help="Choice of the generator/chooser",
                                        title="Subcommands",
                                        description="Valid subcommands")
     parser.add_argument('-v','--version', dest='version', action='version', version='%(prog)s version '+VERSION)
     #parser.add_argument('-c','--cite', dest='cite', action='store_true', help='show citation information and exit\n')
    
+    subparsers.required = True
     mononuc_shuffling_arg_parsing(subparsers)
     mononuc_window_shuffling_arg_parsing(subparsers)
     dinuc_shuffling_arg_parsing(subparsers)
@@ -318,4 +320,5 @@ def arg_parsing():
 ###############################################################################
 if __name__ == "__main__":
     arguments = arg_parsing()
+    print ("I came here")
     arguments.func(arguments)

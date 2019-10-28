@@ -2,7 +2,7 @@
 Citation
 ========
 
-If you used BiasAway commandline tool or web app, please cite:
+If you used BiasAway command line tool or web app, please cite:
 
 	- Khan A, Mathelier A. BiasAway: a tool to generate composition-matched background sequences.
 

@@ -173,7 +173,7 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, nfold):
                 sample = bin_seq
                 gc_list.extend([percent] * len(bin_seq))
             for r in sample:
-                print r.format("fasta"),
+                print (r.format("fasta")),
                 lengths.append(len(r.seq))
     return gc_list, lengths
 
@@ -297,5 +297,5 @@ def generate_len_sequences(fg, bg, bg_dir, nfold):
                                                                 nb_match))
             for s in sequences:
                 lengths.append(len(s))
-                print "{0:s}".format(s.format("fasta")),
+                print ("{0:s}".format(s.format("fasta"))),
     return gc_list, lengths
