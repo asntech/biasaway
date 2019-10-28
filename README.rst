@@ -50,9 +50,7 @@ Install from PyPi::
 
 	pip install biasaway
 
-BiasAway is developed in Python (v2.7) with packages ``BioPython`` and ``Numpy (<=v1.16.5)``.
-
-.. note:: Both ``pip`` and ``conda`` will install these dependencies and you are ready to use BiasAway.
+BiasAway is developed in Python (v2.7) with packages ``BioPython`` and ``Numpy (<=v1.16.5)``. Both ``pip`` and ``conda`` will install these dependencies and you are ready to use BiasAway.
 
 Install BiasAway from source
 =============================
@@ -109,7 +107,7 @@ This will show the main help, which lists the six subcommands/modules: ``m``, ``
 	  -v, --version         show program's version number and exit
 
 
-to see the help for the six subcommands ``m``, ``f``, ``d``, ``w``, ``g``, and ``c`` type:
+And to view the help for the six subcommands ``m``, ``f``, ``d``, ``w``, ``g``, and ``c`` type:
 
 .. code-block:: bash
 	
