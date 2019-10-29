@@ -15,7 +15,7 @@ Prerequisites
 BiasAway requires the following Python modules:
 
 	* Biopython: https://biopython.org
-	* Numpy (<=v1.16.5): https://numpy.org
+	* Numpy: https://numpy.org
 
 Install Biopython and Numpy
 ----------------------------
@@ -29,7 +29,7 @@ BiasAway is using `biopython <https://biopython.org>`_ and `numpy <https://numpy
 
 .. code-block:: bash
 
-	pip install numpy==1.16.5
+	pip install numpy
 
 Install uisng Conda
 --------------------
