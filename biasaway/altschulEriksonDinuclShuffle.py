@@ -134,5 +134,6 @@ def dinuclShuffle(s):
     del List[prevCh][0]
     prevCh = ch
   L.append(s[-1])
-  t = string.join(L,"")
+  #t = string.join(L,"") for p3k by Aziz
+  t = "".join(L)
   return t

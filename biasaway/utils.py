@@ -1,3 +1,7 @@
+"""
+Modified by Aziz Khan on October 29, 2019 
+"""
+
 from Bio import SeqIO
 import re
 import sys
@@ -17,7 +21,8 @@ def GC(seq):
         gc = sum(map(seq.count, ['G', 'C', 'g', 'c', 'S', 's']))
         l = sum(map(seq.count, ['G', 'C', 'A', 'T', 'S', 'W', 'g', 'c', 'a',
                                 't', 's', 'w']))
-        return gc * 100 / l
+        #return gc * 100 / l
+        return round(gc * 100 / l) #fix for py3 issuess
     except ZeroDivisionError:
         return 0
 

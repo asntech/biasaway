@@ -4,6 +4,8 @@ Shuffle input sequences within a sliding window, keeping mononuc compo.
 Written by Luis del Peso
 Modified by A. Mathelier
 
+Modified by Aziz Khan on October 29, 2019 
+
 """
 
 from Bio.SeqRecord import SeqRecord
@@ -49,7 +51,7 @@ def generate_sequences(seqs, winlen, step, nfold):
             new_seq = SeqRecord(Seq(new_sequence, generic_dna),
                                 id="background_seq_{0:d}".format(cpt),
                                 description=descr)
-            print (new_seq.format("fasta")),
+            print(new_seq.format("fasta")),
             bg_gc_list.append(GC(new_sequence))
             bg_lengths.append(len(new_sequence))
             cpt += 1

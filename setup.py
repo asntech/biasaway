@@ -22,7 +22,9 @@ CLASSIFIERS = [
     'Operating System :: OS Independent',
     'Programming Language :: Python',
     'Programming Language :: Python :: 2.7',
-    'Programming Language :: Python :: 3.6'
+    'Programming Language :: Python :: 3.4',
+    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
     'Topic :: Scientific/Engineering :: Bio-Informatics',
     'Topic :: Software Development :: Libraries :: Python Modules',
 ]
@@ -44,7 +46,7 @@ setup(
     description="a tool to generate composition-matched background sequence sets",
     version=VERSION,
     author="Aziz Khan",
-    license='MIT',
+    license='GPL',
     platforms='linux/unix',
     author_email="azez.khan@gmail.com",
     url="https://github.com/asntech/biasaway",

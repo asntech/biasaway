@@ -32,7 +32,6 @@ To view the help for the individual subcommands, please type:
 
 .. note:: Please check ``BiasAway modules`` to see a detailed summary of available **options**.
 
-
 To view ``m`` module help, type
 
 .. code-block:: bash

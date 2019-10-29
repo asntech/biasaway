@@ -4,9 +4,11 @@ Generation of sequences using mono-nucleotide of input sequences.
 Module allowing the generation of sequences by using a mono-nucleotide.
 shuffling of the given sequences.
 
+Modified by Aziz Khan on October 29, 2019 
+
 """
 
-from Bio import SeqRecord
+from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 from biasaway.utils import GC
