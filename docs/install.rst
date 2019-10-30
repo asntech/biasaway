@@ -23,27 +23,19 @@ BiasAway is using `biopython <https://biopython.org>`_ and `numpy <https://numpy
 
 .. note:: If you install using ``pip`` or ``bioconda`` prerequisites will be installed. 
 
-.. code-block:: bash
-
-	pip install biopython
-
-.. code-block:: bash
-
-	pip install numpy
 
 Install uisng Conda
 --------------------
-We highly recommend to install BiasAway using Conda, this will take care of the dependencies. If you already have Conda or Miniconda installed, go ahead and use the below command.
+BiasAway is available on `Bioconda <https://anaconda.org/bioconda/biasaway>` for installation via ``conda``.
 
 .. code-block:: bash
 
 	conda install -c bioconda biasaway
 
-.. note:: This will install all the dependencies and you are ready to use **BiasAway**.
 
 Install using `pip`
 -------------------
-You can install BiasAway from PyPi using pip.
+BiasAway is also available on `PyPi <https://pypi.org/project/biasaway/>` for installation via ``pip``.
 
 .. code-block:: bash
 

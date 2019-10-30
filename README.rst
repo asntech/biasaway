@@ -34,8 +34,9 @@ Documentation
 Installation
 ============
 
-Quick installation using Conda
-------------------------------
+Quick installation using `conda`
+-------------------------------
+BiasAway is available on `Bioconda <https://anaconda.org/bioconda/biasaway>` for installation via ``conda``.
 
 .. code-block:: bash
 
@@ -44,8 +45,7 @@ Quick installation using Conda
 
 Install using `pip`
 -------------------
-
-You can install BiasAway from PyPi using pip.
+BiasAway is also available on `PyPi <https://pypi.org/project/biasaway/>` for installation via ``pip``.
 
 .. code-block:: bash
 
