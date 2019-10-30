@@ -26,7 +26,7 @@ BiasAway is using `biopython <https://biopython.org>`_ and `numpy <https://numpy
 
 Install uisng Conda
 --------------------
-BiasAway is available on `Bioconda <https://anaconda.org/bioconda/biasaway>` for installation via ``conda``.
+BiasAway is available on `Bioconda <https://anaconda.org/bioconda/biasaway>`_ for installation via ``conda``.
 
 .. code-block:: bash
 
@@ -35,7 +35,7 @@ BiasAway is available on `Bioconda <https://anaconda.org/bioconda/biasaway>` for
 
 Install using `pip`
 -------------------
-BiasAway is also available on `PyPi <https://pypi.org/project/biasaway/>` for installation via ``pip``.
+BiasAway is also available on `PyPi <https://pypi.org/project/biasaway/>`_ for installation via ``pip``.
 
 .. code-block:: bash
 
