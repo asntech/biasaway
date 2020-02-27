@@ -1,17 +1,20 @@
-=================
-BiasAway Web App
-=================
+===================
+BiasAway web-server
+===================
 
 Introduction
 ============
-BiasAway Web App provides an interactive interface and easy to use interface for users to upload FASTA files and to genrate backgrounds.
+The BiasAway web-server provides an interactive and easy to use interface for
+users to upload FASTA files and to generate background sequences. It also
+provides genomic background sequences of 101 bp from 9 species for the relevant
+BiasAway modules.
 
 BiasAway has six modules:
 
 .. figure:: img/biasawayapp.png
    :alt: BiasAway Web App
 
-Below are the screenshots for individual modules.
+Below are screenshots for individual modules.
 
 Mono-nucleotide shuffling
 =========================
@@ -52,6 +55,6 @@ Di-nucleotide shuffling within a sliding window
 
 Availability
 ============
-The BiasAway Web App is freely available at:
+The BiasAway web-server is freely available at:
 
-> http://hfaistos.uio.no:8000/
+> http://biasaway.uio.no

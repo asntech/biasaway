@@ -8,7 +8,7 @@ Once you have installed BiasAway, you can type:
 
     biasaway --help
 
-This will show the main help, which lists the six subcommands/modules: ``m``, ``f``, ``d``, ``w``, ``g``, and ``c``.
+It will print the main help, which lists the six subcommands/modules: ``m``, ``f``, ``d``, ``w``, ``g``, and ``c``.
 
 .. code-block:: bash
 

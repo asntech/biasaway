@@ -2,15 +2,28 @@
 Introduction
 ============
 
-BiasAway provides user with six approaches for generating a background sequence useful to enrichment analyses. These backgrounds derived from mono- and di- nucleotide shuffled sequences, and genomic sequences matched to the GC content of the target data
+The BiasAway software tool is introduced to generate nucleotide composition-matched DNA sequences. It is available as open source code from bitbucket.
 
- 1) mononucleotide shuffled target sequence to preserve the mononucleotide composition of the target sequences,
- 2) dinucleotide shuffled target sequence to preserve the dinucleotide composition of the target sequences,
- 3) genomic sequences matched to the mononucleotide composition of each target sequence to preserve the non-random association of nucleotides,
- 4) sliding window of mononucleotide shuffled target sequence,
- 5) sliding window of dinucleotide shuffled target sequence,
- 6) genomic sequences matched in windows of internal mononucleotide composition for each target sequence.
+The tool provides users with six approaches to generate synthetic or genomic background sequences matching mono- and dinucleotide composition of user-provided foreground sequences:
 
-The latter three backgrounds (BiasAway 4-6) are variants of the former three backgrounds (BiasAway 1-3), in which we utilized a sliding window over the ChIP-Seq sequences to determine a distribution for local regions of
-composition. The background sequence set is then generated (mono- or di-nucleotide shuffle) or selected from a pool of genomic sequences (genomic composition match) to match the distribution of window compositions for each target sequence. These latter backgrounds were considered because due to evolutionary changes such as insertion of repetitive sequences, local rearrangements, or biochemical missteps, the target sequences may have sub-regions of distinct nucleotide composition.
+ 1) synthetic mononucleotide shuffled sequences
+ 2) synthetic dinucleotide shuffled sequences
+ 3) synthetic mononucleotide shuffled sequences in a sliding window
+ 4) synthetic dinucleotide shuffled sequences in a sliding window
+ 5) genomic mononucleotide distribution matched sequences
+ 6) genomic mononucleotide distribution within a sliding window matched sequences
 
+The 1st and 2nd approaches shuffle each user-provided sequences independently
+by preserving the mononucleotide or dinucleotide composition, respectively. The
+3rd and 4th approaches apply the same method as for the 1st and 2nd approaches
+but within a sliding window along the user-provided sequences. For the 5th and
+6th approaches, the background sequences are selected from a pool of provided
+genomic sequences to match the distribution of mononucleotide for each target
+sequence. The 6th approach consideres the mean and standard deviation of %GC
+computed within the sliding window along the user-provided sequences to match
+as closely as possible the distribution for each user-provided sequence.
+
+The approaches based on a sliding window were considered because due to
+evolutionary changes such as insertion of repetitive sequences, local
+rearrangements, or biochemical missteps, the target sequences may have
+sub-regions of distinct nucleotide composition.

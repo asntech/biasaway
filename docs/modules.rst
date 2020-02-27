@@ -1,12 +1,18 @@
 =================
 BiasAway modules
 =================
-BiasAway provides user with six approaches for generating a background sequence useful to enrichment analyses. These backgrounds derived from mono- and di- nucleotide shuffled sequences, and genomic sequences matched to the GC content of the target data
+The BiasAway software tool is introduced to generate nucleotide
+composition-matched DNA sequences. It is available as open source code from
+bitbucket.
 
-.. note:: BiasAway also comes with a Web App available at http://hfaistos.uio.no:8000/.
+The tool provides users with six approaches to generate synthetic or genomic
+background sequences matching mono- and dinucleotide composition of
+user-provided foreground sequences:
+
+.. note:: BiasAway also comes with a Web App available at http://biasaway.uio.no.
 
 
-Mono-nucleotide shuffling
+Mononucleotide shuffling
 =========================
 
 **Usage:**
@@ -29,7 +35,7 @@ Mono-nucleotide shuffling
 
     biasaway m -f path/to/FASTA/file/my_fasta_file.fa
 
-This will output the sequence as stdout. If you wish to save the sequences in a specific file, you can type:
+It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
 
 .. code-block:: bash
 
@@ -45,49 +51,7 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
      "-f, --foreground","Foreground file in fasta format."
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
 
-Mono-nucleotide shuffling within a sliding window
-==================================================
-
-**Usage:**
-
-.. code-block:: bash
-
-    biasaway f [options]
-
-.. note:: Please scroll down to see a detailed summary of available **options**.
-
-**Help:**
-
-.. code-block:: bash
-
-    biasaway f --help
-
-**Example:**
-
-.. code-block:: bash
-
-    biasaway f -f path/to/FASTA/file/my_fasta_file.fa
-
-This will output the sequence as stdout. If you wish to save the sequences in a specific file, you can type:
-
-.. code-block:: bash
-
-    biasaway f -f path/to/FASTA/file/my_fasta_file.fa > path/to/output/FASTA/file/my_fasta_output.fa
-
-**Summary of options**
-
-.. csv-table::
-   :header: "Option", "Description"
-   :widths: 10, 80
-
-     "-h, --help","To show the help message and exit"
-     "-f, --foreground","Foreground file in fasta format."
-     "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
-     "-w, --winlen", "Window length (``default: 100``)"
-     "-s, --step",  "Sliding step (``default: 1``)"
-
-
-Di-nucleotide shuffling generator
+Dinucleotide shuffling
 ==================================
 
 **Usage:**
@@ -110,7 +74,7 @@ Di-nucleotide shuffling generator
 
     biasaway d -f path/to/FASTA/file/my_fasta_file.fa
 
-This will output the sequence as stdout. If you wish to save the sequences in a specific file, you can type:
+It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
 
 .. code-block:: bash
 
@@ -126,7 +90,49 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
      "-f, --foreground","Foreground file in fasta format."
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
 
-Di-nucleotide shuffling within a sliding window
+Mononucleotide shuffling within a sliding window
+==================================================
+
+**Usage:**
+
+.. code-block:: bash
+
+    biasaway f [options]
+
+.. note:: Please scroll down to see a detailed summary of available **options**.
+
+**Help:**
+
+.. code-block:: bash
+
+    biasaway f --help
+
+**Example:**
+
+.. code-block:: bash
+
+    biasaway f -f path/to/FASTA/file/my_fasta_file.fa
+
+It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
+
+.. code-block:: bash
+
+    biasaway f -f path/to/FASTA/file/my_fasta_file.fa > path/to/output/FASTA/file/my_fasta_output.fa
+
+**Summary of options**
+
+.. csv-table::
+   :header: "Option", "Description"
+   :widths: 10, 80
+
+     "-h, --help","To show the help message and exit"
+     "-f, --foreground","Foreground file in fasta format."
+     "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
+     "-w, --winlen", "Window length (``default: 100``)"
+     "-s, --step",  "Sliding step (``default: 1``)"
+
+
+Dinucleotide shuffling within a sliding window
 ================================================
 
 **Usage:**
@@ -149,7 +155,7 @@ Di-nucleotide shuffling within a sliding window
 
     biasaway w -f path/to/FASTA/file/my_fasta_file.fa
 
-This will output the sequence as stdout. If you wish to save the sequences in a specific file, you can type:
+It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
 
 .. code-block:: bash
 
@@ -167,8 +173,8 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
      "-w, --winlen", "Window length (``default: 100``)"
      "-s, --step",  "Sliding step (``default: 1``)"
 
-%GC distribution-based background
-==================================
+Genomic mononucleotide distribution matched
+============================================
 
 **Usage:**
 
@@ -190,7 +196,7 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
 
     biasaway g -f path/to/FASTA/file/my_fasta_file.fa -b path/to/background.fa -r path/to/bgdirectory
 
-This will output the sequence as stdout. If you wish to save the sequences in a specific file, you can type:
+It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
 
 .. code-block:: bash
 
@@ -210,8 +216,8 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
      "-l, --length", "Try to match the length as closely as possible (``not set by default``)"
 
 
-%GC distribution and %GC composition within a sliding window
-=============================================================
+Genomic mononucleotide distribution within a sliding window matched
+===================================================================
 
 **Usage:**
 
@@ -233,7 +239,7 @@ This will output the sequence as stdout. If you wish to save the sequences in a 
 
     biasaway c -f path/to/FASTA/file/my_fasta_file.fa -b path/to/background.fa -r path/to/bgdirectory
 
-This will output the sequence as stdout. If you wish to save the sequences in a specific file, you can type:
+It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
 
 .. code-block:: bash
 
