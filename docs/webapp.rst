@@ -16,39 +16,38 @@ BiasAway has six modules:
 
 Below are screenshots for individual modules.
 
-Mono-nucleotide shuffling
+Mononucleotide shuffling
 =========================
 
 .. figure:: img/module_m.png
    :alt: BiasAway - Mono-nucleotide shuffling
 
-Mono-nucleotide shuffling within a sliding window
-==================================================
-
-.. figure:: img/module_f.png
-   :alt: BiasAway - Mono-nucleotide shuffling within a sliding window
-
-Di-nucleotide shuffling generator
+Dinucleotide shuffling
 ==================================
 
 .. figure:: img/module_d.png
    :alt: BiasAway - Di-nucleotide shuffling generator
 
+Mononucleotide shuffling within a sliding window
+==================================================
 
-Di-nucleotide shuffling within a sliding window
+.. figure:: img/module_f.png
+   :alt: BiasAway - Mono-nucleotide shuffling within a sliding window
+
+Dinucleotide shuffling within a sliding window
 ================================================
 
 .. figure:: img/module_w.png
    :alt: BiasAway - Di-nucleotide shuffling within a sliding window
 
-%GC distribution-based background
-==================================
+Genomic mononucleotide distribution matched
+===========================================
 
 .. figure:: img/module_g.png
    :alt: BiasAway - %GC distribution-based background
 
-%GC distribution and %GC composition within a sliding window
-=============================================================
+Genomic mononucleotide distribution within a sliding window matched
+===================================================================
 
 .. figure:: img/module_c.png
    :alt: BiasAway - %GC distribution and %GC composition within a sliding window
