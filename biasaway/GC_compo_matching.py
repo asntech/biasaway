@@ -1,15 +1,16 @@
 """
 Module matching %GC compo distribution b/w fg and bg.
 
-Modified by Aziz Khan on October 29, 2019 
+Modified by Aziz Khan on October 29, 2019
 
 """
 
 
+from __future__ import print_function
 import sys
 import random
 from Bio import SeqIO
-from biasaway.utils import GC
+from biasaway.utils import GC, dinuc_count
 
 
 def fg_GC_bins(fg_file):
@@ -19,22 +20,24 @@ def fg_GC_bins(fg_file):
     It computes the %GC content and store the information in a list. To each
     G+C percentage bin, we associate the number of sequences falling in the
     corresponding bin.
-    Return lists of GC contents, GC bins, and lengths distrib.
+    Return lists of GC contents, GC bins, lengths distrib, and dinuc compo.
 
     """
     stream = open(fg_file)
     gc_bins = [0] * 101
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     for record in SeqIO.parse(stream, "fasta"):
         gc = GC(record.seq)
         gc_list.append(gc)
-        #python 3 fix
+        # python 3 fix
         gc = round(gc)
         gc_bins[gc] += 1
         lengths.append(len(record.seq))
+        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     stream.close()
-    return gc_list, gc_bins, lengths
+    return gc_list, gc_bins, lengths, dinuc
 
 
 def fg_len_GC_bins(fg_file):
@@ -53,17 +56,19 @@ def fg_len_GC_bins(fg_file):
         gc_bins.append({})
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     for record in SeqIO.parse(stream, "fasta"):
         gc = GC(record.seq)
         gc_list.append(gc)
         length = len(record)
+        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
         lengths.append(length)
         if length in gc_bins[gc]:
             gc_bins[gc][length] += 1
         else:
             gc_bins[gc][length] = 1
     stream.close()
-    return gc_list, gc_bins, lengths
+    return gc_list, gc_bins, lengths, dinuc
 
 
 def print_rec(rec, stream):
@@ -100,17 +105,19 @@ def bg_GC_bins(bg_file, bg_dir):
     gc_bins = []
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     for _ in range(0, 101):
         gc_bins.append([])
     for record in SeqIO.parse(stream, "fasta"):
         gc = GC(record.seq)
         gc_list.append(gc)
-        gc = round(gc) #python3 fix
+        gc = round(gc)  # python3 fix
         gc_bins[gc].append(record)
         lengths.append(len(record.seq))
+        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     stream.close()
     print_in_bg_dir(gc_bins, bg_dir)
-    return gc_list, gc_bins, lengths
+    return gc_list, gc_bins, lengths, dinuc
 
 
 def bg_len_GC_bins(bg_file, bg_dir):
@@ -126,6 +133,7 @@ def bg_len_GC_bins(bg_file, bg_dir):
     gc_bins = []
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     for _ in range(0, 101):
         gc_bins.append({})
     for record in SeqIO.parse(stream, "fasta"):
@@ -136,9 +144,10 @@ def bg_len_GC_bins(bg_file, bg_dir):
         else:
             gc_bins[gc][len(record)] = [record]
         lengths.append(len(record.seq))
+        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     stream.close()
     print_in_bg_dir(gc_bins, bg_dir, True)
-    return gc_list, gc_bins, lengths
+    return gc_list, gc_bins, lengths, dinuc
 
 
 def get_bins_from_bg_dir(bg_dir, percent):
@@ -162,6 +171,7 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, nfold):
     """
     lengths = []
     gc_list = []
+    dinuc = [0] * 16
     for percent in range(0, 101):
         if fg_bins[percent]:
             random.seed()
@@ -181,9 +191,10 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, nfold):
                 sample = bin_seq
                 gc_list.extend([percent] * len(bin_seq))
             for r in sample:
-                print(r.format("fasta")),
+                print(r.format("fasta"), end='')
                 lengths.append(len(r.seq))
-    return gc_list, lengths
+                dinuc = [x + y for x, y in zip(dinuc, dinuc_count(r.seq))]
+    return gc_list, lengths, dinuc
 
 
 def extract_seq_rec(size, nb, bg_keys, bg, accu, index):
@@ -197,12 +208,12 @@ def extract_seq_rec(size, nb, bg_keys, bg, accu, index):
 
     """
     if not (bg_keys and nb):  # End of the recursion since we have no sequence
-    # in the bg or enough retrieved (nb=0)
+        # in the bg or enough retrieved (nb=0)
         return accu, nb
     if index > len(bg_keys) - 1:
         return extract_seq_rec(size, nb, bg_keys, bg, accu, index - 1)
     if not bg_keys:  # No more size in the background to be checked so return
-    # what was in the previous size bin
+        # what was in the previous size bin
         if bg[bg_keys[index - 1]]:
             random.shuffle(bg[bg_keys[index - 1]])
             accu.extend(bg[bg_keys[index - 1]][0:nb])
@@ -211,16 +222,16 @@ def extract_seq_rec(size, nb, bg_keys, bg, accu, index):
         else:
             return accu, nb
     if bg_keys[index] >= size:  # No need to go further in the different sizes
-    # within the background
+        # within the background
         if (index == 0 or not bg[bg_keys[index - 1]] or
                 bg_keys[index] - size < size - bg_keys[index - 1]):  # Which
-        # size is the closest to the expected one? => we go for the current one
-        # if YES
+            # size is the closest to the expected one? => we go for the current
+            # one if YES
             random.shuffle(bg[bg_keys[index]])
             accu.extend(bg[bg_keys[index]][0:nb])
             new_nb = nb - len(bg[bg_keys[index]][0:nb])
             if bg[bg_keys[index]][nb:]:  # Check that there is sequences in the
-            # background for this size bin
+                # background for this size bin
                 bg[bg_keys[index]] = bg[bg_keys[index]][nb:]
                 return extract_seq_rec(size, new_nb, bg_keys, bg, accu, index)
             else:
@@ -232,7 +243,7 @@ def extract_seq_rec(size, nb, bg_keys, bg, accu, index):
             accu.extend(bg[bg_keys[index - 1]][0:nb])
             new_nb = nb - len(bg[bg_keys[index - 1]][0:nb])
             if bg[bg_keys[index - 1]][nb:]:  # Check that there is sequences in
-            # the background for this size bin
+                # the background for this size bin
                 bg[bg_keys[index - 1]] = bg[bg_keys[index - 1]][nb:]
                 return extract_seq_rec(size, new_nb, bg_keys, bg, accu, index)
             else:
@@ -281,6 +292,7 @@ def generate_len_sequences(fg, bg, bg_dir, nfold):
     random.seed()
     lengths = []
     gc_list = []
+    dinuc = [0] * 16
     for percent in range(0, 101):
         if fg[percent]:
             nb = sum(fg[percent].values()) * nfold
@@ -305,5 +317,6 @@ def generate_len_sequences(fg, bg, bg_dir, nfold):
                                                                 nb_match))
             for s in sequences:
                 lengths.append(len(s))
-                print("{0:s}".format(s.format("fasta"))),
-    return gc_list, lengths
+                dinuc = [x + y for x, y in zip(dinuc, dinuc_count(s))]
+                print("{0:s}".format(s.format("fasta")), end='')
+    return gc_list, lengths, dinuc

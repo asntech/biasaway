@@ -43,13 +43,13 @@ def readme(fname):
 
 setup(
     name="biasaway",
-    description="a tool to generate composition-matched background sequence sets",
+    description="a tool to generate nucleotide composition-matched DNA sequences",
     version=VERSION,
-    author="Aziz Khan",
+    author="Anthony Mathelier and Aziz Khan",
     license='GPL',
     platforms='linux/unix',
-    author_email="azez.khan@gmail.com",
-    url="https://github.com/asntech/biasaway",
+    author_email="anthony.mathelier@ncmm.uio.no",
+    url="https://bitbucket.org/CBGR/biasaway/src/master/",
     long_description=readme("README.rst"),
     package_dir={'biasaway': 'biasaway'},
 

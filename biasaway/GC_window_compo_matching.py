@@ -1,15 +1,16 @@
 """
 Module matching %GC compo distribution b/w fg and bg w/i a sliding win.
 
-Modified by Aziz Khan on October 29, 2019 
+Modified by Aziz Khan on October 29, 2019
 
 """
 
 
+from __future__ import print_function
 import sys
 import random
 import numpy
-from biasaway.utils import GC
+from biasaway.utils import GC, dinuc_count
 from Bio import SeqIO
 from biasaway.GC_compo_matching import print_in_bg_dir, get_bins_from_bg_dir
 from biasaway.GC_compo_matching import get_bins_len_from_bg_dir
@@ -90,18 +91,20 @@ def fg_GC_bins(fg, winlen, step):
     tmp_gc_bins = []
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     for _ in range(0, 101):
         tmp_gc_bins.append([])
     for record in SeqIO.parse(stream, "fasta"):
         gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen, step)
         gc_list.append(gc)
-        #python 3 fix
+        # python 3 fix
         gc = round(gc)
         tmp_gc_bins[gc].append((min_gc, max_gc, sd_gc, cv_gc))
         exit(0)
         lengths.append(len(record.seq))
+        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     stream.close()
-    return gc_list, avg_and_sd_gc_info(tmp_gc_bins), lengths
+    return gc_list, avg_and_sd_gc_info(tmp_gc_bins), lengths, dinuc
 
 
 def avg_and_sd_len_gc_info(l_dic, gc_info):
@@ -152,6 +155,7 @@ def fg_len_GC_bins(fg, winlen, step):
     tmp_gc_bins = []
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     l_dic = []
     for _ in range(0, 101):
         tmp_gc_bins.append([])
@@ -160,14 +164,15 @@ def fg_len_GC_bins(fg, winlen, step):
         gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen, step)
         gc_list.append(gc)
         tmp_gc_bins[gc].append((min_gc, max_gc, sd_gc, cv_gc))
-        l = len(record)
-        if l in l_dic[gc]:
-            l_dic[gc][l] += 1
+        length = len(record)
+        if length in l_dic[gc]:
+            l_dic[gc][length] += 1
         else:
-            l_dic[gc][l] = 1
-        lengths.append(l)
+            l_dic[gc][length] = 1
+        lengths.append(length)
+        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     stream.close()
-    return gc_list, avg_and_sd_len_gc_info(l_dic, tmp_gc_bins), lengths
+    return gc_list, avg_and_sd_len_gc_info(l_dic, tmp_gc_bins), lengths, dinuc
 
 
 def bg_GC_bins(bg, bg_dir):
@@ -187,6 +192,7 @@ def bg_GC_bins(bg, bg_dir):
     gc_bins = []
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     for _ in range(0, 101):
         gc_bins.append([])
     for record in SeqIO.parse(stream, "fasta"):
@@ -194,9 +200,10 @@ def bg_GC_bins(bg, bg_dir):
         gc_list.append(gc)
         gc_bins[gc].append(record)
         lengths.append(len(record.seq))
+        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     stream.close()
     print_in_bg_dir(gc_bins, bg_dir)
-    return gc_list, gc_bins, lengths
+    return gc_list, gc_bins, lengths, dinuc
 
 
 def bg_len_GC_bins(bg, bg_dir):
@@ -216,6 +223,7 @@ def bg_len_GC_bins(bg, bg_dir):
     gc_bins = []
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     for _ in range(0, 101):
         gc_bins.append({})
     for record in SeqIO.parse(stream, "fasta"):
@@ -226,9 +234,10 @@ def bg_len_GC_bins(bg, bg_dir):
         else:
             gc_bins[gc][len(record)] = [record]
         lengths.append(len(record.seq))
+        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     stream.close()
     print_in_bg_dir(gc_bins, bg_dir, True)
-    return gc_list, gc_bins, lengths
+    return gc_list, gc_bins, lengths, dinuc
 
 
 def inside(val, center, stdev, deviation):
@@ -281,6 +290,7 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
 
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     for percent in range(0, 101):
         if fg_bins[percent][0]:
             nb = fg_bins[percent][0][0] * nfold
@@ -299,9 +309,10 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
             else:
                 gc_list.extend([percent] * nb)
             for r in sample:
-                print(r.format("fasta")),
+                print(r.format("fasta"), end='')
                 lengths.append(len(r.seq))
-    return gc_list, lengths
+                dinuc = [x + y for x, y in zip(dinuc, dinuc_count(r.seq))]
+    return gc_list, lengths, dinuc
 
 
 def extract_seq_rec(size, nb, bg_keys, bg, accu, index, fg, deviation, winlen,
@@ -409,6 +420,7 @@ def generate_len_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
     sys.setrecursionlimit(10000)
     gc_list = []
     lengths = []
+    dinuc = [0] * 16
     for percent in range(0, 101):
         if fg_bins[percent][0]:
             nb = sum(fg_bins[percent][0][0].values()) * nfold
@@ -430,9 +442,10 @@ def generate_len_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
                 sys.stderr.write("""\n*** WARNING ***
                 Sample larger than population for {0:d}% G+C content:
                 {1:d} needed and {2:d} obtained\n""".format(percent, nb,
-                                                          nb_match))
+                                                            nb_match))
             gc_list.extend([percent] * (nb_match))
             for r in sequences:
-                print("{0:s}".format(r.format("fasta"))),
+                print("{0:s}".format(r.format("fasta")), end='')
                 lengths.append(len(r))
-    return gc_list, lengths
+                dinuc = [x + y for x, y in zip(dinuc, dinuc_count(r.seq))]
+    return gc_list, lengths, dinuc
