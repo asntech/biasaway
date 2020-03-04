@@ -5,7 +5,6 @@ Modified by A. Mathelier in March 2020
 
 from Bio import SeqIO
 import re
-import sys
 
 
 def GC(seq):
@@ -131,6 +130,7 @@ def compute_dinuc_distrib(seqs, b=False):
 
 
 def print_dinuc_distrib(dinuc, output):
+    import sys
     stream = sys.stdout
     if output:
         stream = open(output, "w")
@@ -187,10 +187,23 @@ def single_value(the_array):
     return len(np.unique(the_array)) == 1
 
 
-def make_gc_plot(fg_gc, bg_gc):
+def test_dir(outdir):
+    """ Test if the directory exists or can be created. """
+    import os
+    import errno
+    try:
+        os.makedirs(outdir)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(outdir):
+            pass
+        else:
+            raise
+
+def make_gc_plot(fg_gc, bg_gc, outdir):
     """
     Compute the density GC composition plots for background and input.
     """
+    test_dir(outdir)
     import seaborn as sns
     import tempfile
     import matplotlib.pyplot as plt
@@ -209,16 +222,15 @@ def make_gc_plot(fg_gc, bg_gc):
                         label='generated')
     plt.legend()
     plot.set(xlabel="%GC", ylabel="frequency")
-    output = tempfile.mkstemp(prefix="gc_plot")[1]
-    plt.savefig("{0}.pdf".format(output))
-    return "{0}.pdf".format(output)
+    plt.savefig("{0}/gc_plot.pdf".format(outdir ))
 
 
-def make_len_plot(fg_len, bg_len):
+def make_len_plot(fg_len, bg_len, outdir):
     """
     Compute the density length plot for the background, the input and the
     matching background datasets.
     """
+    test_dir(outdir)
     import seaborn as sns
     import tempfile
     import matplotlib.pyplot as plt
@@ -237,15 +249,14 @@ def make_len_plot(fg_len, bg_len):
                         label='generated')
     plt.legend()
     plot.set(xlabel="length", ylabel="frequency")
-    output = tempfile.mkstemp(prefix="length_plot")[1]
-    plot.get_figure().savefig("{0}.pdf".format(output))
-    return "{0}.pdf".format(output)
+    plot.get_figure().savefig("{0}/length_plot.pdf".format(outdir))
 
 
-def make_dinuc_plot(fg_dinuc, bg_dinuc):
+def make_dinuc_plot(fg_dinuc, bg_dinuc, outdir):
     """
     Plot the dinucleotide composition of input and background sequences.
     """
+    test_dir(outdir)
     import pandas as pd
     import seaborn as sns
     import matplotlib.pyplot as plt
@@ -278,6 +289,4 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc):
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
-    output = tempfile.mkstemp(prefix="dinuc_plot")[1]
-    plt.savefig("{0}.pdf".format(output))
-    return "{0}.pdf".format(output)
+    plt.savefig("{0}/dinuc_plot.pdf".format(outdir))
