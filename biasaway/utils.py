@@ -182,6 +182,11 @@ def split_seq(seq):
     return re.split('([!ACGT]+)', seq)
 
 
+def single_value(the_array):
+    import numpy as np
+    return len(np.unique(the_array)) == 1
+
+
 def make_gc_plot(fg_gc, bg_gc):
     """
     Compute the density GC composition plots for background and foreground.
@@ -189,13 +194,20 @@ def make_gc_plot(fg_gc, bg_gc):
     import seaborn as sns
     import tempfile
     import matplotlib.pyplot as plt
+    plot_hist = False
+    plot_kde = True
+    # One cannot compute kde if there is a single value in the array
+    if single_value(fg_gc) or single_value(bg_gc):
+        plot_hist = True
+        plot_kde = False
     plt.figure()
-    plot = sns.distplot(fg_gc, hist=True, kde=False,
-                        # kde_kws={'shade': True, 'linewidth': 3},
+    plot = sns.distplot(fg_gc, hist=plot_hist, kde=plot_kde,
+                        kde_kws={'shade': True, 'linewidth': 3},
                         label='foreground')
-    plot = sns.distplot(bg_gc, hist=True, kde=False,
-                        # kde_kws={'shade': True, 'linewidth': 3},
+    plot = sns.distplot(bg_gc, hist=plot_hist, kde=plot_kde,
+                        kde_kws={'shade': True, 'linewidth': 3},
                         label='background')
+    plt.legend()
     plot.set(xlabel="%GC", ylabel="frequency")
     output = tempfile.mkstemp(prefix="gc_plot")[1]
     plt.savefig("{0}.pdf".format(output))
@@ -210,13 +222,20 @@ def make_len_plot(fg_len, bg_len):
     import seaborn as sns
     import tempfile
     import matplotlib.pyplot as plt
+    plot_hist = False
+    plot_kde = True
+    # One cannot compute kde if there is a single value in the array
+    if single_value(fg_len) or single_value(bg_len):
+        plot_hist = True
+        plot_kde = False
     plt.figure()
-    plot = sns.distplot(fg_len, hist=True, kde=False,
-                        # kde_kws={'shade': True, 'linewidth': 3},
+    plot = sns.distplot(fg_len, hist=plot_hist, kde=plot_kde,
+                        kde_kws={'shade': True, 'linewidth': 3},
                         label='foreground')
-    plot = sns.distplot(bg_len, hist=True, kde=False,
-                        # kde_kws={'shade': True, 'linewidth': 3},
+    plot = sns.distplot(bg_len, hist=plot_hist, kde=plot_kde,
+                        kde_kws={'shade': True, 'linewidth': 3},
                         label='background')
+    plt.legend()
     plot.set(xlabel="length", ylabel="frequency")
     output = tempfile.mkstemp(prefix="length_plot")[1]
     plot.get_figure().savefig("{0}.pdf".format(output))
