@@ -317,6 +317,6 @@ def generate_len_sequences(fg, bg, bg_dir, nfold):
                                                                 nb_match))
             for s in sequences:
                 lengths.append(len(s))
-                dinuc = [x + y for x, y in zip(dinuc, dinuc_count(s))]
+                dinuc = [x + y for x, y in zip(dinuc, dinuc_count(s.seq))]
                 print("{0:s}".format(s.format("fasta")), end='')
     return gc_list, lengths, dinuc
