@@ -65,6 +65,7 @@ def mononuc_shuffling_window_generator(argu):
         seqs, argu.winlen, argu.step, argu.nfold)
     print(make_gc_plot(fg_gc_list, bg_gc_list))
     print(make_len_plot(fg_lengths, bg_lengths))
+    print(make_dinuc_plot(fg_dinuc, bg_dinuc))
 
 
 def dinuc_shuffling_window_generator(argu):
@@ -73,6 +74,7 @@ def dinuc_shuffling_window_generator(argu):
         seqs, argu.winlen, argu.step, argu.nfold)
     print(make_gc_plot(fg_gc_list, bg_gc_list))
     print(make_len_plot(fg_lengths, bg_lengths))
+    print(make_dinuc_plot(fg_dinuc, bg_dinuc))
 
 
 def test_empty_bg_dir(bg_dir):
@@ -121,6 +123,7 @@ def gc_compo_generator_no_len(argu):
                                                                    argu.nfold)
     print(make_gc_plot(fg_gc_list, bg_gc_list))
     print(make_len_plot(fg_lengths, bg_lengths))
+    print(make_dinuc_plot(fg_dinuc, bg_dinuc))
 
 
 def gc_compo_len_generator(argu):
@@ -137,6 +140,7 @@ def gc_compo_len_generator(argu):
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.nfold)
     print(make_gc_plot(fg_gc_list, bg_gc_list))
     print(make_len_plot(fg_lengths, bg_lengths))
+    print(make_dinuc_plot(fg_dinuc, bg_dinuc))
 
 
 def gc_compo_window_generator(argu):
@@ -162,6 +166,7 @@ def gc_compo_len_window_generator(argu):
         argu.step, argu.nfold)
     print(make_gc_plot(fg_gc_list, bg_gc_list))
     print(make_len_plot(fg_lengths, bg_lengths))
+    print(make_dinuc_plot(fg_dinuc, bg_dinuc))
 
 
 def gc_compo_window_generator_no_len(argu):
@@ -179,6 +184,7 @@ def gc_compo_window_generator_no_len(argu):
         argu.step, argu.nfold)
     print(make_gc_plot(fg_gc_list, bg_gc_list))
     print(make_len_plot(fg_lengths, bg_lengths))
+    print(make_dinuc_plot(fg_dinuc, bg_dinuc))
 
 
 def mononuc_shuffling_arg_parsing(subparsers):
