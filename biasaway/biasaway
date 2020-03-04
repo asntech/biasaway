@@ -113,8 +113,7 @@ def gc_compo_generator_no_len(argu):
     bg_gc_bins = None
     if argu.bg_file:
         test_empty_bg_dir(argu.bg_dir)
-        bg_gc_list, bg_gc_bins, bg_lengths, bg_dinuc = GC_compo.bg_GC_bins(
-            argu.bg_file, argu.bg_dir)
+        _, _, _, _ = GC_compo.bg_GC_bins( argu.bg_file, argu.bg_dir)
     else:
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_sequences(fg_gc_bins,
@@ -132,8 +131,7 @@ def gc_compo_len_generator(argu):
     bg_gc_bins = None
     if argu.bg_file:
         test_empty_bg_dir(argu.bg_dir)
-        bg_gc_list, bg_gc_bins, bg_lengths, bg_dinuc = GC_compo.bg_len_GC_bins(
-            argu.bg_file, argu.bg_dir)
+        _, _, _, _ = GC_compo.bg_len_GC_bins( argu.bg_file, argu.bg_dir)
     else:
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_len_sequences(
@@ -157,8 +155,7 @@ def gc_compo_len_window_generator(argu):
     bg_gc_bins = None
     if argu.bg_file:
         test_empty_bg_dir(argu.bg_dir)
-        (bg_gc_list, bg_gc_bins, bg_lengths,
-         bg_dinuc) = GC_window_compo.bg_len_GC_bins(argu.bg_file, argu.bg_dir)
+        _, _, _, _ = GC_window_compo.bg_len_GC_bins(argu.bg_file, argu.bg_dir)
     else:
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_window_compo.generate_len_sequences(
@@ -175,8 +172,7 @@ def gc_compo_window_generator_no_len(argu):
     bg_gc_bins = None
     if argu.bg_file:
         test_empty_bg_dir(argu.bg_dir)
-        (bg_gc_list, bg_gc_bins, bg_lengths,
-         bg_dinuc) = GC_window_compo.bg_GC_bins(argu.bg_file, argu.bg_dir)
+        _, _, _, _ = GC_window_compo.bg_GC_bins(argu.bg_file, argu.bg_dir)
     else:
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_window_compo.generate_sequences(
