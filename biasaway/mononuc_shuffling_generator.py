@@ -5,6 +5,7 @@ Module allowing the generation of sequences by using a mono-nucleotide.
 shuffling of the given sequences.
 
 Modified by Aziz Khan on October 29, 2019
+Modified by A. Mathelier in March 2020
 
 """
 

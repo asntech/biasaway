@@ -1,6 +1,7 @@
 ###############################################################################
 # Module allowing the generation of sequences by using a di-nucleotide
 # shuffling of the given sequences
+# Modified by A. Mathelier in March 2020
 ###############################################################################
 
 from __future__ import print_function

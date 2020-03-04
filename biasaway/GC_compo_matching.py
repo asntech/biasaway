@@ -2,6 +2,7 @@
 Module matching %GC compo distribution b/w fg and bg.
 
 Modified by Aziz Khan on October 29, 2019
+Modified by A. Mathelier in March 2020
 
 """
 

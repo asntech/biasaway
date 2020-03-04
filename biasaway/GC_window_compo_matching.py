@@ -2,6 +2,7 @@
 Module matching %GC compo distribution b/w fg and bg w/i a sliding win.
 
 Modified by Aziz Khan on October 29, 2019
+Modified by A. Mathelier in March 2020
 
 """
 
@@ -322,6 +323,10 @@ def extract_seq_rec(size, nb, bg_keys, bg, accu, index, fg, deviation, winlen,
 
     """
 
+    # There could be too many recursions if a lot of the background sequences
+    # have the same length. Hence, we set a max number of recursion to avoid
+    # going too deep when it does not make sense.
+    sys.setrecursionlimit(10000)
     random.seed()
     if not (bg_keys and nb):
         return accu, nb, bg_keys
