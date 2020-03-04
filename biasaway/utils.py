@@ -205,7 +205,7 @@ def make_gc_plot(fg_gc, bg_gc):
                         label='foreground')
     plot = sns.distplot(bg_gc, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
-                        label='background')
+                        label='generated')
     plt.legend()
     plot.set(xlabel="%GC", ylabel="frequency")
     output = tempfile.mkstemp(prefix="gc_plot")[1]
@@ -233,7 +233,7 @@ def make_len_plot(fg_len, bg_len):
                         label='foreground')
     plot = sns.distplot(bg_len, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
-                        label='background')
+                        label='generated')
     plt.legend()
     plot.set(xlabel="length", ylabel="frequency")
     output = tempfile.mkstemp(prefix="length_plot")[1]

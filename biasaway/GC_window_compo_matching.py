@@ -100,7 +100,6 @@ def fg_GC_bins(fg, winlen, step):
             # python 3 fix
             gc = round(gc)
             tmp_gc_bins[gc].append((min_gc, max_gc, sd_gc, cv_gc))
-            exit(0)
             lengths.append(len(record.seq))
             dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     return gc_list, avg_and_sd_gc_info(tmp_gc_bins), lengths, dinuc
@@ -296,8 +295,6 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
                 bin_seq = get_bins_from_bg_dir(bg_dir, percent)
             left, sample = extract_random_sample(bin_seq, fg_bins[percent], nb,
                                                  deviation, winlen, step)
-            print("Sample:")
-            print(sample)
             if left:
                 sys.stderr.write("""\n*** WARNING ***
                 Sample larger than population for {0:d}% G+C content:
