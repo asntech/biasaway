@@ -23,20 +23,19 @@ def fg_GC_bins(fg_file):
     Return lists of GC contents, GC bins, lengths distrib, and dinuc compo.
 
     """
-    stream = open(fg_file)
-    gc_bins = [0] * 101
-    gc_list = []
-    lengths = []
-    dinuc = [0] * 16
-    for record in SeqIO.parse(stream, "fasta"):
-        gc = GC(record.seq)
-        gc_list.append(gc)
-        # python 3 fix
-        gc = round(gc)
-        gc_bins[gc] += 1
-        lengths.append(len(record.seq))
-        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-    stream.close()
+    with open(fg_file) as stream:
+        gc_bins = [0] * 101
+        gc_list = []
+        lengths = []
+        dinuc = [0] * 16
+        for record in SeqIO.parse(stream, "fasta"):
+            gc = GC(record.seq)
+            gc_list.append(gc)
+            # python 3 fix
+            gc = round(gc)
+            gc_bins[gc] += 1
+            lengths.append(len(record.seq))
+            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     return gc_list, gc_bins, lengths, dinuc
 
 
@@ -50,24 +49,23 @@ def fg_len_GC_bins(fg_file):
     Return lists of GC contents, GC bins, and lengths distrib.
 
     """
-    stream = open(fg_file)
-    gc_bins = []
-    for _ in range(0, 101):
-        gc_bins.append({})
-    gc_list = []
-    lengths = []
-    dinuc = [0] * 16
-    for record in SeqIO.parse(stream, "fasta"):
-        gc = GC(record.seq)
-        gc_list.append(gc)
-        length = len(record)
-        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-        lengths.append(length)
-        if length in gc_bins[gc]:
-            gc_bins[gc][length] += 1
-        else:
-            gc_bins[gc][length] = 1
-    stream.close()
+    with open(fg_file) as stream:
+        gc_bins = []
+        for _ in range(0, 101):
+            gc_bins.append({})
+        gc_list = []
+        lengths = []
+        dinuc = [0] * 16
+        for record in SeqIO.parse(stream, "fasta"):
+            gc = GC(record.seq)
+            gc_list.append(gc)
+            length = len(record)
+            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
+            lengths.append(length)
+            if length in gc_bins[gc]:
+                gc_bins[gc][length] += 1
+            else:
+                gc_bins[gc][length] = 1
     return gc_list, gc_bins, lengths, dinuc
 
 
@@ -101,21 +99,20 @@ def bg_GC_bins(bg_file, bg_dir):
     Return lists of GC contents, GC bins, and lengths distrib.
 
     """
-    stream = open(bg_file)
-    gc_bins = []
-    gc_list = []
-    lengths = []
-    dinuc = [0] * 16
-    for _ in range(0, 101):
-        gc_bins.append([])
-    for record in SeqIO.parse(stream, "fasta"):
-        gc = GC(record.seq)
-        gc_list.append(gc)
-        gc = round(gc)  # python3 fix
-        gc_bins[gc].append(record)
-        lengths.append(len(record.seq))
-        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-    stream.close()
+    with open(bg_file) as stream:
+        gc_bins = []
+        gc_list = []
+        lengths = []
+        dinuc = [0] * 16
+        for _ in range(0, 101):
+            gc_bins.append([])
+        for record in SeqIO.parse(stream, "fasta"):
+            gc = GC(record.seq)
+            gc_list.append(gc)
+            gc = round(gc)  # python3 fix
+            gc_bins[gc].append(record)
+            lengths.append(len(record.seq))
+            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     print_in_bg_dir(gc_bins, bg_dir)
     return gc_list, gc_bins, lengths, dinuc
 
@@ -129,23 +126,22 @@ def bg_len_GC_bins(bg_file, bg_dir):
     Return lists of GC contents, GC bins, and lengths distrib.
 
     """
-    stream = open(bg_file)
-    gc_bins = []
-    gc_list = []
-    lengths = []
-    dinuc = [0] * 16
-    for _ in range(0, 101):
-        gc_bins.append({})
-    for record in SeqIO.parse(stream, "fasta"):
-        gc = GC(record.seq)
-        gc_list.append(gc)
-        if len(record) in gc_bins[gc]:
-            gc_bins[gc][len(record)].append(record)
-        else:
-            gc_bins[gc][len(record)] = [record]
-        lengths.append(len(record.seq))
-        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-    stream.close()
+    with open(bg_file) as stream:
+        gc_bins = []
+        gc_list = []
+        lengths = []
+        dinuc = [0] * 16
+        for _ in range(0, 101):
+            gc_bins.append({})
+        for record in SeqIO.parse(stream, "fasta"):
+            gc = GC(record.seq)
+            gc_list.append(gc)
+            if len(record) in gc_bins[gc]:
+                gc_bins[gc][len(record)].append(record)
+            else:
+                gc_bins[gc][len(record)] = [record]
+            lengths.append(len(record.seq))
+            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     print_in_bg_dir(gc_bins, bg_dir, True)
     return gc_list, gc_bins, lengths, dinuc
 

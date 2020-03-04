@@ -42,14 +42,13 @@ def get_seqs(f):
     fg_gc_list = []
     fg_lengths = []
     dinuc = [0] * 16
-    stream = open(f)
-    for record in SeqIO.parse(f, "fasta"):
-        record.seq = record.seq.upper()
-        seqs.append(record)
-        fg_gc_list.append(GC(record.seq))
-        fg_lengths.append(len(record.seq))
-        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-    stream.close()
+    with open(f) as stream:
+        for record in SeqIO.parse(f, "fasta"):
+            record.seq = record.seq.upper()
+            seqs.append(record)
+            fg_gc_list.append(GC(record.seq))
+            fg_lengths.append(len(record.seq))
+            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     return seqs, fg_gc_list, fg_lengths, dinuc
 
 

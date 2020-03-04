@@ -87,23 +87,22 @@ def fg_GC_bins(fg, winlen, step):
 
     """
 
-    stream = open(fg)
-    tmp_gc_bins = []
-    gc_list = []
-    lengths = []
-    dinuc = [0] * 16
-    for _ in range(0, 101):
-        tmp_gc_bins.append([])
-    for record in SeqIO.parse(stream, "fasta"):
-        gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen, step)
-        gc_list.append(gc)
-        # python 3 fix
-        gc = round(gc)
-        tmp_gc_bins[gc].append((min_gc, max_gc, sd_gc, cv_gc))
-        exit(0)
-        lengths.append(len(record.seq))
-        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-    stream.close()
+    with open(fg) as stream:
+        tmp_gc_bins = []
+        gc_list = []
+        lengths = []
+        dinuc = [0] * 16
+        for _ in range(0, 101):
+            tmp_gc_bins.append([])
+        for record in SeqIO.parse(stream, "fasta"):
+            gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen, step)
+            gc_list.append(gc)
+            # python 3 fix
+            gc = round(gc)
+            tmp_gc_bins[gc].append((min_gc, max_gc, sd_gc, cv_gc))
+            exit(0)
+            lengths.append(len(record.seq))
+            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     return gc_list, avg_and_sd_gc_info(tmp_gc_bins), lengths, dinuc
 
 
@@ -151,27 +150,26 @@ def fg_len_GC_bins(fg, winlen, step):
 
     """
 
-    stream = open(fg)
-    tmp_gc_bins = []
-    gc_list = []
-    lengths = []
-    dinuc = [0] * 16
-    l_dic = []
-    for _ in range(0, 101):
-        tmp_gc_bins.append([])
-        l_dic.append({})
-    for record in SeqIO.parse(stream, "fasta"):
-        gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen, step)
-        gc_list.append(gc)
-        tmp_gc_bins[gc].append((min_gc, max_gc, sd_gc, cv_gc))
-        length = len(record)
-        if length in l_dic[gc]:
-            l_dic[gc][length] += 1
-        else:
-            l_dic[gc][length] = 1
-        lengths.append(length)
-        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-    stream.close()
+    with open(fg) as stream:
+        tmp_gc_bins = []
+        gc_list = []
+        lengths = []
+        dinuc = [0] * 16
+        l_dic = []
+        for _ in range(0, 101):
+            tmp_gc_bins.append([])
+            l_dic.append({})
+        for record in SeqIO.parse(stream, "fasta"):
+            gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen, step)
+            gc_list.append(gc)
+            tmp_gc_bins[gc].append((min_gc, max_gc, sd_gc, cv_gc))
+            length = len(record)
+            if length in l_dic[gc]:
+                l_dic[gc][length] += 1
+            else:
+                l_dic[gc][length] = 1
+            lengths.append(length)
+            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     return gc_list, avg_and_sd_len_gc_info(l_dic, tmp_gc_bins), lengths, dinuc
 
 
@@ -188,20 +186,19 @@ def bg_GC_bins(bg, bg_dir):
 
     """
 
-    stream = open(bg)
-    gc_bins = []
-    gc_list = []
-    lengths = []
-    dinuc = [0] * 16
-    for _ in range(0, 101):
-        gc_bins.append([])
-    for record in SeqIO.parse(stream, "fasta"):
-        gc = GC(record.seq)
-        gc_list.append(gc)
-        gc_bins[gc].append(record)
-        lengths.append(len(record.seq))
-        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-    stream.close()
+    with open(bg) as stream:
+        gc_bins = []
+        gc_list = []
+        lengths = []
+        dinuc = [0] * 16
+        for _ in range(0, 101):
+            gc_bins.append([])
+        for record in SeqIO.parse(stream, "fasta"):
+            gc = GC(record.seq)
+            gc_list.append(gc)
+            gc_bins[gc].append(record)
+            lengths.append(len(record.seq))
+            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     print_in_bg_dir(gc_bins, bg_dir)
     return gc_list, gc_bins, lengths, dinuc
 
@@ -219,23 +216,22 @@ def bg_len_GC_bins(bg, bg_dir):
 
     """
 
-    stream = open(bg)
-    gc_bins = []
-    gc_list = []
-    lengths = []
-    dinuc = [0] * 16
-    for _ in range(0, 101):
-        gc_bins.append({})
-    for record in SeqIO.parse(stream, "fasta"):
-        gc = GC(record.seq)
-        gc_list.append(gc)
-        if len(record) in gc_bins[gc]:
-            gc_bins[gc][len(record)].append(record)
-        else:
-            gc_bins[gc][len(record)] = [record]
-        lengths.append(len(record.seq))
-        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-    stream.close()
+    with open(bg) as stream:
+        gc_bins = []
+        gc_list = []
+        lengths = []
+        dinuc = [0] * 16
+        for _ in range(0, 101):
+            gc_bins.append({})
+        for record in SeqIO.parse(stream, "fasta"):
+            gc = GC(record.seq)
+            gc_list.append(gc)
+            if len(record) in gc_bins[gc]:
+                gc_bins[gc][len(record)].append(record)
+            else:
+                gc_bins[gc][len(record)] = [record]
+            lengths.append(len(record.seq))
+            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
     print_in_bg_dir(gc_bins, bg_dir, True)
     return gc_list, gc_bins, lengths, dinuc
 
@@ -300,6 +296,8 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
                 bin_seq = get_bins_from_bg_dir(bg_dir, percent)
             left, sample = extract_random_sample(bin_seq, fg_bins[percent], nb,
                                                  deviation, winlen, step)
+            print("Sample:")
+            print(sample)
             if left:
                 sys.stderr.write("""\n*** WARNING ***
                 Sample larger than population for {0:d}% G+C content:
