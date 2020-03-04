@@ -60,7 +60,7 @@ def dinuc_shuffling_generator(argu):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
         make_len_plot(fg_lengths, bg_lengths, argu.outdir)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
-    
+
 
 def mononuc_shuffling_window_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
@@ -80,7 +80,7 @@ def dinuc_shuffling_window_generator(argu):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
         make_len_plot(fg_lengths, bg_lengths, argu.outdir)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
-    
+
 
 def test_empty_bg_dir(bg_dir):
     if os.path.isdir(bg_dir):
@@ -118,7 +118,7 @@ def gc_compo_generator_no_len(argu):
     bg_gc_bins = None
     if argu.bg_file:
         test_empty_bg_dir(argu.bg_dir)
-        _, _, _, _ = GC_compo.bg_GC_bins( argu.bg_file, argu.bg_dir)
+        _, _, _, _ = GC_compo.bg_GC_bins(argu.bg_file, argu.bg_dir)
     else:
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_sequences(fg_gc_bins,
@@ -137,7 +137,7 @@ def gc_compo_len_generator(argu):
     bg_gc_bins = None
     if argu.bg_file:
         test_empty_bg_dir(argu.bg_dir)
-        _, _, _, _ = GC_compo.bg_len_GC_bins( argu.bg_file, argu.bg_dir)
+        _, _, _, _ = GC_compo.bg_len_GC_bins(argu.bg_file, argu.bg_dir)
     else:
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_len_sequences(
@@ -206,7 +206,7 @@ def mononuc_shuffling_arg_parsing(subparsers):
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
     parser_m.add_argument('-o', '--outdir', required=False, dest="outdir",
-            type=str, action="store", default="", help=help_str)
+                          type=str, action="store", default="", help=help_str)
     parser_m.set_defaults(func=mononuc_shuffling_generator)
 
 
@@ -230,7 +230,7 @@ def mononuc_window_shuffling_arg_parsing(subparsers):
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
     parser_f.add_argument('-o', '--outdir', required=False, dest="outdir",
-            type=str, action="store", default="", help=help_str)
+                          type=str, action="store", default="", help=help_str)
     parser_f.set_defaults(func=mononuc_shuffling_window_generator)
 
 
@@ -248,7 +248,7 @@ def dinuc_shuffling_arg_parsing(subparsers):
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
     parser_d.add_argument('-o', '--outdir', required=False, dest="outdir",
-            type=str, action="store", default="", help=help_str)
+                          type=str, action="store", default="", help=help_str)
     parser_d.set_defaults(func=dinuc_shuffling_generator)
 
 
@@ -272,7 +272,7 @@ def dinuc_window_shuffling_arg_parsing(subparsers):
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
     parser_w.add_argument('-o', '--outdir', required=False, dest="outdir",
-            type=str, action="store", default="", help=help_str)
+                          type=str, action="store", default="", help=help_str)
     parser_w.set_defaults(func=dinuc_shuffling_window_generator)
 
 
@@ -301,7 +301,7 @@ def gc_compo_arg_parsing(subparsers):
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
     parser_g.add_argument('-o', '--outdir', required=False, dest="outdir",
-            type=str, action="store", default="", help=help_str)
+                          type=str, action="store", default="", help=help_str)
     parser_g.set_defaults(func=gc_compo_generator)
 
 
@@ -342,7 +342,7 @@ def gc_compo_window_arg_parsing(subparsers):
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
     parser_c.add_argument('-o', '--outdir', required=False, dest="outdir",
-            type=str, action="store", default="", help=help_str)
+                          type=str, action="store", default="", help=help_str)
     parser_c.set_defaults(func=gc_compo_window_generator)
 
 

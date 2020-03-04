@@ -96,7 +96,8 @@ def fg_GC_bins(fg, winlen, step):
         for _ in range(0, 101):
             tmp_gc_bins.append([])
         for record in SeqIO.parse(stream, "fasta"):
-            gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen, step)
+            gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen,
+                                                       step)
             gc_list.append(gc)
             # python 3 fix
             gc = round(gc)
@@ -160,7 +161,8 @@ def fg_len_GC_bins(fg, winlen, step):
             tmp_gc_bins.append([])
             l_dic.append({})
         for record in SeqIO.parse(stream, "fasta"):
-            gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen, step)
+            gc, min_gc, max_gc, sd_gc, cv_gc = GC_info(record.seq, winlen,
+                                                       step)
             gc_list.append(gc)
             tmp_gc_bins[gc].append((min_gc, max_gc, sd_gc, cv_gc))
             length = len(record)

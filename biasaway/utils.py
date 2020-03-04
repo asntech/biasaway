@@ -43,7 +43,7 @@ def get_seqs(f):
     fg_lengths = []
     dinuc = [0] * 16
     with open(f) as stream:
-        for record in SeqIO.parse(f, "fasta"):
+        for record in SeqIO.parse(stream, "fasta"):
             record.seq = record.seq.upper()
             seqs.append(record)
             fg_gc_list.append(GC(record.seq))
@@ -199,13 +199,13 @@ def test_dir(outdir):
         else:
             raise
 
+
 def make_gc_plot(fg_gc, bg_gc, outdir):
     """
     Compute the density GC composition plots for background and input.
     """
     test_dir(outdir)
     import seaborn as sns
-    import tempfile
     import matplotlib.pyplot as plt
     plot_hist = False
     plot_kde = True
@@ -222,7 +222,7 @@ def make_gc_plot(fg_gc, bg_gc, outdir):
                         label='generated')
     plt.legend()
     plot.set(xlabel="%GC", ylabel="frequency")
-    plt.savefig("{0}/gc_plot.pdf".format(outdir ))
+    plt.savefig("{0}/gc_plot.pdf".format(outdir))
 
 
 def make_len_plot(fg_len, bg_len, outdir):
@@ -232,7 +232,6 @@ def make_len_plot(fg_len, bg_len, outdir):
     """
     test_dir(outdir)
     import seaborn as sns
-    import tempfile
     import matplotlib.pyplot as plt
     plot_hist = False
     plot_kde = True
@@ -260,7 +259,6 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, outdir):
     import pandas as pd
     import seaborn as sns
     import matplotlib.pyplot as plt
-    import tempfile
     nuc = ['A', 'C', 'G', 'T']
     fg_total = sum(fg_dinuc)
     fg_dinuc = [val / fg_total for val in fg_dinuc]
