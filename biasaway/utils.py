@@ -188,7 +188,7 @@ def single_value(the_array):
 
 def make_gc_plot(fg_gc, bg_gc):
     """
-    Compute the density GC composition plots for background and foreground.
+    Compute the density GC composition plots for background and input.
     """
     import seaborn as sns
     import tempfile
@@ -202,7 +202,7 @@ def make_gc_plot(fg_gc, bg_gc):
     plt.figure()
     plot = sns.distplot(fg_gc, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
-                        label='foreground')
+                        label='input')
     plot = sns.distplot(bg_gc, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
                         label='generated')
@@ -215,7 +215,7 @@ def make_gc_plot(fg_gc, bg_gc):
 
 def make_len_plot(fg_len, bg_len):
     """
-    Compute the density length plot for the background, the foreground and the
+    Compute the density length plot for the background, the input and the
     matching background datasets.
     """
     import seaborn as sns
@@ -230,7 +230,7 @@ def make_len_plot(fg_len, bg_len):
     plt.figure()
     plot = sns.distplot(fg_len, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
-                        label='foreground')
+                        label='input')
     plot = sns.distplot(bg_len, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
                         label='generated')
@@ -243,7 +243,7 @@ def make_len_plot(fg_len, bg_len):
 
 def make_dinuc_plot(fg_dinuc, bg_dinuc):
     """
-    Plot the dinucleotide composition of foreground and background sequences.
+    Plot the dinucleotide composition of input and background sequences.
     """
     import pandas as pd
     import seaborn as sns
