@@ -55,7 +55,7 @@ copyright = u'2019, Aziz Khan'
 author = u'Aziz Khan'
 
 #from biasaway import __version__ as VERSION
-VERSION = '2.0.0'
+VERSION = '2.0.1'
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.

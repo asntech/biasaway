@@ -39,7 +39,7 @@ install_requires = [
 #        return f.read()
 
 def readme(fname):
-    with open(os.path.join(os.path.dirname(__file__), fname), encoding='utf-8') as f:
+    with open(os.path.join(os.path.dirname(__file__), fname)) as f:
         return f.read()
 
 setup(
