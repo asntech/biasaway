@@ -222,7 +222,7 @@ def make_gc_plot(fg_gc, bg_gc, outdir):
                         label='generated')
     plt.legend()
     plot.set(xlabel="%GC", ylabel="frequency")
-    plt.savefig("{0}/gc_plot.pdf".format(outdir))
+    plt.savefig("{0}/gc_plot.png".format(outdir))
 
 
 def make_len_plot(fg_len, bg_len, outdir):
@@ -248,7 +248,7 @@ def make_len_plot(fg_len, bg_len, outdir):
                         label='generated')
     plt.legend()
     plot.set(xlabel="length", ylabel="frequency")
-    plot.get_figure().savefig("{0}/length_plot.pdf".format(outdir))
+    plot.get_figure().savefig("{0}/length_plot.png".format(outdir))
 
 
 def make_dinuc_plot(fg_dinuc, bg_dinuc, outdir):
@@ -287,4 +287,4 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, outdir):
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
-    plt.savefig("{0}/dinuc_plot.pdf".format(outdir))
+    plt.savefig("{0}/dinuc_plot.png".format(outdir))
