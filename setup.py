@@ -39,7 +39,8 @@ install_requires = [
 #        return f.read()
 
 def readme(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    with open(os.path.join(os.path.dirname(__file__), fname)) as f:
+        return f.read()
 
 setup(
     name="biasaway",
@@ -51,6 +52,7 @@ setup(
     author_email="anthony.mathelier@ncmm.uio.no",
     url="https://bitbucket.org/CBGR/biasaway/src/master/",
     long_description=readme("README.rst"),
+    long_description_content_type='text/markdown',
     package_dir={'biasaway': 'biasaway'},
 
     packages=['biasaway',
