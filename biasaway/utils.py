@@ -187,32 +187,34 @@ def single_value(the_array):
     return len(np.unique(the_array)) == 1
 
 
-def test_dir(outdir):
+def test_dir(plot_filename):
     """ Test if the directory exists or can be created. """
     import os
     import errno
     try:
-        os.makedirs(outdir)
+        os.makedirs(plot_filename)
     except OSError as exc:
-        if exc.errno == errno.EEXIST and os.path.isdir(outdir):
+        if exc.errno == errno.EEXIST and os.path.isdir(plot_filename):
             pass
         else:
             raise
 
 
-def make_gc_plot(fg_gc, bg_gc, outdir):
+def make_gc_plot(fg_gc, bg_gc, plot_filename):
     """
     Compute the density GC composition plots for background and input.
     """
-    test_dir(outdir)
+    test_dir(plot_filename)
     import seaborn as sns
     import matplotlib.pyplot as plt
     plot_hist = False
     plot_kde = True
+    ylab = "density"
     # One cannot compute kde if there is a single value in the array
     if single_value(fg_gc) or single_value(bg_gc):
         plot_hist = True
         plot_kde = False
+        ylab = "frequency"
     plt.figure()
     plot = sns.distplot(fg_gc, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
@@ -221,24 +223,26 @@ def make_gc_plot(fg_gc, bg_gc, outdir):
                         kde_kws={'shade': True, 'linewidth': 3},
                         label='generated')
     plt.legend()
-    plot.set(xlabel="%GC", ylabel="frequency")
-    plt.savefig("{0}/gc_plot.png".format(outdir))
+    plot.set(xlabel="%GC", ylabel=ylab)
+    plt.savefig("{0}_gc_plot.png".format(plot_filename))
 
 
-def make_len_plot(fg_len, bg_len, outdir):
+def make_len_plot(fg_len, bg_len, plot_filename):
     """
     Compute the density length plot for the background, the input and the
     matching background datasets.
     """
-    test_dir(outdir)
+    test_dir(plot_filename)
     import seaborn as sns
     import matplotlib.pyplot as plt
     plot_hist = False
     plot_kde = True
+    ylab = "density"
     # One cannot compute kde if there is a single value in the array
     if single_value(fg_len) or single_value(bg_len):
         plot_hist = True
         plot_kde = False
+        ylab = "frequency"
     plt.figure()
     plot = sns.distplot(fg_len, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
@@ -247,15 +251,15 @@ def make_len_plot(fg_len, bg_len, outdir):
                         kde_kws={'shade': True, 'linewidth': 3},
                         label='generated')
     plt.legend()
-    plot.set(xlabel="length", ylabel="frequency")
-    plot.get_figure().savefig("{0}/length_plot.png".format(outdir))
+    plot.set(xlabel="length", ylabel=ylab)
+    plot.get_figure().savefig("{0}_length_plot.png".format(plot_filename))
 
 
-def make_dinuc_plot(fg_dinuc, bg_dinuc, outdir):
+def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
     """
     Plot the dinucleotide composition of input and background sequences.
     """
-    test_dir(outdir)
+    test_dir(plot_filename)
     import pandas as pd
     import seaborn as sns
     import matplotlib.pyplot as plt
@@ -287,4 +291,6 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, outdir):
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
-    plt.savefig("{0}/dinuc_plot.png".format(outdir))
+    print("Saving dinuc plot")
+    print("{0}_dinuc_plot.png".format(plot_filename))
+    plt.savefig("{0}_dinuc_plot.png".format(plot_filename))

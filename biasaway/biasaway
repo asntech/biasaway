@@ -46,40 +46,40 @@ def mononuc_shuffling_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = mononuc_shuff.generate_sequences(
         seqs, argu.nfold)
-    if(argu.outdir):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
-        make_len_plot(fg_lengths, bg_lengths, argu.outdir)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
+    if(argu.plot_filename):
+        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
+        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
+        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def dinuc_shuffling_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = dinuc_shuff.generate_sequences(
         seqs, argu.nfold)
-    if(argu.outdir):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
-        make_len_plot(fg_lengths, bg_lengths, argu.outdir)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
+    if(argu.plot_filename):
+        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
+        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
+        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def mononuc_shuffling_window_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = mononuc_win_shuff.generate_sequences(
         seqs, argu.winlen, argu.step, argu.nfold)
-    if(argu.outdir):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
-        make_len_plot(fg_lengths, bg_lengths, argu.outdir)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
+    if(argu.plot_filename):
+        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
+        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
+        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def dinuc_shuffling_window_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = dinuc_win_shuff.generate_sequences(
         seqs, argu.winlen, argu.step, argu.nfold)
-    if(argu.outdir):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
-        make_len_plot(fg_lengths, bg_lengths, argu.outdir)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
+    if(argu.plot_filename):
+        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
+        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
+        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def test_empty_bg_dir(bg_dir):
@@ -125,10 +125,10 @@ def gc_compo_generator_no_len(argu):
                                                                    bg_gc_bins,
                                                                    argu.bg_dir,
                                                                    argu.nfold)
-    if(argu.outdir):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
-        make_len_plot(fg_lengths, bg_lengths, argu.outdir)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
+    if(argu.plot_filename):
+        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
+        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
+        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def gc_compo_len_generator(argu):
@@ -142,10 +142,10 @@ def gc_compo_len_generator(argu):
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_len_sequences(
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.nfold)
-    if(argu.outdir):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
-        make_len_plot(fg_lengths, bg_lengths, argu.outdir)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
+    if(argu.plot_filename):
+        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
+        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
+        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def gc_compo_window_generator(argu):
@@ -168,10 +168,10 @@ def gc_compo_len_window_generator(argu):
     bg_gc_list, bg_lengths, bg_dinuc = GC_window_compo.generate_len_sequences(
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.deviation, argu.winlen,
         argu.step, argu.nfold)
-    if(argu.outdir):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
-        make_len_plot(fg_lengths, bg_lengths, argu.outdir)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
+    if(argu.plot_filename):
+        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
+        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
+        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def gc_compo_window_generator_no_len(argu):
@@ -186,10 +186,10 @@ def gc_compo_window_generator_no_len(argu):
     bg_gc_list, bg_lengths, bg_dinuc = GC_window_compo.generate_sequences(
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.deviation, argu.winlen,
         argu.step, argu.nfold)
-    if(argu.outdir):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.outdir)
-        make_len_plot(fg_lengths, bg_lengths, argu.outdir)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.outdir)
+    if(argu.plot_filename):
+        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
+        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
+        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def mononuc_shuffling_arg_parsing(subparsers):
@@ -205,8 +205,9 @@ def mononuc_shuffling_arg_parsing(subparsers):
                           help=help_str)
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
-    parser_m.add_argument('-o', '--outdir', required=False, dest="outdir",
-                          type=str, action="store", default="", help=help_str)
+    parser_m.add_argument('-p', '--plot_filename', required=False,
+                          dest="plot_filename", type=str, action="store",
+                          default="", help=help_str)
     parser_m.set_defaults(func=mononuc_shuffling_generator)
 
 
@@ -229,8 +230,9 @@ def mononuc_window_shuffling_arg_parsing(subparsers):
                           help=help_str)
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
-    parser_f.add_argument('-o', '--outdir', required=False, dest="outdir",
-                          type=str, action="store", default="", help=help_str)
+    parser_f.add_argument('-p', '--plot_filename', required=False,
+                          dest="plot_filename", type=str, action="store",
+                          default="", help=help_str)
     parser_f.set_defaults(func=mononuc_shuffling_window_generator)
 
 
@@ -247,8 +249,9 @@ def dinuc_shuffling_arg_parsing(subparsers):
                           help=help_str)
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
-    parser_d.add_argument('-o', '--outdir', required=False, dest="outdir",
-                          type=str, action="store", default="", help=help_str)
+    parser_d.add_argument('-p', '--plot_filename', required=False,
+                          dest="plot_filename", type=str, action="store",
+                          default="", help=help_str)
     parser_d.set_defaults(func=dinuc_shuffling_generator)
 
 
@@ -271,8 +274,9 @@ def dinuc_window_shuffling_arg_parsing(subparsers):
                           help=help_str)
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
-    parser_w.add_argument('-o', '--outdir', required=False, dest="outdir",
-                          type=str, action="store", default="", help=help_str)
+    parser_w.add_argument('-p', '--plot_filename', required=False,
+                          dest="plot_filename", type=str, action="store",
+                          default="", help=help_str)
     parser_w.set_defaults(func=dinuc_shuffling_window_generator)
 
 
@@ -300,8 +304,9 @@ def gc_compo_arg_parsing(subparsers):
                           help=help_str)
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
-    parser_g.add_argument('-o', '--outdir', required=False, dest="outdir",
-                          type=str, action="store", default="", help=help_str)
+    parser_g.add_argument('-p', '--plot_filename', required=False,
+                          dest="plot_filename", type=str, action="store",
+                          default="", help=help_str)
     parser_g.set_defaults(func=gc_compo_generator)
 
 
@@ -341,8 +346,9 @@ def gc_compo_window_arg_parsing(subparsers):
                           help=help_str)
     help_str = "Output directory where the plots will be stored "
     help_str += "(default: no plot created)"
-    parser_c.add_argument('-o', '--outdir', required=False, dest="outdir",
-                          type=str, action="store", default="", help=help_str)
+    parser_c.add_argument('-p', '--plot_filename', required=False,
+                          dest="plot_filename", type=str, action="store",
+                          default="", help=help_str)
     parser_c.set_defaults(func=gc_compo_window_generator)
 
 
