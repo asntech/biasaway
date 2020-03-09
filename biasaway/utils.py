@@ -291,6 +291,4 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
-    print("Saving dinuc plot")
-    print("{0}_dinuc_plot.png".format(plot_filename))
     plt.savefig("{0}_dinuc_plot.png".format(plot_filename))
