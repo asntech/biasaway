@@ -205,6 +205,8 @@ def make_gc_plot(fg_gc, bg_gc, plot_filename):
     Compute the density GC composition plots for background and input.
     """
     test_dir(plot_filename)
+    import matplotlib
+    matplotlib.use('Agg')
     import seaborn as sns
     import matplotlib.pyplot as plt
     plot_hist = False
@@ -233,6 +235,8 @@ def make_len_plot(fg_len, bg_len, plot_filename):
     matching background datasets.
     """
     test_dir(plot_filename)
+    import matplotlib
+    matplotlib.use('Agg')
     import seaborn as sns
     import matplotlib.pyplot as plt
     plot_hist = False
@@ -261,6 +265,8 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
     """
     test_dir(plot_filename)
     import pandas as pd
+    import matplotlib
+    matplotlib.use('Agg')
     import seaborn as sns
     import matplotlib.pyplot as plt
     nuc = ['A', 'C', 'G', 'T']
