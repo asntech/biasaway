@@ -15,6 +15,9 @@ user-provided foreground sequences:
 Mononucleotide shuffling
 =========================
 
+Each user-provided sequence will be shuffled to keep its mononucleotide
+composition.
+
 **Usage:**
 
 .. code-block:: bash
@@ -54,6 +57,9 @@ It will output the generated sequences on stdout. If you wish to save the sequen
 Dinucleotide shuffling
 ==================================
 
+Each user-provided sequence will be shuffled to keep its dinucleotide
+composition.
+
 **Usage:**
 
 .. code-block:: bash
@@ -92,6 +98,11 @@ It will output the generated sequences on stdout. If you wish to save the sequen
 
 Mononucleotide shuffling within a sliding window
 ==================================================
+
+For each user-provided sequence, a window will slide along to shuffle the
+nucleotides within the window, keeping the local mononucleotide composition. As
+such, the generated sequences will preserve the local mononucleotide
+composition of the input sequences along them.
 
 **Usage:**
 
@@ -135,6 +146,12 @@ It will output the generated sequences on stdout. If you wish to save the sequen
 Dinucleotide shuffling within a sliding window
 ================================================
 
+For each user-provided sequence, a window will slide along to shuffle the
+nucleotides within the window, keeping the local dinucleotide composition. As
+such, the generated sequences will preserve the local dinucleotide composition
+of the input sequences along them.
+
+
 **Usage:**
 
 .. code-block:: bash
@@ -175,6 +192,10 @@ It will output the generated sequences on stdout. If you wish to save the sequen
 
 Genomic mononucleotide distribution matched
 ============================================
+
+Given a set of available background sequences (pre-computed or provided by the
+user), each user-provided foreground sequence will be matched to a background
+sequence having the same mononucleotide composition.
 
 **Usage:**
 
@@ -218,6 +239,18 @@ It will output the generated sequences on stdout. If you wish to save the sequen
 
 Genomic mononucleotide distribution within a sliding window matched
 ===================================================================
+
+Given a set of available background sequences (pre-computed or provided by the
+user), each user-provided foreground sequence will be matched to a background
+sequence having a close mononucleotide local composition. Specifically,
+distribution of %GC composition in a sliding window are computed for foreground
+and background sequences; a foreground sequence with a mean m_f and standard
+deviation sdev_f of %GC in the sliding window is matched to a background
+sequence if its mean %GC m_b is such that:
+.. math::
+    m_f - N * sdev_f <= m_b <= m_f + N * sdev_f
+
+with *N* equals to 2.6 by default.
 
 **Usage:**
 
