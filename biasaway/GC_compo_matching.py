@@ -33,7 +33,7 @@ def fg_GC_bins(fg_file):
             gc = GC(record.seq)
             gc_list.append(gc)
             # python 3 fix
-            gc = round(gc)
+            gc = int(round(gc))
             gc_bins[gc] += 1
             lengths.append(len(record.seq))
             dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
@@ -110,7 +110,8 @@ def bg_GC_bins(bg_file, bg_dir):
         for record in SeqIO.parse(stream, "fasta"):
             gc = GC(record.seq)
             gc_list.append(gc)
-            gc = round(gc)  # python3 fix
+            gc = int(round(gc))  # python3 fix
+            print(gc)
             gc_bins[gc].append(record)
             lengths.append(len(record.seq))
             dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]

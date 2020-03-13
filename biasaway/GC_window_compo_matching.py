@@ -100,7 +100,7 @@ def fg_GC_bins(fg, winlen, step):
                                                        step)
             gc_list.append(gc)
             # python 3 fix
-            gc = round(gc)
+            gc = int(round(gc))
             tmp_gc_bins[gc].append((min_gc, max_gc, sd_gc, cv_gc))
             lengths.append(len(record.seq))
             dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]

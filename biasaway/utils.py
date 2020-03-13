@@ -22,7 +22,7 @@ def GC(seq):
         length = sum(map(seq.count, ['G', 'C', 'A', 'T', 'S', 'W', 'g', 'c',
                                      'a', 't', 's', 'w']))
         # fix for py3 issues
-        return round(gc * 100 / length)
+        return int(round(gc * 100 / length))
     except ZeroDivisionError:
         return 0
 
