@@ -111,7 +111,6 @@ def bg_GC_bins(bg_file, bg_dir):
             gc = GC(record.seq)
             gc_list.append(gc)
             gc = int(round(gc))  # python3 fix
-            print(gc)
             gc_bins[gc].append(record)
             lengths.append(len(record.seq))
             dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
