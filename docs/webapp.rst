@@ -7,9 +7,9 @@ Introduction
 The BiasAway web-server provides an interactive and easy to use interface for
 users to upload FASTA files and to generate background sequences. It comes with
 precomputed genomic partitions of 100, 500, and 1000 bp bins for the genome of
-nine species (Arabidopsis thaliana; Caenorhabditis elegans; Danio rerio;
-Drosophila melanogaster; Homo sapiens; Mus musculus; Rattus norvegicus;
-Saccharomyces cerevisiae; and Schizosaccharomyces pombe). These background
+nine species (*Arabidopsis thaliana*; *Caenorhabditis elegans*; *Danio rerio*;
+*Drosophila melanogaster*; *Homo sapiens*; *Mus musculus*; *Rattus norvegicus*;
+*Saccharomyces cerevisiae*; and *Schizosaccharomyces pombe*). These background
 sequences were generated using the script at
 https://bitbucket.org/CBGR/biasaway_background_construction, which can be used
 by users to generate their own background sequences. The result page provides
