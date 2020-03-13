@@ -241,7 +241,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   (master_doc, 'BiasAway.tex', u'BiasAway Documentation',
-   u'Aziz Khan', 'manual'),
+   u'Aziz Khan and Anthony Mathelier', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
