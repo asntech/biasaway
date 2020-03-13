@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'BiasAway'
-copyright = u'2019, Aziz Khan and Anthony Mathelier'
+copyright = u'2020, Aziz Khan and Anthony Mathelier'
 author = u'Aziz Khan and Anthony Mathelier'
 
 # from biasaway import __version__ as VERSION

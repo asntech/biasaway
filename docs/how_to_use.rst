@@ -17,12 +17,12 @@ It will print the main help, which lists the six subcommands/modules: ``m``, ``f
 	positional arguments <subcommand>: {m,f,d,w,g,c}
 
 		List of subcommands
-		m 	mono-nucleotide shuffling generator
-		f 	mono-nucleotide shuffling within a sliding window generator
-		d 	di-nucleotide shuffling generator
-		w 	di-nucleotide shuffling within a sliding window generator
-		g 	%GC distribution-based background chooser
-		c 	%GC distribution and %GC composition within a sliding window background chooser
+		m 	mononucleotide shuffling
+		d 	dinucleotide shuffling
+		f 	mononucleotide shuffling within a sliding window
+		w 	dinucleotide shuffling within a sliding window
+		g 	mononucleotide distribution matched
+		c 	mononucleotide distribution within a sliding window matched
 
 	optional arguments:
 	  -h, --help            show this help message and exit

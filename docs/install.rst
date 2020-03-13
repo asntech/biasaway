@@ -24,19 +24,25 @@ Prerequisites
 =============
 BiasAway requires the following Python modules:
 
-	* Biopython: https://biopython.org
-	* Numpy: https://numpy.org
+	* biopython: https://biopython.org
+	* numpy: https://numpy.org
+    * matplotlib: https://matplotlib.org/
+    * seaborn: https://seaborn.pydata.org/
 
-Install Biopython and Numpy
-----------------------------
-BiasAway uses `biopython <https://biopython.org>`_ and `numpy
-<https://numpy.org>`_, you can install them using `pip`.
+Install biopython, numpy, matplotlib, and seaborn
+-------------------------------------------------
+BiasAway uses `biopython <https://biopython.org>`_, `numpy
+<https://numpy.org>`_, `matplotlib <https://matplotlib.org>`_, and `seaborn
+<https://seaborn.pydata.org>`_ you can install them using `pip` or `conda`.
+
+.. code-block:: bash
+    conda install biopython numpy matplotlib seaborn
 
 .. note:: If you install using ``pip`` or ``bioconda`` prerequisites will be installed. 
 
 
-Install uisng Conda
---------------------
+Install BiasAway using `conda`
+==============================
 BiasAway is available on `Bioconda <https://anaconda.org/bioconda/biasaway>`_ for installation via ``conda``.
 
 .. code-block:: bash
@@ -44,8 +50,8 @@ BiasAway is available on `Bioconda <https://anaconda.org/bioconda/biasaway>`_ fo
 	conda install -c bioconda biasaway
 
 
-Install using `pip`
--------------------
+Install BiasAway using `pip`
+============================
 BiasAway is available on `PyPi <https://pypi.org/project/biasaway/>`_ for installation via ``pip``.
 
 .. code-block:: bash
