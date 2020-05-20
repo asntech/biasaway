@@ -11,7 +11,7 @@ from __future__ import print_function
 import sys
 import random
 from Bio import SeqIO
-from biasaway.utils import GC, dinuc_count
+from biasaway.utils import GC, dinuc_count, open_for_parsing
 
 
 def fg_GC_bins(fg_file):
@@ -24,7 +24,7 @@ def fg_GC_bins(fg_file):
     Return lists of GC contents, GC bins, lengths distrib, and dinuc compo.
 
     """
-    with open(fg_file) as stream:
+    with open_for_parsing(fg_file) as stream:
         gc_bins = [0] * 101
         gc_list = []
         lengths = []
@@ -50,7 +50,7 @@ def fg_len_GC_bins(fg_file):
     Return lists of GC contents, GC bins, and lengths distrib.
 
     """
-    with open(fg_file) as stream:
+    with open_for_parsing(fg_file) as stream:
         gc_bins = []
         for _ in range(0, 101):
             gc_bins.append({})
@@ -80,7 +80,7 @@ def print_in_bg_dir(gc_bins, bg_dir, with_len=False):
     """ Print the sequences in the bg directory in bin files. """
 
     for percent in range(0, 101):
-        with open("{0}/bg_bin_{1}.txt".format(bg_dir, percent), 'w') as stream:
+        with open_for_parsing("{0}/bg_bin_{1}.txt".format(bg_dir, percent), 'w') as stream:
             if with_len:
                 for length in gc_bins[percent]:
                     for rec in gc_bins[percent][length]:
@@ -100,7 +100,7 @@ def bg_GC_bins(bg_file, bg_dir):
     Return lists of GC contents, GC bins, and lengths distrib.
 
     """
-    with open(bg_file) as stream:
+    with open_for_parsing(bg_file) as stream:
         gc_bins = []
         gc_list = []
         lengths = []
@@ -127,7 +127,7 @@ def bg_len_GC_bins(bg_file, bg_dir):
     Return lists of GC contents, GC bins, and lengths distrib.
 
     """
-    with open(bg_file) as stream:
+    with open_for_parsing(bg_file) as stream:
         gc_bins = []
         gc_list = []
         lengths = []
@@ -150,7 +150,7 @@ def bg_len_GC_bins(bg_file, bg_dir):
 def get_bins_from_bg_dir(bg_dir, percent):
     """ Return the sequences from the corresponding bin file. """
 
-    with open("{0}/bg_bin_{1:d}.txt".format(bg_dir, percent)) as stream:
+    with open_for_parsing("{0}/bg_bin_{1:d}.txt".format(bg_dir, percent)) as stream:
         bin_seq = []
         for record in SeqIO.parse(stream, "fasta"):
             bin_seq.append(record)
@@ -266,7 +266,7 @@ def extract_seq_rec(size, nb, bg_keys, bg, accu, index):
 def get_bins_len_from_bg_dir(bg_dir, percent):
     """ Return the sequences from the corresponding bin file. """
 
-    with open("{0}/bg_bin_{1:d}.txt".format(bg_dir, percent)) as stream:
+    with open_for_parsing("{0}/bg_bin_{1:d}.txt".format(bg_dir, percent)) as stream:
         bin_seq = {}
         for record in SeqIO.parse(stream, "fasta"):
             length = len(record)

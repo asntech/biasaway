@@ -11,7 +11,7 @@ from __future__ import print_function
 import sys
 import random
 import numpy
-from biasaway.utils import GC, dinuc_count
+from biasaway.utils import GC, dinuc_count, open_for_parsing
 from Bio import SeqIO
 from biasaway.GC_compo_matching import print_in_bg_dir, get_bins_from_bg_dir
 from biasaway.GC_compo_matching import get_bins_len_from_bg_dir
@@ -88,7 +88,7 @@ def fg_GC_bins(fg, winlen, step):
 
     """
 
-    with open(fg) as stream:
+    with open_for_parsing(fg) as stream:
         tmp_gc_bins = []
         gc_list = []
         lengths = []
@@ -151,7 +151,7 @@ def fg_len_GC_bins(fg, winlen, step):
 
     """
 
-    with open(fg) as stream:
+    with open_for_parsing(fg) as stream:
         tmp_gc_bins = []
         gc_list = []
         lengths = []
@@ -188,7 +188,7 @@ def bg_GC_bins(bg, bg_dir):
 
     """
 
-    with open(bg) as stream:
+    with open_for_parsing(bg) as stream:
         gc_bins = []
         gc_list = []
         lengths = []
@@ -218,7 +218,7 @@ def bg_len_GC_bins(bg, bg_dir):
 
     """
 
-    with open(bg) as stream:
+    with open_for_parsing(bg) as stream:
         gc_bins = []
         gc_list = []
         lengths = []

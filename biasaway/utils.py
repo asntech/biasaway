@@ -4,7 +4,22 @@ Modified by A. Mathelier in March 2020
 """
 
 from Bio import SeqIO
+from os.path import splitext
+import gzip
 import re
+
+
+def open_for_parsing(filename):
+    """
+    Open the file with the given filename for parsing. Where the file appears to
+    be a gzip-compressed file it is opened in the appropriate way to provide
+    access to the decompressed text.
+    """
+    ext = splitext(filename)[-1]
+    if ext == ".gz":
+        return gzip.open(filename, "rt") # text flag "t" needed in Python 3
+    else:
+        return open(filename)
 
 
 def GC(seq):
@@ -42,7 +57,7 @@ def get_seqs(f):
     fg_gc_list = []
     fg_lengths = []
     dinuc = [0] * 16
-    with open(f) as stream:
+    with open_for_parsing(f) as stream:
         for record in SeqIO.parse(stream, "fasta"):
             record.seq = record.seq.upper()
             seqs.append(record)
