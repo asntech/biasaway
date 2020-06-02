@@ -202,24 +202,10 @@ def single_value(the_array):
     return len(np.unique(the_array)) == 1
 
 
-def test_dir(plot_filename):
-    """ Test if the directory exists or can be created. """
-    import os
-    import errno
-    try:
-        os.makedirs(plot_filename)
-    except OSError as exc:
-        if exc.errno == errno.EEXIST and os.path.isdir(plot_filename):
-            pass
-        else:
-            raise
-
-
 def make_gc_plot(fg_gc, bg_gc, plot_filename):
     """
     Compute the density GC composition plots for background and input.
     """
-    test_dir(plot_filename)
     import matplotlib
     matplotlib.use('Agg')
     import seaborn as sns
@@ -241,7 +227,7 @@ def make_gc_plot(fg_gc, bg_gc, plot_filename):
                         label='generated')
     plt.legend()
     plot.set(xlabel="%GC", ylabel=ylab)
-    plt.savefig("{0}/{0}_gc_plot.png".format(plot_filename))
+    plt.savefig("{0}_gc_plot.png".format(plot_filename))
 
 
 def make_len_plot(fg_len, bg_len, plot_filename):
@@ -249,7 +235,6 @@ def make_len_plot(fg_len, bg_len, plot_filename):
     Compute the density length plot for the background, the input and the
     matching background datasets.
     """
-    test_dir(plot_filename)
     import matplotlib
     matplotlib.use('Agg')
     import seaborn as sns
@@ -271,14 +256,13 @@ def make_len_plot(fg_len, bg_len, plot_filename):
                         label='generated')
     plt.legend()
     plot.set(xlabel="length", ylabel=ylab)
-    plot.get_figure().savefig("{0}/{0}_length_plot.png".format(plot_filename))
+    plot.get_figure().savefig("{0}_length_plot.png".format(plot_filename))
 
 
 def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
     """
     Plot the dinucleotide composition of input and background sequences.
     """
-    test_dir(plot_filename)
     import pandas as pd
     import matplotlib
     matplotlib.use('Agg')
@@ -312,4 +296,4 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
-    plt.savefig("{0}/{0}_dinuc_plot.png".format(plot_filename))
+    plt.savefig("{0}_dinuc_plot.png".format(plot_filename))

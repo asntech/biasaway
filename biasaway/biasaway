@@ -203,7 +203,7 @@ def mononuc_shuffling_arg_parsing(subparsers):
     parser_m.add_argument('-n', '--nfold', required=False, type=int,
                           dest="nfold", action="store", default=1,
                           help=help_str)
-    help_str = "Output directory where the plots will be stored "
+    help_str = "Basename for the plot files "
     help_str += "(default: no plot created)"
     parser_m.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
@@ -228,7 +228,7 @@ def mononuc_window_shuffling_arg_parsing(subparsers):
     parser_f.add_argument('-n', '--nfold', required=False, type=int,
                           dest="nfold", action="store", default=1,
                           help=help_str)
-    help_str = "Output directory where the plots will be stored "
+    help_str = "Basename for the plot files "
     help_str += "(default: no plot created)"
     parser_f.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
@@ -247,7 +247,7 @@ def dinuc_shuffling_arg_parsing(subparsers):
     parser_d.add_argument('-n', '--nfold', required=False, type=int,
                           dest="nfold", action="store", default=1,
                           help=help_str)
-    help_str = "Output directory where the plots will be stored "
+    help_str = "Basename for the plot files "
     help_str += "(default: no plot created)"
     parser_d.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
@@ -272,7 +272,7 @@ def dinuc_window_shuffling_arg_parsing(subparsers):
     parser_w.add_argument('-n', '--nfold', required=False, type=int,
                           dest="nfold", action="store", default=1,
                           help=help_str)
-    help_str = "Output directory where the plots will be stored "
+    help_str = "Basename for the plot files "
     help_str += "(default: no plot created)"
     parser_w.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
@@ -302,7 +302,7 @@ def gc_compo_arg_parsing(subparsers):
     parser_g.add_argument('-l', '--length', required=False, dest="len_opt",
                           action="store_const", const=1, default=0,
                           help=help_str)
-    help_str = "Output directory where the plots will be stored "
+    help_str = "Basename for the plot files "
     help_str += "(default: no plot created)"
     parser_g.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
@@ -344,7 +344,7 @@ def gc_compo_window_arg_parsing(subparsers):
     parser_c.add_argument('-l', '--length', required=False, dest="len_opt",
                           action="store_const", const=1, default=0,
                           help=help_str)
-    help_str = "Output directory where the plots will be stored "
+    help_str = "Basename for the plot files "
     help_str += "(default: no plot created)"
     parser_c.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
