@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 """
-This is a setup script for BiasAway: a tool for DNA sequence background generation 
+This is a setup script for BiasAway: a tool for DNA sequence background generation
 
-This code is free software; you can redistribute it and/or modify it under the terms of the 
+This code is free software; you can redistribute it and/or modify it under the terms of the
 BSD License (see the file LICENSE.md included with the distribution).
 
 @author: Aziz Khan

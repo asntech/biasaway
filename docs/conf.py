@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Intervene documentation build configuration file, created by
+# BiasAway documentation build configuration file, created by
 # sphinx-quickstart on Sat Jan 21 22:33:46 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -51,13 +51,12 @@ copyright = u'2020, Aziz Khan and Anthony Mathelier'
 author = u'Aziz Khan and Anthony Mathelier'
 
 # from biasaway import __version__ as VERSION
-VERSION = '2.1.0'
+VERSION = '2.2.0'
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-# version = intervene.__version__
 version = VERSION
 # The full version, including alpha/beta/rc tags.
 release = 'v'+str(VERSION)
