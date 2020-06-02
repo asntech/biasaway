@@ -11,13 +11,13 @@ import re
 
 def open_for_parsing(filename):
     """
-    Open the file with the given filename for parsing. Where the file appears to
-    be a gzip-compressed file it is opened in the appropriate way to provide
+    Open the file with the given filename for parsing. Where the file appears
+    to be a gzip-compressed file it is opened in the appropriate way to provide
     access to the decompressed text.
     """
     ext = splitext(filename)[-1]
     if ext == ".gz":
-        return gzip.open(filename, "rt") # text flag "t" needed in Python 3
+        return gzip.open(filename, "rt")  # text flag "t" needed in Python 3
     else:
         return open(filename)
 
@@ -241,7 +241,7 @@ def make_gc_plot(fg_gc, bg_gc, plot_filename):
                         label='generated')
     plt.legend()
     plot.set(xlabel="%GC", ylabel=ylab)
-    plt.savefig("{0}_gc_plot.png".format(plot_filename))
+    plt.savefig("{0}/{0}_gc_plot.png".format(plot_filename))
 
 
 def make_len_plot(fg_len, bg_len, plot_filename):
@@ -271,7 +271,7 @@ def make_len_plot(fg_len, bg_len, plot_filename):
                         label='generated')
     plt.legend()
     plot.set(xlabel="length", ylabel=ylab)
-    plot.get_figure().savefig("{0}_length_plot.png".format(plot_filename))
+    plot.get_figure().savefig("{0}/{0}_length_plot.png".format(plot_filename))
 
 
 def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
@@ -312,4 +312,4 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
-    plt.savefig("{0}_dinuc_plot.png".format(plot_filename))
+    plt.savefig("{0}/{0}_dinuc_plot.png".format(plot_filename))
