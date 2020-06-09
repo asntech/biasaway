@@ -4,7 +4,7 @@
 This is a setup script for BiasAway: a tool for DNA sequence background generation
 
 This code is free software; you can redistribute it and/or modify it under the terms of the
-BSD License (see the file LICENSE.md included with the distribution).
+BSD License (see the file LICENSE included with the distribution).
 
 @author: Aziz Khan
 @email: aziz.khan@ncmm.uio.no
@@ -31,7 +31,9 @@ CLASSIFIERS = [
 
 install_requires = [
     'biopython',
-    'numpy',
+    'numpy==1.16.5',
+    'matplotlib==3.2.0',
+    'seaborn'
 ]
 
 #def readme():

@@ -1,2 +1,3 @@
 include README.rst
-exclude .gitignore
+include LICENSE
+exclude .gitignores
