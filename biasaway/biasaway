@@ -36,6 +36,7 @@ from biasaway.utils import get_seqs
 from biasaway.utils import make_gc_plot
 from biasaway.utils import make_len_plot
 from biasaway.utils import make_dinuc_plot
+from biasaway.utils import make_dinuc_acgt_only_plot
 import sys
 import os
 import errno
@@ -53,13 +54,20 @@ def mononuc_shuffling_generator(argu):
 
 
 def dinuc_shuffling_generator(argu):
+    sys.stderr.write("Getting sequences\n")
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
+    sys.stderr.write("Shuffling sequences\n")
     bg_gc_list, bg_lengths, bg_dinuc = dinuc_shuff.generate_sequences(
         seqs, argu.nfold)
     if(argu.plot_filename):
+        sys.stderr.write("GC plotting\n")
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
+        sys.stderr.write("Length plotting\n")
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
+        sys.stderr.write("Dinuc plotting\n")
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
+        sys.stderr.write("Dinuc ACGT plotting\n")
+        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def mononuc_shuffling_window_generator(argu):

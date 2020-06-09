@@ -1,12 +1,17 @@
 """
-Modified by Aziz Khan on October 29, 2019
-Modified by A. Mathelier in March 2020
+Modified by Aziz Khan and Anthony Mathelier
 """
 
 from Bio import SeqIO
+from Bio.Data import IUPACData
 from os.path import splitext
 import gzip
-import re
+import itertools
+
+
+IUPAC = list(IUPACData.ambiguous_dna_letters)
+IUPAC_DINUC = [''.join(letters) for letters in itertools.product(IUPAC,
+                                                                 repeat=2)]
 
 
 def open_for_parsing(filename):
@@ -27,15 +32,17 @@ def GC(seq):
     Calculate G+C content, return the percentage (float between 0 and 100).
     Copes mixed case sequences, and with the ambiguous nucleotide S (G or C)
     when counting the G and C content. The percentage is calculated against
-    the length of the sequence using A,C,G,T,S,W with Ns, e.g.:
+    the length of the sequence using the IUPAC alphabet, e.g.:
     >>> GC("ACTGN")
     50.0 Note that this will return zero for an empty sequence.
 
     """
     try:
         gc = sum(map(seq.count, ['G', 'C', 'g', 'c', 'S', 's']))
-        length = sum(map(seq.count, ['G', 'C', 'A', 'T', 'S', 'W', 'g', 'c',
-                                     'a', 't', 's', 'w']))
+        length = sum(map(seq.count, ['G', 'C', 'A', 'T', 'S', 'W', 'R', 'Y',
+                                     'K', 'M', 'B', 'D', 'H', 'V', 'N', 'g',
+                                     'c', 'a', 't', 's', 'w', 'r', 'y', 'k',
+                                     'm', 'b', 'd', 'h', 'v', 'n']))
         # fix for py3 issues
         return int(round(gc * 100 / length))
     except ZeroDivisionError:
@@ -45,18 +52,16 @@ def GC(seq):
 def dinuc_count(seq):
     """
     Calculate dinucleotide composition of a sequence.
-    Only considers A, C, G, T
+    We consider the IUPAC alphabet here.
     """
-    dinuc = ['AA', 'AT', 'AG', 'AC', 'TA', 'TT', 'TG', 'TC', 'GA', 'GT', 'GG',
-             'GC', 'CA', 'CT', 'CG', 'CC']
-    return map(seq.count, dinuc)
+    return map(seq.count, IUPAC_DINUC)
 
 
 def get_seqs(f):
     seqs = []
     fg_gc_list = []
     fg_lengths = []
-    dinuc = [0] * 16
+    dinuc = [0] * len(IUPAC) * len(IUPAC)
     with open_for_parsing(f) as stream:
         for record in SeqIO.parse(stream, "fasta"):
             record.seq = record.seq.upper()
@@ -72,22 +77,8 @@ def init_compo(length):
     for i in range(1, length):
         dico.append({})
         j = i - 1
-        dico[j]["AA"] = 0.0
-        dico[j]["AC"] = 0.0
-        dico[j]["AT"] = 0.0
-        dico[j]["AG"] = 0.0
-        dico[j]["CA"] = 0.0
-        dico[j]["CC"] = 0.0
-        dico[j]["CT"] = 0.0
-        dico[j]["CG"] = 0.0
-        dico[j]["GA"] = 0.0
-        dico[j]["GC"] = 0.0
-        dico[j]["GG"] = 0.0
-        dico[j]["GT"] = 0.0
-        dico[j]["TA"] = 0.0
-        dico[j]["TC"] = 0.0
-        dico[j]["TG"] = 0.0
-        dico[j]["TT"] = 0.0
+        for letters in IUPAC_DINUC:
+            dico[j][letters] = 0.0
     return dico
 
 
@@ -104,7 +95,7 @@ def all_pos_dinuc(compo, max_length):
             cpt += compo[i - 1][key]
         composition[key] = cpt
     for k in composition.keys():
-        cpt = 4.0  # WARNING: WE DO NOT TAKE ANY 'N' INTO ACCOUNT
+        cpt = len(IUPAC)  # WARNING: WE CONSIDER THE IUPAC ALPHABET
         first = k[0]
         for key in composition.keys():
             if key[0] == first:
@@ -117,28 +108,24 @@ def pos_by_pos_dinuc(compo, seq_length):
     distrib = init_compo(seq_length)
     for j in range(1, seq_length):
         for k in compo[j - 1].keys():
-            if re.search("N", k):
-                distrib[j - 1][k] = 0.0
-            else:
-                cpt = 4.0
-                first = k[0]
-                for key in compo[j - 1].keys():
-                    if key[0] == first:
-                        cpt += compo[j - 1][key]
-                distrib[j - 1][k] = (compo[j - 1][k] + 1.0) / cpt
+            cpt = len(IUPAC)
+            first = k[0]
+            for key in compo[j - 1].keys():
+                if key[0] == first:
+                    cpt += compo[j - 1][key]
+            distrib[j - 1][k] = (compo[j - 1][k] + 1.0) / cpt
     return distrib
 
 
-def compute_dinuc_distrib(seqs, b=False):
+def compute_dinuc_distrib(seqs, over_all_pos=False):
     max_length = max(map(length, seqs))
     compo = init_compo(max_length)
     for i in range(0, len(seqs)):
         seq_length = len(seqs[i].seq)
         for j in range(1, seq_length):
-            if seqs[i].seq[j - 1] != 'N' and seqs[i].seq[j] != 'N':
-                compo[j - 1]["%s" % (seqs[i].seq[(j - 1):(j + 1)])] += 1.0
+            compo[j - 1]["%s" % (seqs[i].seq[(j - 1):(j + 1)])] += 1.0
 
-    if b:  # Dinucleotide distrib over all positions
+    if over_all_pos:  # Dinucleotide distrib over all positions
         return all_pos_dinuc(compo, max_length)
     else:  # Dinucleotide distrib position by position
         return pos_by_pos_dinuc(compo, seq_length)
@@ -150,51 +137,24 @@ def print_dinuc_distrib(dinuc, output):
     if output:
         stream = open(output, "w")
     for j in range(0, len(dinuc)):
-        stream.write("%f, %f, %f, %f, %f, %f, %f, %f, %f," % (dinuc[j]["AA"],
-                                                              dinuc[j]["AC"],
-                                                              dinuc[j]["AG"],
-                                                              dinuc[j]["AT"],
-                                                              dinuc[j]["AN"],
-                                                              dinuc[j]["CA"],
-                                                              dinuc[j]["CC"],
-                                                              dinuc[j]["CG"],
-                                                              dinuc[j]["CT"]))
-        stream.write(" %f, %f, %f, %f, %f, %f, %f, %f, %f," % (dinuc[j]["CN"],
-                                                               dinuc[j]["GA"],
-                                                               dinuc[j]["GC"],
-                                                               dinuc[j]["GG"],
-                                                               dinuc[j]["GT"],
-                                                               dinuc[j]["GN"],
-                                                               dinuc[j]["TA"],
-                                                               dinuc[j]["TC"],
-                                                               dinuc[j]["TG"]))
-        stream.write(" %f, %f, %f, %f, %f, %f, %f\n" % (dinuc[j]["TT"],
-                                                        dinuc[j]["TN"],
-                                                        dinuc[j]["NA"],
-                                                        dinuc[j]["NC"],
-                                                        dinuc[j]["NG"],
-                                                        dinuc[j]["NT"],
-                                                        dinuc[j]["NN"]))
+        for dinuc_letters in IUPAC_DINUC[:len(IUPAC_DINUC)-1]:
+            stream.write("%f, " % dinuc[j][dinuc_letters])
+        stream.write("%f\n" % dinuc[j][IUPAC_DINUC[len(IUPAC_DINUC)]])
     stream.close()
 
 
 def compute_nt_distrib(seqs):
-    cpt = 4.0
+    cpt = len(IUPAC)
     distrib = {}
-    for l in "ACGT":
+    for l in IUPAC:
         distrib[l] = 1.0
     for seq in seqs:
         for letter in seq:
-            if letter != 'N':
-                distrib[letter] += 1.0
-                cpt += 1.0
-    for letter in "ACGT":
+            distrib[letter] += 1.0
+            cpt += 1.0
+    for letter in IUPAC:
         distrib[letter] /= cpt
     return distrib
-
-
-def split_seq(seq):
-    return re.split('([!ACGT]+)', seq)
 
 
 def single_value(the_array):
@@ -259,41 +219,105 @@ def make_len_plot(fg_len, bg_len, plot_filename):
     plot.get_figure().savefig("{0}_length_plot.png".format(plot_filename))
 
 
+def make_dinuc_dico(dinuc_counts):
+    dico = {}
+    for indx, nuc in enumerate(IUPAC):
+        min_indx = indx * len(IUPAC)
+        max_indx = min_indx + len(IUPAC)
+        dico[nuc] = dinuc_counts[min_indx:max_indx]
+    return dico
+
+
 def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
     """
     Plot the dinucleotide composition of input and background sequences.
+    We use the IUPAC alphabet.
     """
     import pandas as pd
     import matplotlib
     matplotlib.use('Agg')
     import seaborn as sns
     import matplotlib.pyplot as plt
-    nuc = ['A', 'C', 'G', 'T']
     fg_total = sum(fg_dinuc)
     fg_dinuc = [val / fg_total for val in fg_dinuc]
-    fg_df = pd.DataFrame({'A': fg_dinuc[0:4], 'C': fg_dinuc[4:8],
-                          'G': fg_dinuc[8:12], 'T': fg_dinuc[12:16]},
-                         index=nuc)
+    dico = make_dinuc_dico(fg_dinuc)
+    fg_df = pd.DataFrame(dico, index=IUPAC)
     bg_total = sum(bg_dinuc)
     bg_dinuc = [val / bg_total for val in bg_dinuc]
-    bg_df = pd.DataFrame({'A': bg_dinuc[0:4], 'C': bg_dinuc[4:8],
-                          'G': bg_dinuc[8:12], 'T': bg_dinuc[12:16]},
-                         index=nuc)
+    dico = make_dinuc_dico(bg_dinuc)
+    bg_df = pd.DataFrame(dico, index=IUPAC)
     mini = min(min(fg_dinuc), min(bg_dinuc))
     maxi = max(max(fg_dinuc), max(bg_dinuc))
     fig, (ax1, ax2) = plt.subplots(ncols=2)
     fig.subplots_adjust(wspace=0.05)
-    sns.heatmap(fg_df, cmap="icefire", ax=ax1, cbar=False, annot=True,
-                fmt='.2f', vmin=mini, vmax=maxi)
+    sns.heatmap(fg_df, cmap="icefire", ax=ax1, cbar=False,
+                vmin=mini, vmax=maxi)  # annot=True, fmt='.2f'
     ax1.set(xlabel="first nucleotide", ylabel="second nucleotide",
             title="input")
     fig.colorbar(ax1.collections[0], ax=ax1, location="left",
                  use_gridspec=False, pad=0.2)
-    sns.heatmap(bg_df, cmap="icefire", ax=ax2, cbar=False, annot=True,
-                fmt='.2f', vmin=mini, vmax=maxi)
+    sns.heatmap(bg_df, cmap="icefire", ax=ax2, cbar=False,
+                vmin=mini, vmax=maxi)  # annot=True, fmt='.2f"
     ax2.set(xlabel="first nucleotide", title="generated")
     fig.colorbar(ax2.collections[0], ax=ax2, location="right",
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
     plt.savefig("{0}_dinuc_plot.png".format(plot_filename))
+
+
+def make_dinuc_acgt_only_dico(dinuc_counts):
+    acgt = "ACGT"
+    dico = {}
+    for nuc in acgt:
+        dico[nuc] = {}
+        for nuc2 in acgt:
+            dico[nuc][nuc2] = 0.0
+    for indx, dinuc in enumerate(IUPAC_DINUC):
+        if(dinuc[0] in "ACGT" and dinuc[1] in "ACGT"):
+            dico[dinuc[0]][dinuc[1]] = dinuc_counts[indx]
+    final_dico = {}
+    for nuc in acgt:
+        final_dico[nuc] = []
+        for nuc2 in acgt:
+            final_dico[nuc].append(dico[nuc][nuc2])
+    return final_dico
+
+
+def make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, plot_filename):
+    """
+    Plot the dinucleotide composition of input and background sequences.
+    We use only A, C, G, T letters.
+    """
+    import pandas as pd
+    import matplotlib
+    matplotlib.use('Agg')
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    acgt = ['A', 'C', 'G', 'T']
+    fg_total = sum(fg_dinuc)
+    fg_dinuc = [val / fg_total for val in fg_dinuc]
+    dico = make_dinuc_acgt_only_dico(fg_dinuc)
+    fg_df = pd.DataFrame(dico, index=acgt)
+    bg_total = sum(bg_dinuc)
+    bg_dinuc = [val / bg_total for val in bg_dinuc]
+    dico = make_dinuc_acgt_only_dico(bg_dinuc)
+    bg_df = pd.DataFrame(dico, index=acgt)
+    mini = min(min(fg_dinuc), min(bg_dinuc))
+    maxi = max(max(fg_dinuc), max(bg_dinuc))
+    fig, (ax1, ax2) = plt.subplots(ncols=2)
+    fig.subplots_adjust(wspace=0.05)
+    sns.heatmap(fg_df, cmap="icefire", ax=ax1, cbar=False,
+                vmin=mini, vmax=maxi)  # annot=True, fmt='.2f'
+    ax1.set(xlabel="first nucleotide", ylabel="second nucleotide",
+            title="input")
+    fig.colorbar(ax1.collections[0], ax=ax1, location="left",
+                 use_gridspec=False, pad=0.2)
+    sns.heatmap(bg_df, cmap="icefire", ax=ax2, cbar=False,
+                vmin=mini, vmax=maxi)  # annot=True, fmt='.2f"
+    ax2.set(xlabel="first nucleotide", title="generated")
+    fig.colorbar(ax2.collections[0], ax=ax2, location="right",
+                 use_gridspec=False, pad=0.2)
+    ax2.yaxis.tick_right()
+    ax2.tick_params(labelrotation=0)
+    plt.savefig("{0}_dinuc_acgt_only_plot.png".format(plot_filename))
