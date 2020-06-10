@@ -34,7 +34,7 @@ def shuffle_window(ss, wl, step):
     return bs
 
 
-def generate_sequences(seqs, winlen, step, nfold):
+def generate_sequences(seqs, winlen, step, nfold, random_seed):
     """
     Shuffle sequences within a sliding window, keeping mononuc compo.
 
@@ -42,6 +42,7 @@ def generate_sequences(seqs, winlen, step, nfold):
 
     """
 
+    random.seed(random_seed)
     cpt = 1
     bg_gc_list = []
     bg_lengths = []

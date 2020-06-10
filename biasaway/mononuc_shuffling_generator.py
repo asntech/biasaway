@@ -17,7 +17,7 @@ from biasaway.utils import GC, dinuc_count, IUPAC_DINUC
 import random
 
 
-def generate_sequences(seqs, nfold):
+def generate_sequences(seqs, nfold, random_seed):
     """
     Generate sequences by shuffling input (mononucleotide).
 
@@ -25,6 +25,7 @@ def generate_sequences(seqs, nfold):
 
     """
 
+    random.seed(random_seed)
     cpt = 1
     bg_gc_list = []
     bg_lengths = []

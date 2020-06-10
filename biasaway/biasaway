@@ -46,7 +46,7 @@ from biasaway import __version__ as VERSION
 def mononuc_shuffling_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = mononuc_shuff.generate_sequences(
-        seqs, argu.nfold)
+        seqs, argu.nfold, argu.random_seed)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
@@ -57,7 +57,7 @@ def mononuc_shuffling_generator(argu):
 def kmer_shuffling_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = kmer_shuff.generate_sequences(
-        seqs, argu.kmer, argu.nfold)
+        seqs, argu.kmer, argu.nfold, argu.random_seed)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
@@ -68,7 +68,7 @@ def kmer_shuffling_generator(argu):
 def mononuc_shuffling_window_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = mononuc_win_shuff.generate_sequences(
-        seqs, argu.kmer, argu.winlen, argu.step, argu.nfold)
+        seqs, argu.kmer, argu.winlen, argu.step, argu.nfold, argu.random_seed)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
@@ -79,7 +79,7 @@ def mononuc_shuffling_window_generator(argu):
 def kmer_shuffling_window_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = kmer_win_shuff.generate_sequences(
-        seqs, argu.kmer, argu.winlen, argu.step, argu.nfold)
+        seqs, argu.kmer, argu.winlen, argu.step, argu.nfold, argu.random_seed)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
@@ -126,10 +126,8 @@ def gc_compo_generator_no_len(argu):
         _, _, _, _ = GC_compo.bg_GC_bins(argu.bg_file, argu.bg_dir)
     else:
         test_non_empty_bg_dir(argu.bg_dir)
-    bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_sequences(fg_gc_bins,
-                                                                   bg_gc_bins,
-                                                                   argu.bg_dir,
-                                                                   argu.nfold)
+    bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_sequences(
+        fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.nfold, argu.random_seed)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
@@ -147,7 +145,7 @@ def gc_compo_len_generator(argu):
     else:
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_len_sequences(
-        fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.nfold)
+        fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.nfold, argu.random_seed)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
@@ -174,7 +172,7 @@ def gc_compo_len_window_generator(argu):
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_window_compo.generate_len_sequences(
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.deviation, argu.winlen,
-        argu.step, argu.nfold)
+        argu.step, argu.nfold, argu.random_seed)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
@@ -193,7 +191,7 @@ def gc_compo_window_generator_no_len(argu):
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_window_compo.generate_sequences(
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.deviation, argu.winlen,
-        argu.step, argu.nfold)
+        argu.step, argu.nfold, argu.random_seed)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
@@ -217,6 +215,12 @@ def mononuc_shuffling_arg_parsing(subparsers):
     parser_m.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
+    import time
+    timeseed = int(round(time.time()))
+    help_str = "Seed number to initialize the random number generator"
+    parser_m.add_argument('-e', '--seed', required=False, dest='random_seed',
+                          type=int, action="store", default=timeseed,
+                          help=help_str)
     parser_m.set_defaults(func=mononuc_shuffling_generator)
 
 
@@ -242,29 +246,41 @@ def mononuc_window_shuffling_arg_parsing(subparsers):
     parser_f.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
+    import time
+    timeseed = int(round(time.time()))
+    help_str = "Seed number to initialize the random number generator"
+    parser_f.add_argument('-e', '--seed', required=False, dest='random_seed',
+                          type=int, action="store", default=timeseed,
+                          help=help_str)
     parser_f.set_defaults(func=mononuc_shuffling_window_generator)
 
 
 def kmer_shuffling_arg_parsing(subparsers):
-    parser_d = subparsers.add_parser('k',
+    parser_k = subparsers.add_parser('k',
                                      help="k-mer shuffling generator")
-    parser_d.add_argument("-k", "--kmer", required=False, type=int,
+    parser_k.add_argument("-k", "--kmer", required=False, type=int,
                           dest="kmer", action="store", default=2,
                           help="K-mer used for the shuffling (default: 2")
-    parser_d.add_argument('-f', '--foreground', required=True, type=str,
+    parser_k.add_argument('-f', '--foreground', required=True, type=str,
                           dest="fg_file", action="store",
                           help="Foreground file in fasta format")
     help_str = "How many background sequences per each foreground sequence "
     help_str += "will be generated (default: 1)"
-    parser_d.add_argument('-n', '--nfold', required=False, type=int,
+    parser_k.add_argument('-n', '--nfold', required=False, type=int,
                           dest="nfold", action="store", default=1,
                           help=help_str)
     help_str = "Basename for the plot files "
     help_str += "(default: no plot created)"
-    parser_d.add_argument('-p', '--plot_filename', required=False,
+    parser_k.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
-    parser_d.set_defaults(func=kmer_shuffling_generator)
+    import time
+    timeseed = int(round(time.time()))
+    help_str = "Seed number to initialize the random number generator"
+    parser_k.add_argument('-e', '--seed', required=False, dest='random_seed',
+                          type=int, action="store", default=timeseed,
+                          help=help_str)
+    parser_k.set_defaults(func=kmer_shuffling_generator)
 
 
 def kmer_window_shuffling_arg_parsing(subparsers):
@@ -292,6 +308,12 @@ def kmer_window_shuffling_arg_parsing(subparsers):
     parser_w.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
+    import time
+    timeseed = int(round(time.time()))
+    help_str = "Seed number to initialize the random number generator"
+    parser_w.add_argument('-e', '--seed', required=False, dest='random_seed',
+                          type=int, action="store", default=timeseed,
+                          help=help_str)
     parser_w.set_defaults(func=kmer_shuffling_window_generator)
 
 
@@ -322,6 +344,12 @@ def gc_compo_arg_parsing(subparsers):
     parser_g.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
+    import time
+    timeseed = int(round(time.time()))
+    help_str = "Seed number to initialize the random number generator"
+    parser_g.add_argument('-e', '--seed', required=False, dest='random_seed',
+                          type=int, action="store", default=timeseed,
+                          help=help_str)
     parser_g.set_defaults(func=gc_compo_generator)
 
 
@@ -364,6 +392,12 @@ def gc_compo_window_arg_parsing(subparsers):
     parser_c.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
+    import time
+    timeseed = int(round(time.time()))
+    help_str = "Seed number to initialize the random number generator"
+    parser_c.add_argument('-e', '--seed', required=False, dest='random_seed',
+                          type=int, action="store", default=timeseed,
+                          help=help_str)
     parser_c.set_defaults(func=gc_compo_window_generator)
 
 

@@ -260,7 +260,6 @@ def same_bg(min_gc, max_gc, sd_gc, cv_gc, fg, deviation):
 def extract_random_sample(bg, fg, nb, deviation, winlen, step):
     """ Return the # of samples found and the samples. """
 
-    random.seed()
     random.shuffle(bg)
     index = 0
     sample = []
@@ -275,7 +274,7 @@ def extract_random_sample(bg, fg, nb, deviation, winlen, step):
 
 
 def generate_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
-                       nfold):
+                       nfold, random_seed):
     """
     Choose randomly the background sequences in each bin of GC%.
 
@@ -286,6 +285,7 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
 
     """
 
+    random.seed(random_seed)
     gc_list = []
     lengths = []
     dinuc = [0] * 16
@@ -329,7 +329,6 @@ def extract_seq_rec(size, nb, bg_keys, bg, accu, index, fg, deviation, winlen,
     # have the same length. Hence, we set a max number of recursion to avoid
     # going too deep when it does not make sense.
     sys.setrecursionlimit(10000)
-    random.seed()
     if not (bg_keys and nb):
         return accu, nb, bg_keys
     if index > len(bg_keys) - 1:

@@ -53,6 +53,7 @@ It will output the generated sequences on stdout. If you wish to save the sequen
      "-h, --help","To show the help message and exit"
      "-f, --foreground","Foreground file in fasta format."
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
+     "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"
 
 K-mer shuffling
 ==================================
@@ -97,6 +98,7 @@ to save the sequences in a specific file, you can type:
      "-f, --foreground","Foreground file in fasta format."
      "-k, --kmer","K-mer to be used for shuffling (``default: 2`` for dinucleotide shuffling)"
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
+     "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"
 
 Mononucleotide shuffling within a sliding window
 ==================================================
@@ -143,6 +145,7 @@ It will output the generated sequences on stdout. If you wish to save the sequen
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
      "-w, --winlen", "Window length (``default: 100``)"
      "-s, --step",  "Sliding step (``default: 1``)"
+     "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"
 
 
 K-mer shuffling within a sliding window
@@ -195,6 +198,7 @@ can type:
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
      "-w, --winlen", "Window length (``default: 100``)"
      "-s, --step",  "Sliding step (``default: 1``)"
+     "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"
 
 Genomic mononucleotide distribution matched
 ============================================
@@ -241,6 +245,7 @@ It will output the generated sequences on stdout. If you wish to save the sequen
      "-r, --bgdirectory", "Background directory"
      "-b, --background", "Background file in fasta format"
      "-l, --length", "Try to match the length as closely as possible (``not set by default``)"
+     "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"
 
 
 Genomic mononucleotide distribution within a sliding window matched
@@ -299,3 +304,4 @@ It will output the generated sequences on stdout. If you wish to save the sequen
      "-w, --winlen", "Window length (``default: 100``)"
      "-s, --step", "Sliding step (``default: 1``)"
      "-d, --deviation", "Deviation from the mean (``default: 2.6 for a threshold of mean + 2.6 * stdev``)"
+     "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"

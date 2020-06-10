@@ -80,7 +80,8 @@ def print_in_bg_dir(gc_bins, bg_dir, with_len=False):
     """ Print the sequences in the bg directory in bin files. """
 
     for percent in range(0, 101):
-        with open_for_parsing("{0}/bg_bin_{1}.txt".format(bg_dir, percent), 'w') as stream:
+        filename = "{0}/bg_bin_{1}.txt".format(bg_dir, percent)
+        with open_for_parsing(filename, 'w') as stream:
             if with_len:
                 for length in gc_bins[percent]:
                     for rec in gc_bins[percent][length]:
@@ -150,14 +151,15 @@ def bg_len_GC_bins(bg_file, bg_dir):
 def get_bins_from_bg_dir(bg_dir, percent):
     """ Return the sequences from the corresponding bin file. """
 
-    with open_for_parsing("{0}/bg_bin_{1:d}.txt".format(bg_dir, percent)) as stream:
+    filename = "{0}/bg_bin_{1:d}.txt".format(bg_dir, percent)
+    with open_for_parsing(filename) as stream:
         bin_seq = []
         for record in SeqIO.parse(stream, "fasta"):
             bin_seq.append(record)
         return bin_seq
 
 
-def generate_sequences(fg_bins, bg_bins, bg_dir, nfold):
+def generate_sequences(fg_bins, bg_bins, bg_dir, nfold, random_seed):
     """
     Choose randomly the background sequences in each bin of %GC.
 
@@ -166,12 +168,12 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, nfold):
     Return the list of %GC and length distrib.
 
     """
+    random.seed(random_seed)
     lengths = []
     gc_list = []
     dinuc = [0] * 16
     for percent in range(0, 101):
         if fg_bins[percent]:
-            random.seed()
             try:
                 nb = fg_bins[percent] * nfold
                 if bg_bins:
@@ -266,7 +268,8 @@ def extract_seq_rec(size, nb, bg_keys, bg, accu, index):
 def get_bins_len_from_bg_dir(bg_dir, percent):
     """ Return the sequences from the corresponding bin file. """
 
-    with open_for_parsing("{0}/bg_bin_{1:d}.txt".format(bg_dir, percent)) as stream:
+    filename = "{0}/bg_bin_{1:d}.txt".format(bg_dir, percent)
+    with open_for_parsing(filename) as stream:
         bin_seq = {}
         for record in SeqIO.parse(stream, "fasta"):
             length = len(record)
@@ -286,7 +289,6 @@ def generate_len_sequences(fg, bg, bg_dir, nfold):
     """
 
     sys.setrecursionlimit(10000)
-    random.seed()
     lengths = []
     gc_list = []
     dinuc = [0] * 16

@@ -10,7 +10,7 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 from Bio.Data import IUPACData
 from biasaway.utils import GC, dinuc_count, IUPAC_DINUC
-from ushuffle import shuffle
+from ushuffle import shuffle, set_seed
 
 
 def shuffle_window(ss, km, wl, step):
@@ -21,7 +21,8 @@ def shuffle_window(ss, km, wl, step):
     return(bs)  # returns shuffled sequence
 
 
-def generate_sequences(seqs, kmer, winlen, step, nfold):
+def generate_sequences(seqs, kmer, winlen, step, nfold, random_seed):
+    set_seed(random_seed)
     cpt = 1
     bg_gc_list = []
     bg_lengths = []
