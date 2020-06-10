@@ -12,8 +12,8 @@ Modified by A. Mathelier in March 2020
 from __future__ import print_function
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
-from Bio.Alphabet import generic_dna
-from biasaway.utils import GC, dinuc_count
+from Bio.Data import IUPACData
+from biasaway.utils import GC, dinuc_count, IUPAC_DINUC
 import random
 
 
@@ -45,13 +45,14 @@ def generate_sequences(seqs, winlen, step, nfold):
     cpt = 1
     bg_gc_list = []
     bg_lengths = []
-    dinuc = [0] * 16
+    dinuc = [0] * len(IUPAC_DINUC)
     for record in seqs:
         sequence = record.seq.__str__()
         descr = "Background sequence for {0:s}".format(record.name, cpt)
         for _ in range(0, nfold):
             new_sequence = shuffle_window(sequence, winlen, step)
-            new_seq = SeqRecord(Seq(new_sequence, generic_dna),
+            new_seq = SeqRecord(Seq(new_sequence,
+                                    IUPACData.ambiguous_dna_letters),
                                 id="background_seq_{0:d}".format(cpt),
                                 description=descr)
             print(new_seq.format("fasta"), end='')

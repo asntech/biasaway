@@ -9,8 +9,8 @@ BiasAway tool generating adapted background for motif overrepresentation.
    - mono-nucleotide shuffling using the foreground sequences
    - mono-nucleotide shuffling within a sliding window using foreground
      sequences
-   - di-nucleotide shuffling using the foreground sequences
-   - di-nucleotide shuffling within a sliding window using foreground
+   - k-mer shuffling using the foreground sequences
+   - k-mer shuffling within a sliding window using foreground
      sequences
 - Extraction of sequences from a set of possible background sequences:
    - respecting the %GC distribution of the foreground (using %GC bins)
@@ -28,8 +28,8 @@ Modified by A. Mathelier in March 2020
 import argparse
 from biasaway import mononuc_shuffling_generator as mononuc_shuff
 from biasaway import mononuc_window_shuffling_generator as mononuc_win_shuff
-from biasaway import dinuc_shuffling_generator as dinuc_shuff
-from biasaway import dinuc_window_shuffling_generator as dinuc_win_shuff
+from biasaway import kmer_shuffling_generator as kmer_shuff
+from biasaway import kmer_window_shuffling_generator as kmer_win_shuff
 from biasaway import GC_compo_matching as GC_compo
 from biasaway import GC_window_compo_matching as GC_window_compo
 from biasaway.utils import get_seqs
@@ -51,43 +51,40 @@ def mononuc_shuffling_generator(argu):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
+        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
-def dinuc_shuffling_generator(argu):
-    sys.stderr.write("Getting sequences\n")
+def kmer_shuffling_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
-    sys.stderr.write("Shuffling sequences\n")
-    bg_gc_list, bg_lengths, bg_dinuc = dinuc_shuff.generate_sequences(
-        seqs, argu.nfold)
+    bg_gc_list, bg_lengths, bg_dinuc = kmer_shuff.generate_sequences(
+        seqs, argu.kmer, argu.nfold)
     if(argu.plot_filename):
-        sys.stderr.write("GC plotting\n")
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
-        sys.stderr.write("Length plotting\n")
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
-        sys.stderr.write("Dinuc plotting\n")
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
-        sys.stderr.write("Dinuc ACGT plotting\n")
         make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def mononuc_shuffling_window_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = mononuc_win_shuff.generate_sequences(
-        seqs, argu.winlen, argu.step, argu.nfold)
+        seqs, argu.kmer, argu.winlen, argu.step, argu.nfold)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
+        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
-def dinuc_shuffling_window_generator(argu):
+def kmer_shuffling_window_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
-    bg_gc_list, bg_lengths, bg_dinuc = dinuc_win_shuff.generate_sequences(
-        seqs, argu.winlen, argu.step, argu.nfold)
+    bg_gc_list, bg_lengths, bg_dinuc = kmer_win_shuff.generate_sequences(
+        seqs, argu.kmer, argu.winlen, argu.step, argu.nfold)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
+        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def test_empty_bg_dir(bg_dir):
@@ -137,6 +134,7 @@ def gc_compo_generator_no_len(argu):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
+        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def gc_compo_len_generator(argu):
@@ -154,6 +152,7 @@ def gc_compo_len_generator(argu):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
+        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def gc_compo_window_generator(argu):
@@ -180,6 +179,7 @@ def gc_compo_len_window_generator(argu):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
+        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def gc_compo_window_generator_no_len(argu):
@@ -198,6 +198,7 @@ def gc_compo_window_generator_no_len(argu):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
+        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def mononuc_shuffling_arg_parsing(subparsers):
@@ -244,9 +245,12 @@ def mononuc_window_shuffling_arg_parsing(subparsers):
     parser_f.set_defaults(func=mononuc_shuffling_window_generator)
 
 
-def dinuc_shuffling_arg_parsing(subparsers):
-    parser_d = subparsers.add_parser('d',
-                                     help="di-nucleotide shuffling generator")
+def kmer_shuffling_arg_parsing(subparsers):
+    parser_d = subparsers.add_parser('k',
+                                     help="k-mer shuffling generator")
+    parser_d.add_argument("-k", "--kmer", required=False, type=int,
+                          dest="kmer", action="store", default=2,
+                          help="K-mer used for the shuffling (default: 2")
     parser_d.add_argument('-f', '--foreground', required=True, type=str,
                           dest="fg_file", action="store",
                           help="Foreground file in fasta format")
@@ -260,12 +264,15 @@ def dinuc_shuffling_arg_parsing(subparsers):
     parser_d.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
-    parser_d.set_defaults(func=dinuc_shuffling_generator)
+    parser_d.set_defaults(func=kmer_shuffling_generator)
 
 
-def dinuc_window_shuffling_arg_parsing(subparsers):
-    help_str = "di-nucleotide shuffling within a sliding window generator"
+def kmer_window_shuffling_arg_parsing(subparsers):
+    help_str = "k-mer shuffling within a sliding window generator"
     parser_w = subparsers.add_parser('w', help=help_str)
+    parser_w.add_argument("-k", "--kmer", required=False, type=int,
+                          dest="kmer", action="store", default=2,
+                          help="K-mer used for the shuffling (default: 2")
     parser_w.add_argument("-w", "--winlen", required=False, type=int,
                           dest="winlen", action="store", default=100,
                           help="Window length (default: 100)")
@@ -285,7 +292,7 @@ def dinuc_window_shuffling_arg_parsing(subparsers):
     parser_w.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
-    parser_w.set_defaults(func=dinuc_shuffling_window_generator)
+    parser_w.set_defaults(func=kmer_shuffling_window_generator)
 
 
 def gc_compo_arg_parsing(subparsers):
@@ -367,8 +374,8 @@ def arg_parsing():
             - mono-nucleotide shuffling using the foreground sequences
             - mono-nucleotide shuffling within a sliding window using
                 foreground sequences
-            - di-nucleotide shuffling using the foreground sequences
-            - di-nucleotide shuffling within a sliding window using foreground
+            - k-mer shuffling using the foreground sequences
+            - k-mer shuffling within a sliding window using foreground
                 sequences
         - Extraction of sequences from a set of possible background sequences
           (choosers):
@@ -392,8 +399,8 @@ def arg_parsing():
     subparsers.required = True
     mononuc_shuffling_arg_parsing(subparsers)
     mononuc_window_shuffling_arg_parsing(subparsers)
-    dinuc_shuffling_arg_parsing(subparsers)
-    dinuc_window_shuffling_arg_parsing(subparsers)
+    kmer_shuffling_arg_parsing(subparsers)
+    kmer_window_shuffling_arg_parsing(subparsers)
     gc_compo_arg_parsing(subparsers)
     gc_compo_window_arg_parsing(subparsers)
     argu = parser.parse_args()

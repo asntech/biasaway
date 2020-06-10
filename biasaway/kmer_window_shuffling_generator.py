@@ -1,8 +1,9 @@
-###############################################################################
-# Module allowing the generation of sequences by using a di-nucleotide
-# shuffling of the given sequences
-# Modified by Anthony Mathelier
-###############################################################################
+# Luis del Peso
+# Modified by A. Mathelier
+# Vancouver, Jan 2012
+
+# Modified by Aziz Khan and Anthony Mathelier
+
 
 from __future__ import print_function
 from Bio.SeqRecord import SeqRecord
@@ -12,16 +13,24 @@ from biasaway.utils import GC, dinuc_count, IUPAC_DINUC
 from ushuffle import shuffle
 
 
-def generate_sequences(seqs, nfold):
+def shuffle_window(ss, km, wl, step):
+    bs = ss[:]
+    for i in range(0, len(bs)-1, step):
+        shuff_seq = shuffle(str.encode(bs[i:(i+wl)]), km).decode()
+        bs = bs[0:i] + shuff_seq + bs[i+wl:]
+    return(bs)  # returns shuffled sequence
+
+
+def generate_sequences(seqs, kmer, winlen, step, nfold):
     cpt = 1
     bg_gc_list = []
     bg_lengths = []
     dinuc = [0] * len(IUPAC_DINUC)
     for record in seqs:
         seq = record.seq.__str__()
-        descr = "Background sequence for {0:s}".format(record.name)
+        descr = "Background sequence for {0:s}".format(record.name, cpt)
         for n in range(0, nfold):
-            new_sequence = shuffle(str.encode(seq), 2).decode()
+            new_sequence = shuffle_window(seq, kmer, winlen, step)
             new_seq = SeqRecord(Seq(new_sequence,
                                     IUPACData.ambiguous_dna_letters),
                                 id="background_seq_{0:d}".format(cpt),

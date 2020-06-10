@@ -6,8 +6,8 @@ composition-matched DNA sequences. It is available as open source code from
 bitbucket.
 
 The tool provides users with six approaches to generate synthetic or genomic
-background sequences matching mono- and dinucleotide composition of
-user-provided foreground sequences:
+background sequences matching mono- and k-mer composition of user-provided
+foreground sequences:
 
 .. note:: BiasAway also comes with a Web App available at http://biasaway.uio.no.
 
@@ -54,17 +54,16 @@ It will output the generated sequences on stdout. If you wish to save the sequen
      "-f, --foreground","Foreground file in fasta format."
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
 
-Dinucleotide shuffling
+K-mer shuffling
 ==================================
 
-Each user-provided sequence will be shuffled to keep its dinucleotide
-composition.
+Each user-provided sequence will be shuffled to keep its k-mer composition.
 
 **Usage:**
 
 .. code-block:: bash
 
-    biasaway d [options]
+    biasaway k [options]
 
 .. note:: Please scroll down to see a detailed summary of available **options**.
 
@@ -72,15 +71,17 @@ composition.
 
 .. code-block:: bash
 
-    biasaway d --help
+    biasaway k --help
 
 **Example:**
 
 .. code-block:: bash
 
-    biasaway d -f path/to/FASTA/file/my_fasta_file.fa
+    biasaway k -f path/to/FASTA/file/my_fasta_file.fa
 
-It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
+It will output the generated sequences on stdout, keeping the dinucleotide
+composition of the input sequence (k-mer with k=2 is the default). If you wish
+to save the sequences in a specific file, you can type:
 
 .. code-block:: bash
 
@@ -94,6 +95,7 @@ It will output the generated sequences on stdout. If you wish to save the sequen
 
      "-h, --help","To show the help message and exit"
      "-f, --foreground","Foreground file in fasta format."
+     "-k, --kmer","K-mer to be used for shuffling (``default: 2`` for dinucleotide shuffling)"
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
 
 Mononucleotide shuffling within a sliding window
@@ -143,13 +145,13 @@ It will output the generated sequences on stdout. If you wish to save the sequen
      "-s, --step",  "Sliding step (``default: 1``)"
 
 
-Dinucleotide shuffling within a sliding window
+K-mer shuffling within a sliding window
 ================================================
 
 For each user-provided sequence, a window will slide along to shuffle the
-nucleotides within the window, keeping the local dinucleotide composition. As
-such, the generated sequences will preserve the local dinucleotide composition
-of the input sequences along them.
+nucleotides within the window, keeping the local k-mer composition. As such,
+the generated sequences will preserve the local k-mer composition of the input
+sequences along them.
 
 
 **Usage:**
@@ -172,7 +174,10 @@ of the input sequences along them.
 
     biasaway w -f path/to/FASTA/file/my_fasta_file.fa
 
-It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
+It will output the generated sequences on stdout, keeping the local
+dinucleotide composition of the input sequences (k=2 for dinucleotide shuffling
+is used as default). If you wish to save the sequences in a specific file, you
+can type:
 
 .. code-block:: bash
 
@@ -186,6 +191,7 @@ It will output the generated sequences on stdout. If you wish to save the sequen
 
      "-h, --help","To show the help message and exit"
      "-f, --foreground","Foreground file in fasta format."
+     "-k, --kmer","K-mer to be used for shuffling (``default: 2`` for dinucleotide shuffling)"
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
      "-w, --winlen", "Window length (``default: 100``)"
      "-s, --step",  "Sliding step (``default: 1``)"

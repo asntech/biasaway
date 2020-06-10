@@ -82,7 +82,7 @@ Once you have installed biasaway, you can type:
 
 	biasaway --help
 
-This will show the main help, which lists the six subcommands/modules: ``m``, ``f``, ``d``, ``w``, ``g``, and ``c``.
+This will show the main help, which lists the six subcommands/modules: ``m``, ``f``, ``k``, ``w``, ``g``, and ``c``.
 
 .. code-block:: bash
 
@@ -93,8 +93,8 @@ This will show the main help, which lists the six subcommands/modules: ``m``, ``
 		List of subcommands
 		m 	mono-nucleotide shuffling generator
 		f 	mono-nucleotide shuffling within a sliding window generator
-		d 	di-nucleotide shuffling generator
-		w 	di-nucleotide shuffling within a sliding window generator
+		k 	k-mer shuffling generator
+		w 	k-mer shuffling within a sliding window generator
 		g 	%GC distribution-based background chooser
 		c 	GC distribution and %GC composition within a sliding window background chooser
 
@@ -103,7 +103,7 @@ This will show the main help, which lists the six subcommands/modules: ``m``, ``
 	  -v, --version         show program's version number and exit
 
 
-And to view the help for the six subcommands ``m``, ``f``, ``d``, ``w``, ``g``, and ``c`` type:
+And to view the help for the six subcommands ``m``, ``f``, ``k``, ``w``, ``g``, and ``c`` type:
 
 .. code-block:: bash
 	
@@ -111,7 +111,7 @@ And to view the help for the six subcommands ``m``, ``f``, ``d``, ``w``, ``g``, 
 
 	biasaway f --help
 
-	biasaway d --help
+	biasaway k --help
 
 	biasaway w --help
 

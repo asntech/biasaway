@@ -8,19 +8,19 @@ Once you have installed BiasAway, you can type:
 
     biasaway --help
 
-It will print the main help, which lists the six subcommands/modules: ``m``, ``f``, ``d``, ``w``, ``g``, and ``c``.
+It will print the main help, which lists the six subcommands/modules: ``m``, ``f``, ``k``, ``w``, ``g``, and ``c``.
 
 .. code-block:: bash
 
 	usage: biasaway <subcommand> [options]
 
-	positional arguments <subcommand>: {m,f,d,w,g,c}
+	positional arguments <subcommand>: {m,f,k,w,g,c}
 
 		List of subcommands
 		m 	mononucleotide shuffling
-		d 	dinucleotide shuffling
+		k 	k-mer shuffling
 		f 	mononucleotide shuffling within a sliding window
-		w 	dinucleotide shuffling within a sliding window
+		w 	k-mer shuffling within a sliding window
 		g 	mononucleotide distribution matched
 		c 	mononucleotide distribution within a sliding window matched
 
@@ -44,11 +44,11 @@ To view ``f`` module help, type
 
 	biasaway f --help
 
-To view ``d`` module help, type
+To view ``k`` module help, type
 
 .. code-block:: bash
 
-	biasaway d --help
+	biasaway k --help
 
 To view ``w`` module help, type
 
