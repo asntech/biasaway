@@ -1,17 +1,14 @@
 #!/usr/bin/env python
 
 """
-BiasAway tool generating adapted background for motif overrepresentation.
+BiasAway tool originally developed to generate adapted background for motif
+overrepresentation.
 
- BiasAway with the possibility of using very different ways of
+ BiasAway comes with the possibility of using very different ways of
  generating backgrounds lying into two categories:
  - Creation of new random sequences:
-   - mono-nucleotide shuffling using the foreground sequences
-   - mono-nucleotide shuffling within a sliding window using foreground
-     sequences
    - k-mer shuffling using the foreground sequences
-   - k-mer shuffling within a sliding window using foreground
-     sequences
+   - k-mer shuffling within a sliding window using foreground sequences
 - Extraction of sequences from a set of possible background sequences:
    - respecting the %GC distribution of the foreground (using %GC bins)
    - respecting the %GC distribution as in the previous item and also
@@ -20,14 +17,10 @@ BiasAway tool generating adapted background for motif overrepresentation.
 Authors: BiasAway has been originally developed by Anthony Mathelier, Luis Del
 Peso, and Rebecca Worsley-Hunt at the University of British Columbia.
 
-Modified by Aziz Khan and Peter on October 29, 2019
-Modified by A. Mathelier in March 2020
-
+Modified by Peter Arner, Aziz Khan and Anthony Mathelier
 """
 
 import argparse
-from biasaway import mononuc_shuffling_generator as mononuc_shuff
-from biasaway import mononuc_window_shuffling_generator as mononuc_win_shuff
 from biasaway import kmer_shuffling_generator as kmer_shuff
 from biasaway import kmer_window_shuffling_generator as kmer_win_shuff
 from biasaway import GC_compo_matching as GC_compo
@@ -40,35 +33,14 @@ from biasaway.utils import make_dinuc_acgt_only_plot
 import sys
 import os
 import errno
+import time
 from biasaway import __version__ as VERSION
-
-
-def mononuc_shuffling_generator(argu):
-    seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
-    bg_gc_list, bg_lengths, bg_dinuc = mononuc_shuff.generate_sequences(
-        seqs, argu.nfold, argu.random_seed)
-    if(argu.plot_filename):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
-        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
-        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
 def kmer_shuffling_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = kmer_shuff.generate_sequences(
         seqs, argu.kmer, argu.nfold, argu.random_seed)
-    if(argu.plot_filename):
-        make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
-        make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
-        make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
-        make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
-
-
-def mononuc_shuffling_window_generator(argu):
-    seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
-    bg_gc_list, bg_lengths, bg_dinuc = mononuc_win_shuff.generate_sequences(
-        seqs, argu.kmer, argu.winlen, argu.step, argu.nfold, argu.random_seed)
     if(argu.plot_filename):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
@@ -199,82 +171,25 @@ def gc_compo_window_generator_no_len(argu):
         make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
 
 
-def mononuc_shuffling_arg_parsing(subparsers):
-    help_str = "mono-nucleotide shuffling generator"
-    parser_m = subparsers.add_parser('m', help=help_str)
-    parser_m.add_argument('-f', '--foreground', required=True, type=str,
-                          dest="fg_file", action="store",
-                          help="Foreground file in fasta format")
-    help_str = "How many background sequences per each foreground sequence "
-    help_str += "will be generated (default: 1)"
-    parser_m.add_argument('-n', '--nfold', required=False, type=int,
-                          dest="nfold", action="store", default=1,
-                          help=help_str)
-    help_str = "Basename for the plot files "
-    help_str += "(default: no plot created)"
-    parser_m.add_argument('-p', '--plot_filename', required=False,
-                          dest="plot_filename", type=str, action="store",
-                          default="", help=help_str)
-    import time
-    timeseed = int(round(time.time()))
-    help_str = "Seed number to initialize the random number generator"
-    parser_m.add_argument('-e', '--seed', required=False, dest='random_seed',
-                          type=int, action="store", default=timeseed,
-                          help=help_str)
-    parser_m.set_defaults(func=mononuc_shuffling_generator)
-
-
-def mononuc_window_shuffling_arg_parsing(subparsers):
-    help_str = "mono-nucleotide shuffling within a sliding window generator"
-    parser_f = subparsers.add_parser('f', help=help_str)
-    parser_f.add_argument("-w", "--winlen", required=False, type=int,
-                          dest="winlen", action="store", default=100,
-                          help="Window length (default: 100)")
-    parser_f.add_argument("-s", "--step", required=False, type=int,
-                          dest="step", action="store", default=1,
-                          help="Sliding step (default: 1)")
-    parser_f.add_argument('-f', '--foreground', required=True, type=str,
-                          dest="fg_file", action="store",
-                          help="Foreground file in fasta format")
-    help_str = "How many background sequences per each foreground sequence "
-    help_str += "will be generated (default: 1)"
-    parser_f.add_argument('-n', '--nfold', required=False, type=int,
-                          dest="nfold", action="store", default=1,
-                          help=help_str)
-    help_str = "Basename for the plot files "
-    help_str += "(default: no plot created)"
-    parser_f.add_argument('-p', '--plot_filename', required=False,
-                          dest="plot_filename", type=str, action="store",
-                          default="", help=help_str)
-    import time
-    timeseed = int(round(time.time()))
-    help_str = "Seed number to initialize the random number generator"
-    parser_f.add_argument('-e', '--seed', required=False, dest='random_seed',
-                          type=int, action="store", default=timeseed,
-                          help=help_str)
-    parser_f.set_defaults(func=mononuc_shuffling_window_generator)
-
-
 def kmer_shuffling_arg_parsing(subparsers):
     parser_k = subparsers.add_parser('k',
                                      help="k-mer shuffling generator")
-    parser_k.add_argument("-k", "--kmer", required=False, type=int,
-                          dest="kmer", action="store", default=2,
-                          help="K-mer used for the shuffling (default: 2")
     parser_k.add_argument('-f', '--foreground', required=True, type=str,
                           dest="fg_file", action="store",
                           help="Foreground file in fasta format")
+    parser_k.add_argument("-k", "--kmer", required=False, type=int,
+                          dest="kmer", action="store", default=2,
+                          help="K-mer used for the shuffling (default: 2)")
     help_str = "How many background sequences per each foreground sequence "
     help_str += "will be generated (default: 1)"
     parser_k.add_argument('-n', '--nfold', required=False, type=int,
                           dest="nfold", action="store", default=1,
                           help=help_str)
-    help_str = "Basename for the plot files "
-    help_str += "(default: no plot created)"
+    help_str = "Basename for the QC plot and metric files "
+    help_str += "(default: no QC plot created)"
     parser_k.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
-    import time
     timeseed = int(round(time.time()))
     help_str = "Seed number to initialize the random number generator"
     parser_k.add_argument('-e', '--seed', required=False, dest='random_seed',
@@ -286,6 +201,9 @@ def kmer_shuffling_arg_parsing(subparsers):
 def kmer_window_shuffling_arg_parsing(subparsers):
     help_str = "k-mer shuffling within a sliding window generator"
     parser_w = subparsers.add_parser('w', help=help_str)
+    parser_w.add_argument('-f', '--foreground', required=True, type=str,
+                          dest="fg_file", action="store",
+                          help="Foreground file in fasta format")
     parser_w.add_argument("-k", "--kmer", required=False, type=int,
                           dest="kmer", action="store", default=2,
                           help="K-mer used for the shuffling (default: 2")
@@ -295,20 +213,16 @@ def kmer_window_shuffling_arg_parsing(subparsers):
     parser_w.add_argument("-s", "--step", required=False, type=int,
                           dest="step", action="store", default=1,
                           help="Sliding step (default: 1)")
-    parser_w.add_argument('-f', '--foreground', required=True, type=str,
-                          dest="fg_file", action="store",
-                          help="Foreground file in fasta format")
     help_str = "How many background sequences per each foreground sequence "
     help_str += "will be generated (default: 1)"
     parser_w.add_argument('-n', '--nfold', required=False, type=int,
                           dest="nfold", action="store", default=1,
                           help=help_str)
-    help_str = "Basename for the plot files "
-    help_str += "(default: no plot created)"
+    help_str = "Basename for the QC plot and metric files "
+    help_str += "(default: no QC plot created)"
     parser_w.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
-    import time
     timeseed = int(round(time.time()))
     help_str = "Seed number to initialize the random number generator"
     parser_w.add_argument('-e', '--seed', required=False, dest='random_seed',
@@ -320,15 +234,15 @@ def kmer_window_shuffling_arg_parsing(subparsers):
 def gc_compo_arg_parsing(subparsers):
     help_str = "%%GC distribution-based background chooser"
     parser_g = subparsers.add_parser('g', help=help_str)
+    parser_g.add_argument('-f', '--foreground', required=True, type=str,
+                          dest="fg_file", action="store",
+                          help="Foreground file in fasta format")
     parser_g.add_argument("-r", "--bgdirectory", required=True, type=str,
                           dest="bg_dir", action="store",
                           help="Background directory")
     parser_g.add_argument("-b", "--background", required=False, type=str,
                           dest="bg_file", action="store",
                           help="Background file in fasta format")
-    parser_g.add_argument('-f', '--foreground', required=True, type=str,
-                          dest="fg_file", action="store",
-                          help="Foreground file in fasta format")
     help_str = "How many background sequences per each foreground sequence "
     help_str += "will be choosen (default: 1)"
     parser_g.add_argument('-n', '--nfold', required=False, type=int,
@@ -339,12 +253,11 @@ def gc_compo_arg_parsing(subparsers):
     parser_g.add_argument('-l', '--length', required=False, dest="len_opt",
                           action="store_const", const=1, default=0,
                           help=help_str)
-    help_str = "Basename for the plot files "
-    help_str += "(default: no plot created)"
+    help_str = "Basename for the QC plot and metric files "
+    help_str += "(default: no QC plot created)"
     parser_g.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
-    import time
     timeseed = int(round(time.time()))
     help_str = "Seed number to initialize the random number generator"
     parser_g.add_argument('-e', '--seed', required=False, dest='random_seed',
@@ -357,6 +270,9 @@ def gc_compo_window_arg_parsing(subparsers):
     help_str = "%%GC distribution and %%GC composition within a sliding "
     help_str += "window background chooser"
     parser_c = subparsers.add_parser('c', help=help_str)
+    parser_c.add_argument('-f', '--foreground', required=True, type=str,
+                          dest="fg_file", action="store",
+                          help="Foreground file in fasta format")
     parser_c.add_argument("-r", "--bgdirectory", required=True, type=str,
                           dest="bg_dir", action="store",
                           help="Background directory")
@@ -374,9 +290,6 @@ def gc_compo_window_arg_parsing(subparsers):
     parser_c.add_argument("-d", "--deviation", required=False, type=float,
                           dest="deviation", action="store", default=2.6,
                           help=help_str)
-    parser_c.add_argument('-f', '--foreground', required=True, type=str,
-                          dest="fg_file", action="store",
-                          help="Foreground file in fasta format")
     help_str = "How many background sequences per each foreground sequence "
     help_str += "will be choosen (default: 1)"
     parser_c.add_argument('-n', '--nfold', required=False, type=int,
@@ -387,12 +300,11 @@ def gc_compo_window_arg_parsing(subparsers):
     parser_c.add_argument('-l', '--length', required=False, dest="len_opt",
                           action="store_const", const=1, default=0,
                           help=help_str)
-    help_str = "Basename for the plot files "
-    help_str += "(default: no plot created)"
+    help_str = "Basename for the QC plot and metric files "
+    help_str += "(default: no QC plot created)"
     parser_c.add_argument('-p', '--plot_filename', required=False,
                           dest="plot_filename", type=str, action="store",
                           default="", help=help_str)
-    import time
     timeseed = int(round(time.time()))
     help_str = "Seed number to initialize the random number generator"
     parser_c.add_argument('-e', '--seed', required=False, dest='random_seed',
@@ -402,15 +314,12 @@ def gc_compo_window_arg_parsing(subparsers):
 
 
 def arg_parsing():
-    descr = '''Background generator with the possibility of using very
+    descr = '''Background generator offering the possibility of using very
     different ways of generating backgrounds lying into two categories:
         - Creation of new random sequences (generators):
-            - mono-nucleotide shuffling using the foreground sequences
-            - mono-nucleotide shuffling within a sliding window using
-                foreground sequences
             - k-mer shuffling using the foreground sequences
             - k-mer shuffling within a sliding window using foreground
-                sequences
+              sequences
         - Extraction of sequences from a set of possible background sequences
           (choosers):
             - respecting the %GC distribution of the foreground (using %GC
@@ -431,8 +340,6 @@ def arg_parsing():
                         version='%(prog)s version '+VERSION)
 
     subparsers.required = True
-    mononuc_shuffling_arg_parsing(subparsers)
-    mononuc_window_shuffling_arg_parsing(subparsers)
     kmer_shuffling_arg_parsing(subparsers)
     kmer_window_shuffling_arg_parsing(subparsers)
     gc_compo_arg_parsing(subparsers)
