@@ -16,15 +16,43 @@ IUPAC_DINUC = [''.join(letters) for letters in itertools.product(IUPAC,
 
 def open_for_parsing(filename):
     """
-    Open the file with the given filename for parsing. Where the file appears
-    to be a gzip-compressed file it is opened in the appropriate way to provide
-    access to the decompressed text.
+    Open the file with the given filename for parsing. stdin is used for
+    reading from the standard Unix input. Where the file appears to be a
+    gzip-compressed file it is opened in the appropriate way to provide access
+    to the decompressed text.
     """
     ext = splitext(filename)[-1]
     if ext == ".gz":
         return gzip.open(filename, "rt")  # text flag "t" needed in Python 3
+    elif filename == "stdin":
+        import sys
+        return sys.stdin
     else:
         return open(filename)
+
+
+def get_seqs(f):
+    """
+    Retrieve sequences from the input file in fasta format (can be gzipped).
+    """
+    seqs = []
+    fg_gc_list = []
+    fg_lengths = []
+    dinuc = [0] * len(IUPAC) * len(IUPAC)
+    # We cannot use 'with' statement as it would otherwise close stdin
+    # automatically
+    stream = open_for_parsing(f)
+    for record in SeqIO.parse(stream, "fasta"):
+        record.seq = record.seq.upper()
+        seqs.append(record)
+        fg_gc_list.append(GC(record.seq))
+        fg_lengths.append(len(record.seq))
+        dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
+    # Not that we are done, we need to close the opened file but make sure that
+    # we do not close stdin
+    if f != "stdin":
+        stream.close()
+    return seqs, fg_gc_list, fg_lengths, dinuc
 
 
 def GC(seq):
@@ -57,24 +85,6 @@ def dinuc_count(seq):
     return map(seq.count, IUPAC_DINUC)
 
 
-def get_seqs(f):
-    """
-    Retrieve sequences from the input file in fasta format (can be gzipped).
-    """
-    seqs = []
-    fg_gc_list = []
-    fg_lengths = []
-    dinuc = [0] * len(IUPAC) * len(IUPAC)
-    with open_for_parsing(f) as stream:
-        for record in SeqIO.parse(stream, "fasta"):
-            record.seq = record.seq.upper()
-            seqs.append(record)
-            fg_gc_list.append(GC(record.seq))
-            fg_lengths.append(len(record.seq))
-            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(record.seq))]
-    return seqs, fg_gc_list, fg_lengths, dinuc
-
-
 def power_div(fg_dist, bg_dist, lambda_="pearson"):
     """
     Compute the power divergence between two distributions.
@@ -101,8 +111,6 @@ def make_gc_plot(fg_gc, bg_gc, plot_filename):
     from numpy import histogram
     import matplotlib
     matplotlib.use('Agg')
-    import seaborn as sns
-    import matplotlib.pyplot as plt
     fg_hist, _ = histogram(fg_gc, bins=101, range=(0.0, 100.))
     bg_hist, _ = histogram(bg_gc, bins=101, range=(0.0, 100.))
     plot_hist = False
@@ -113,7 +121,9 @@ def make_gc_plot(fg_gc, bg_gc, plot_filename):
         plot_hist = True
         plot_kde = False
         ylab = "frequency"
+    import matplotlib.pyplot as plt
     plt.figure()
+    import seaborn as sns
     plot = sns.distplot(fg_gc, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
                         label='input')
