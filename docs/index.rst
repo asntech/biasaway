@@ -3,7 +3,7 @@ BiasAway Documentation
 ======================
 
 Welcome to BiasAway - an open-source command-line tool and web-server that
-provide six approaches to generate nucleotide composition-matched DNA
+provide four approaches to generate nucleotide composition-matched DNA
 sequences.
 
 

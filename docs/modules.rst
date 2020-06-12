@@ -5,60 +5,19 @@ The BiasAway software tool is introduced to generate nucleotide
 composition-matched DNA sequences. It is available as open source code from
 bitbucket.
 
-The tool provides users with six approaches to generate synthetic or genomic
+The tool provides users with four approaches to generate synthetic or genomic
 background sequences matching mono- and k-mer composition of user-provided
 foreground sequences:
 
 .. note:: BiasAway also comes with a Web App available at http://biasaway.uio.no.
 
 
-Mononucleotide shuffling
-=========================
-
-Each user-provided sequence will be shuffled to keep its mononucleotide
-composition.
-
-**Usage:**
-
-.. code-block:: bash
-
-    biasaway m [options]
-
-.. note:: Please scroll down to see a detailed summary of available **options**.
-
-**Help:**
-
-.. code-block:: bash
-
-    biasaway m --help
-
-**Example:**
-
-.. code-block:: bash
-
-    biasaway m -f path/to/FASTA/file/my_fasta_file.fa
-
-It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
-
-.. code-block:: bash
-
-    biasaway m -f path/to/FASTA/file/my_fasta_file.fa > path/to/output/FASTA/file/my_fasta_output.fa
-
-**Summary of options**
-
-.. csv-table::
-   :header: "Option", "Description"
-   :widths: 10, 80
-
-     "-h, --help","To show the help message and exit"
-     "-f, --foreground","Foreground file in fasta format."
-     "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
-     "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"
-
 K-mer shuffling
 ==================================
 
 Each user-provided sequence will be shuffled to keep its k-mer composition.
+This module can be used for any k, for instance use -k 1 for conserving the
+mononucleotide composition of the input sequences.
 
 **Usage:**
 
@@ -81,8 +40,8 @@ Each user-provided sequence will be shuffled to keep its k-mer composition.
     biasaway k -f path/to/FASTA/file/my_fasta_file.fa
 
 It will output the generated sequences on stdout, keeping the dinucleotide
-composition of the input sequence (k-mer with k=2 is the default). If you wish
-to save the sequences in a specific file, you can type:
+composition of the input sequence by default (k-mer with k=2 is the default).
+If you wish to save the sequences in a specific file, you can type:
 
 .. code-block:: bash
 
@@ -99,54 +58,6 @@ to save the sequences in a specific file, you can type:
      "-k, --kmer","K-mer to be used for shuffling (``default: 2`` for dinucleotide shuffling)"
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
      "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"
-
-Mononucleotide shuffling within a sliding window
-==================================================
-
-For each user-provided sequence, a window will slide along to shuffle the
-nucleotides within the window, keeping the local mononucleotide composition. As
-such, the generated sequences will preserve the local mononucleotide
-composition of the input sequences along them.
-
-**Usage:**
-
-.. code-block:: bash
-
-    biasaway f [options]
-
-.. note:: Please scroll down to see a detailed summary of available **options**.
-
-**Help:**
-
-.. code-block:: bash
-
-    biasaway f --help
-
-**Example:**
-
-.. code-block:: bash
-
-    biasaway f -f path/to/FASTA/file/my_fasta_file.fa
-
-It will output the generated sequences on stdout. If you wish to save the sequences in a specific file, you can type:
-
-.. code-block:: bash
-
-    biasaway f -f path/to/FASTA/file/my_fasta_file.fa > path/to/output/FASTA/file/my_fasta_output.fa
-
-**Summary of options**
-
-.. csv-table::
-   :header: "Option", "Description"
-   :widths: 10, 80
-
-     "-h, --help","To show the help message and exit"
-     "-f, --foreground","Foreground file in fasta format."
-     "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
-     "-w, --winlen", "Window length (``default: 100``)"
-     "-s, --step",  "Sliding step (``default: 1``)"
-     "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"
-
 
 K-mer shuffling within a sliding window
 ================================================
