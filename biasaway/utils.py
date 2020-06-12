@@ -58,6 +58,9 @@ def dinuc_count(seq):
 
 
 def get_seqs(f):
+    """
+    Retrieve sequences from the input file in fasta format (can be gzipped).
+    """
     seqs = []
     fg_gc_list = []
     fg_lengths = []
@@ -72,91 +75,6 @@ def get_seqs(f):
     return seqs, fg_gc_list, fg_lengths, dinuc
 
 
-def init_compo(length):
-    dico = []
-    for i in range(1, length):
-        dico.append({})
-        j = i - 1
-        for letters in IUPAC_DINUC:
-            dico[j][letters] = 0.0
-    return dico
-
-
-def length(record):
-    return len(record.seq)
-
-
-def all_pos_dinuc(compo, max_length):
-    distrib = {}
-    composition = {}
-    for key in compo[0].keys():
-        cpt = 0.0
-        for i in range(1, max_length):
-            cpt += compo[i - 1][key]
-        composition[key] = cpt
-    for k in composition.keys():
-        cpt = len(IUPAC)  # WARNING: WE CONSIDER THE IUPAC ALPHABET
-        first = k[0]
-        for key in composition.keys():
-            if key[0] == first:
-                cpt += composition[key]
-        distrib[k] = (composition[k] + 1.0) / cpt
-    return distrib
-
-
-def pos_by_pos_dinuc(compo, seq_length):
-    distrib = init_compo(seq_length)
-    for j in range(1, seq_length):
-        for k in compo[j - 1].keys():
-            cpt = len(IUPAC)
-            first = k[0]
-            for key in compo[j - 1].keys():
-                if key[0] == first:
-                    cpt += compo[j - 1][key]
-            distrib[j - 1][k] = (compo[j - 1][k] + 1.0) / cpt
-    return distrib
-
-
-def compute_dinuc_distrib(seqs, over_all_pos=False):
-    max_length = max(map(length, seqs))
-    compo = init_compo(max_length)
-    for i in range(0, len(seqs)):
-        seq_length = len(seqs[i].seq)
-        for j in range(1, seq_length):
-            compo[j - 1]["%s" % (seqs[i].seq[(j - 1):(j + 1)])] += 1.0
-
-    if over_all_pos:  # Dinucleotide distrib over all positions
-        return all_pos_dinuc(compo, max_length)
-    else:  # Dinucleotide distrib position by position
-        return pos_by_pos_dinuc(compo, seq_length)
-
-
-def print_dinuc_distrib(dinuc, output):
-    import sys
-    stream = sys.stdout
-    if output:
-        stream = open(output, "w")
-    for j in range(0, len(dinuc)):
-        for dinuc_letters in IUPAC_DINUC[:len(IUPAC_DINUC)-1]:
-            stream.write("%f, " % dinuc[j][dinuc_letters])
-        stream.write("%f\n" % dinuc[j][IUPAC_DINUC[len(IUPAC_DINUC)]])
-    stream.close()
-
-
-def compute_nt_distrib(seqs):
-    cpt = len(IUPAC)
-    distrib = {}
-    for l in IUPAC:
-        distrib[l] = 1.0
-    for seq in seqs:
-        for letter in seq:
-            distrib[letter] += 1.0
-            cpt += 1.0
-    for letter in IUPAC:
-        distrib[letter] /= cpt
-    return distrib
-
-
 def power_div(fg_dist, bg_dist, lambda_="pearson"):
     """
     Compute the power divergence between two distributions.
@@ -169,6 +87,9 @@ def power_div(fg_dist, bg_dist, lambda_="pearson"):
 
 
 def single_value(the_array):
+    """
+    Assert if the array contains a single value.
+    """
     import numpy as np
     return len(np.unique(the_array)) == 1
 
@@ -265,6 +186,9 @@ def make_len_plot(fg_len, bg_len, plot_filename):
 
 
 def make_dinuc_dico(dinuc_counts):
+    """
+    Create a dictionary with all dinucleotide frequencies.
+    """
     dico = {}
     for indx, nuc in enumerate(IUPAC):
         min_indx = indx * len(IUPAC)
@@ -325,6 +249,10 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
 
 
 def make_dinuc_acgt_only_dico(dinuc_counts):
+    """
+    Plot the dinucleotide composition of input and background sequences.
+    Only the frequencies for ACGT are considered here.
+    """
     acgt = "ACGT"
     dico = {}
     for nuc in acgt:
