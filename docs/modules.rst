@@ -108,7 +108,7 @@ can type:
      "-k, --kmer","K-mer to be used for shuffling (``default: 2`` for dinucleotide shuffling)"
      "-n, --nfold","How many background sequences per each foreground sequence will be generated (``default: 1``)"
      "-w, --winlen", "Window length (``default: 100``)"
-     "-s, --step",  "Sliding step (``default: 1``)"
+     "-s, --step",  "Sliding step (``default: 10``)"
      "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"
 
 Genomic mononucleotide distribution matched
@@ -213,6 +213,6 @@ It will output the generated sequences on stdout. If you wish to save the sequen
      "-b, --background", "Background file in fasta format"
      "-l, --length", "Try to match the length as closely as possible (``not set by default``)"
      "-w, --winlen", "Window length (``default: 100``)"
-     "-s, --step", "Sliding step (``default: 1``)"
+     "-s, --step", "Sliding step (``default: 10``)"
      "-d, --deviation", "Deviation from the mean (``default: 2.6 for a threshold of mean + 2.6 * stdev``)"
      "-e, --seed","Seed number to initialize the random number generator for reproducibility (``default: integer from the current time``)"

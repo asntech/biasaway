@@ -12,6 +12,13 @@ import sys
 import random
 from Bio import SeqIO
 from biasaway.utils import GC, dinuc_count, open_for_parsing
+from Bio.Data import IUPACData
+import itertools
+
+
+IUPAC = list(IUPACData.ambiguous_dna_letters)
+IUPAC_DINUC = [''.join(letters) for letters in itertools.product(IUPAC,
+                                                                 repeat=2)]
 
 
 def fg_GC_bins(fg_file):
@@ -28,7 +35,7 @@ def fg_GC_bins(fg_file):
         gc_bins = [0] * 101
         gc_list = []
         lengths = []
-        dinuc = [0] * 16
+        dinuc = [0] * len(IUPAC) * len(IUPAC)
         for record in SeqIO.parse(stream, "fasta"):
             gc = GC(record.seq)
             gc_list.append(gc)
@@ -56,7 +63,7 @@ def fg_len_GC_bins(fg_file):
             gc_bins.append({})
         gc_list = []
         lengths = []
-        dinuc = [0] * 16
+        dinuc = [0] * len(IUPAC) * len(IUPAC)
         for record in SeqIO.parse(stream, "fasta"):
             gc = GC(record.seq)
             gc_list.append(gc)
@@ -81,7 +88,7 @@ def print_in_bg_dir(gc_bins, bg_dir, with_len=False):
 
     for percent in range(0, 101):
         filename = "{0}/bg_bin_{1}.txt".format(bg_dir, percent)
-        with open_for_parsing(filename, 'w') as stream:
+        with open(filename, 'w') as stream:
             if with_len:
                 for length in gc_bins[percent]:
                     for rec in gc_bins[percent][length]:
@@ -105,7 +112,7 @@ def bg_GC_bins(bg_file, bg_dir):
         gc_bins = []
         gc_list = []
         lengths = []
-        dinuc = [0] * 16
+        dinuc = [0] * len(IUPAC) * len(IUPAC)
         for _ in range(0, 101):
             gc_bins.append([])
         for record in SeqIO.parse(stream, "fasta"):
@@ -132,7 +139,7 @@ def bg_len_GC_bins(bg_file, bg_dir):
         gc_bins = []
         gc_list = []
         lengths = []
-        dinuc = [0] * 16
+        dinuc = [0] * len(IUPAC) * len(IUPAC)
         for _ in range(0, 101):
             gc_bins.append({})
         for record in SeqIO.parse(stream, "fasta"):
@@ -171,7 +178,7 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, nfold, random_seed):
     random.seed(random_seed)
     lengths = []
     gc_list = []
-    dinuc = [0] * 16
+    dinuc = [0] * len(IUPAC) * len(IUPAC)
     for percent in range(0, 101):
         if fg_bins[percent]:
             try:
@@ -291,7 +298,7 @@ def generate_len_sequences(fg, bg, bg_dir, nfold):
     sys.setrecursionlimit(10000)
     lengths = []
     gc_list = []
-    dinuc = [0] * 16
+    dinuc = [0] * len(IUPAC) * len(IUPAC)
     for percent in range(0, 101):
         if fg[percent]:
             nb = sum(fg[percent].values()) * nfold

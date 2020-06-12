@@ -15,6 +15,13 @@ from biasaway.utils import GC, dinuc_count, open_for_parsing
 from Bio import SeqIO
 from biasaway.GC_compo_matching import print_in_bg_dir, get_bins_from_bg_dir
 from biasaway.GC_compo_matching import get_bins_len_from_bg_dir
+from Bio.Data import IUPACData
+import itertools
+
+
+IUPAC = list(IUPACData.ambiguous_dna_letters)
+IUPAC_DINUC = [''.join(letters) for letters in itertools.product(IUPAC,
+                                                                 repeat=2)]
 
 
 def GC_info(seq, win_len, step):
@@ -92,7 +99,7 @@ def fg_GC_bins(fg, winlen, step):
         tmp_gc_bins = []
         gc_list = []
         lengths = []
-        dinuc = [0] * 16
+        dinuc = [0] * len(IUPAC) * len(IUPAC)
         for _ in range(0, 101):
             tmp_gc_bins.append([])
         for record in SeqIO.parse(stream, "fasta"):
@@ -155,7 +162,7 @@ def fg_len_GC_bins(fg, winlen, step):
         tmp_gc_bins = []
         gc_list = []
         lengths = []
-        dinuc = [0] * 16
+        dinuc = [0] * len(IUPAC) * len(IUPAC)
         l_dic = []
         for _ in range(0, 101):
             tmp_gc_bins.append([])
@@ -192,7 +199,7 @@ def bg_GC_bins(bg, bg_dir):
         gc_bins = []
         gc_list = []
         lengths = []
-        dinuc = [0] * 16
+        dinuc = [0] * len(IUPAC) * len(IUPAC)
         for _ in range(0, 101):
             gc_bins.append([])
         for record in SeqIO.parse(stream, "fasta"):
@@ -222,7 +229,7 @@ def bg_len_GC_bins(bg, bg_dir):
         gc_bins = []
         gc_list = []
         lengths = []
-        dinuc = [0] * 16
+        dinuc = [0] * len(IUPAC) * len(IUPAC)
         for _ in range(0, 101):
             gc_bins.append({})
         for record in SeqIO.parse(stream, "fasta"):
@@ -288,7 +295,7 @@ def generate_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
     random.seed(random_seed)
     gc_list = []
     lengths = []
-    dinuc = [0] * 16
+    dinuc = [0] * len(IUPAC) * len(IUPAC)
     for percent in range(0, 101):
         if fg_bins[percent][0]:
             nb = fg_bins[percent][0][0] * nfold
@@ -421,7 +428,7 @@ def generate_len_sequences(fg_bins, bg_bins, bg_dir, deviation, winlen, step,
     sys.setrecursionlimit(10000)
     gc_list = []
     lengths = []
-    dinuc = [0] * 16
+    dinuc = [0] * len(IUPAC) * len(IUPAC)
     for percent in range(0, 101):
         if fg_bins[percent][0]:
             nb = sum(fg_bins[percent][0][0].values()) * nfold
