@@ -347,7 +347,7 @@ def arg_parsing():
     msg = 'generator/chooser. For more information, run the program '
     msg += 'again and type -h for help.'
     msg += '\n\n\n' + descr
-    subparsers = parser.add_subparsers(dest='command',
+    subparsers = parser.add_subparsers(dest='subcommand',
                                        title="Subcommands",
                                        description="Valid subcommands")
     parser.add_argument('-v', '--version', dest='version', action='version',
