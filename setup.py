@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
 """
-This is a setup script for BiasAway: a tool for DNA sequence background generation
+This is a setup script for BiasAway: a tool for DNA sequence background
+generation
 
-This code is free software; you can redistribute it and/or modify it under the terms of the
-BSD License (see the file LICENSE included with the distribution).
+This code is free software; you can redistribute it and/or modify it under the
+terms of the BSD License (see the file LICENSE included with the distribution).
 
-@author: Aziz Khan
-@email: aziz.khan@ncmm.uio.no
+@author: Anthony Mathelier
+@email: anthony.mathelier@ncmm.uio.no
 """
 import os
 from distutils.core import setup
@@ -21,10 +22,10 @@ CLASSIFIERS = [
     'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
     'Operating System :: OS Independent',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
     'Topic :: Scientific/Engineering :: Bio-Informatics',
     'Topic :: Software Development :: Libraries :: Python Modules',
 ]
