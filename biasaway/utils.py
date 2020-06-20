@@ -154,29 +154,36 @@ def make_len_plot(fg_len, bg_len, plot_filename):
     matching background datasets.
     """
     from numpy import histogram
+    from numpy import hstack
     import matplotlib
     matplotlib.use('Agg')
     import seaborn as sns
     import matplotlib.pyplot as plt
-    fg_hist, _ = histogram(fg_len, bins=101, range=(0.0, 100.))
-    bg_hist, _ = histogram(bg_len, bins=101, range=(0.0, 100.))
+    min_len = min(min(fg_len), min(bg_len))
+    max_len = max(max(fg_len), max(bg_len))
+    fg_hist, _ = histogram(fg_len, bins=max_len - min_len + 1,
+                           range=(min_len, max_len))
+    bg_hist, _ = histogram(bg_len, bins=max_len - min_len + 1,
+                           range=(min_len, max_len))
     plot_hist = False
-    plot_kde = True
     ylab = "density"
     # One cannot compute kde if there is a single value in the array
     if single_value(fg_len) or single_value(bg_len):
         plot_hist = True
-        plot_kde = False
         ylab = "frequency"
     plt.figure()
-    plot = sns.distplot(fg_len, hist=plot_hist, kde=plot_kde,
-                        kde_kws={'shade': True, 'linewidth': 3},
-                        label='input')
-    plot = sns.distplot(bg_len, hist=plot_hist, kde=plot_kde,
-                        kde_kws={'shade': True, 'linewidth': 3},
-                        label='generated')
+    if plot_hist:
+        bins = histogram(hstack((fg_len, bg_len)), bins=100)[1]
+        plt.hist(fg_len, bins=bins, align='right', alpha=.5, label='input')
+        plt.hist(bg_len, bins=bins, align='right', alpha=.5, label='generated')
+    else:
+        sns.distplot(fg_len, kde=True, kde_kws={'shade': True, 'linewidth': 3},
+                     label='input')
+        sns.distplot(bg_len, kde=True, kde_kws={'shade': True, 'linewidth': 3},
+                     label='generated')
+    plt.xlabel('length')
+    plt.ylabel(ylab)
     plt.legend()
-    plot.set(xlabel="length", ylabel=ylab)
     from sklearn.metrics import mean_absolute_error as mae
     mean_abs_error = mae(fg_hist, bg_hist)
     chi_stat, chi_pval = power_div(fg_hist, bg_hist)
@@ -185,7 +192,6 @@ def make_len_plot(fg_len, bg_len, plot_filename):
     the_text += "chisquare: %.2f, p-val: %.2f; " % (chi_stat, chi_pval)
     the_text += "cressie-read: %.2f, p-val: %.2f" % (gof_stat, gof_pval)
     plt.figtext(.5, .97, the_text, ha='center', va='center')
-    plot.get_figure().savefig("{0}_length_plot.png".format(plot_filename))
     basename = "{0}_length_plot".format(plot_filename)
     plt.savefig("{0}.png".format(basename))
     with open("{0}_stats.txt".format(basename), 'w') as stream:

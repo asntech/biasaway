@@ -54,8 +54,8 @@ BiasAway is also available on `PyPi <https://pypi.org/project/biasaway/>`_ for i
 
 BiasAway is developed in Python and Python packages ``biopython`` and
 ``numpy``. Both ``pip`` and ``conda`` will install these dependencies and you
-are ready to use BiasAway. It is tested with Python versions ``2.7``, ``3.4``,
-``3.5``, and ``3.6``. 
+are ready to use BiasAway. It is tested with Python versions ``3.4``, ``3.5``,
+``3.6``, and ``3.7``.
 
 Install BiasAway from source
 =============================
