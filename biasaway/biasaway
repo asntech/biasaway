@@ -211,8 +211,8 @@ def kmer_window_shuffling_arg_parsing(subparsers):
                           dest="winlen", action="store", default=100,
                           help="Window length (default: 100)")
     parser_w.add_argument("-s", "--step", required=False, type=int,
-                          dest="step", action="store", default=10,
-                          help="Sliding step (default: 10)")
+                          dest="step", action="store", default=50,
+                          help="Sliding step (default: 50)")
     help_str = "How many background sequences per each foreground sequence "
     help_str += "will be generated (default: 1)"
     parser_w.add_argument('-n', '--nfold', required=False, type=int,
@@ -283,8 +283,8 @@ def gc_compo_window_arg_parsing(subparsers):
                           dest="winlen", action="store", default=100,
                           help="Window length (default: 100)")
     parser_c.add_argument("-s", "--step", required=False, type=int,
-                          dest="step", action="store", default=10,
-                          help="Sliding step (default: 10)")
+                          dest="step", action="store", default=50,
+                          help="Sliding step (default: 50)")
     help_str = "Deviation from the mean (default: 2.6 for a "
     help_str += "threshold of mean + 2.6 * stdev)"
     parser_c.add_argument("-d", "--deviation", required=False, type=float,
