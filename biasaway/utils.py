@@ -310,13 +310,13 @@ def make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, plot_filename):
     fig, (ax1, ax2) = plt.subplots(ncols=2)
     fig.subplots_adjust(wspace=0.05)
     sns.heatmap(fg_df, cmap="icefire", ax=ax1, cbar=False,
-                vmin=mini, vmax=maxi)  # annot=True, fmt='.2f'
+                vmin=mini, vmax=maxi, annot=True, fmt='.2f')
     ax1.set(xlabel="first nucleotide", ylabel="second nucleotide",
             title="input")
     fig.colorbar(ax1.collections[0], ax=ax1, location="left",
                  use_gridspec=False, pad=0.2)
-    sns.heatmap(bg_df, cmap="icefire", ax=ax2, cbar=False,
-                vmin=mini, vmax=maxi)  # annot=True, fmt='.2f"
+    sns.heatmap(bg_df, cmap="icefire", ax=ax2, cbar=False, vmin=mini,
+                vmax=maxi, annot=True, fmt='.2f')
     ax2.set(xlabel="first nucleotide", title="generated")
     fig.colorbar(ax2.collections[0], ax=ax2, location="right",
                  use_gridspec=False, pad=0.2)
