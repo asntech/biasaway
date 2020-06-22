@@ -11,7 +11,7 @@ terms of the BSD License (see the file LICENSE included with the distribution).
 @email: anthony.mathelier@ncmm.uio.no
 """
 import os
-from distutils.core import setup
+from setuptools import setup
 from biasaway import __version__ as VERSION
 
 
@@ -56,11 +56,9 @@ setup(
     author_email="anthony.mathelier@ncmm.uio.no",
     url="https://bitbucket.org/CBGR/biasaway/src/master/",
     long_description=readme("README.rst"),
-    long_description_content_type='text/markdown',
+    long_description_content_type='text/x-rst',
     package_dir={'biasaway': 'biasaway'},
-
     packages=['biasaway'],
-
     scripts=['biasaway/biasaway'],
     include_package_data=True,
     install_requires=install_requires,

@@ -35,7 +35,7 @@ Installation
 ============
 
 Quick installation using `conda`
--------------------------------
+--------------------------------
 BiasAway is available on `Bioconda <https://anaconda.org/bioconda/biasaway>`_ for installation via ``conda``.
 
 .. code-block:: bash
@@ -52,15 +52,11 @@ BiasAway is also available on `PyPi <https://pypi.org/project/biasaway/>`_ for i
 	pip install biasaway
 	
 
-BiasAway is developed in Python and Python packages ``biopython`` and
-``numpy``. Both ``pip`` and ``conda`` will install these dependencies and you
-are ready to use BiasAway. It is tested with Python versions ``3.4``, ``3.5``,
-``3.6``, and ``3.7``.
+BiasAway is developed in Python and Python packages ``biopython`` and ``numpy``. Both ``pip`` and ``conda`` will install these dependencies and you are ready to use BiasAway. It is tested with Python versions ``3.4``, ``3.5``, ``3.6``, and ``3.7``.
 
 Install BiasAway from source
-=============================
-You can install a development version by using ``git`` from `bitbucket
-<https://bitbucket.org/CBGR/biasaway/`_.
+============================
+You can install a development version by using ``git`` from `bitbucket <https://bitbucket.org/CBGR/biasaway/>`_.
 
 
 Install development version from `Bitbucket`
@@ -75,7 +71,7 @@ If you have `git` installed, use this:
     python setup.py sdist install
 
 How to use BiasAway
-====================
+===================
 Once you have installed biasaway, you can type:
 
 .. code-block:: bash
@@ -120,6 +116,5 @@ BiasAway web-server is freely available at: http://biasaway.uio.no
 
 
 Support
-========
-If you have questions, or found any bug in the program, please write to us at
-``azizk[at]uio.no`` or ``anthony.mathelier[at]ncmm.uio.no``
+=======
+If you have questions, or found any bug in the program, please write to us at ``azizk[at]uio.no`` or ``anthony.mathelier[at]ncmm.uio.no``
