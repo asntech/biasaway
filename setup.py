@@ -34,7 +34,10 @@ install_requires = [
     'biopython',
     'numpy==1.16.5',
     'matplotlib==3.2.0',
-    'seaborn'
+    'seaborn',
+    'scipy',
+    'sklearn',
+    'ushuffle'
 ]
 
 #def readme():
