@@ -121,4 +121,5 @@ BiasAway web-server is freely available at: http://biasaway.uio.no
 
 Support
 ========
-If you have questions, or found any bug in the program, please write to us at ``azizk[at]uio.no`` or ``anthony.mathelier[at]ncmm.uio.no``
+If you have questions, or found any bug in the program, please write to us at
+``azizk[at]uio.no`` or ``anthony.mathelier[at]ncmm.uio.no``

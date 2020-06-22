@@ -12,7 +12,6 @@ terms of the BSD License (see the file LICENSE included with the distribution).
 """
 import os
 from distutils.core import setup
-from setuptools import find_packages
 from biasaway import __version__ as VERSION
 
 
@@ -32,22 +31,24 @@ CLASSIFIERS = [
 
 install_requires = [
     'biopython',
-    'numpy==1.16.5',
-    'matplotlib==3.2.0',
-    'seaborn'
+    'numpy',
+    'matplotlib',
+    'seaborn',
+    'ushuffle',
+    'sklearn',
+    'scipy'
 ]
 
-#def readme():
-#    with open('README.rst') as f:
-#        return f.read()
 
 def readme(fname):
     with open(os.path.join(os.path.dirname(__file__), fname)) as f:
         return f.read()
 
+
+descr = "a tool to generate nucleotide composition-matched DNA sequences"
 setup(
     name="biasaway",
-    description="a tool to generate nucleotide composition-matched DNA sequences",
+    description=descr,
     version=VERSION,
     author="Anthony Mathelier and Aziz Khan",
     license='GPL',
@@ -58,13 +59,10 @@ setup(
     long_description_content_type='text/markdown',
     package_dir={'biasaway': 'biasaway'},
 
-    packages=['biasaway',
-        #'biasaway.example_data'
-        ],
+    packages=['biasaway'],
 
-    scripts=['biasaway/biasaway',
-                   ],
+    scripts=['biasaway/biasaway'],
     include_package_data=True,
-    install_requires = install_requires,
+    install_requires=install_requires,
     classifiers=CLASSIFIERS,
 )
