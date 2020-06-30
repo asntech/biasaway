@@ -28,7 +28,7 @@ Below are screenshots for individual modules.
 K-mer shuffling
 ===============
 
-This module should be run when the user aims at preserving the global k-mer nucleotide frequencies of input sequences. The model permutes the nucleotides of the target sequences by keeping any k-mer composition of the original sequence selected by the user. For instance, the user can select k=2 to preserve dinucleotide composition, which would conserve CpG distributions.
+This module should be run when the user aims at preserving the global k-mer nucleotide frequencies of input sequences.
 
 .. figure:: img/module_k.png
    :alt: BiasAway - K-mer shuffling generator
@@ -36,7 +36,7 @@ This module should be run when the user aims at preserving the global k-mer nucl
 K-mer shuffling within a sliding window
 =======================================
 
-This module should be run when the user aims at preserving the local k-mer nucleotide frequencies of input sequences. This approach is based on a sliding window to consider sub-regions of distinct nucleotide composition within the input sequences, which could be derived from evolutionary changes such as insertion of repetitive sequences, local rearrangements, or biochemical missteps (see module 4 as well). The model generates a background sequence by shuffling the nucleotides within a sliding window W (default 100bp) with a step S (default 50bp) to conserve the local k-mer nucleotide composition for each sequence in the target sequences.
+This module should be run when the user aims at preserving the local k-mer nucleotide frequencies of input sequences.
 
 .. figure:: img/module_w.png
    :alt: BiasAway - K-mer shuffling within a sliding window
@@ -44,7 +44,7 @@ This module should be run when the user aims at preserving the local k-mer nucle
 Genomic mononucleotide distribution matched
 ===========================================
 
-This module should be run when the user aims at selecting genuine genomic background sequences from a pool of provided genomic sequences to match the distribution of mononucleotide for each target sequence. The model requires both foreground and  a set of genomic background sequences to be drawn as input. We also provide several background options for multiple species to choose from. First, GC composition of each target sequence is computed and sequences are assigned to bins in steps of 1% GC and the same is applied to the background pool of sequences. Then for each target sequence in a given GC bin, it randomly selects a background sequence from the equivalent background 1% GC bin.
+This module should be run when the user aims at selecting genuine genomic background sequences from a pool of provided genomic sequences to match the distribution of mononucleotide for each target sequence.
 
 .. figure:: img/module_g.png
    :alt: BiasAway - %GC distribution-based background
@@ -52,7 +52,7 @@ This module should be run when the user aims at selecting genuine genomic backgr
 Genomic mononucleotide distribution within a sliding window matched
 ===================================================================
 
-This module should be run when the user aims at selecting genuine genomic background sequences from a pool of provided genomic sequences to match the local distribution of mononucleotide for each target sequence. The method requires both foreground and  a set of genomic background sequences to be drawn as input. This module first computes the distribution %GC composition within a sliding window W (default 100bp) and with a step S (default 50bp) for each sequence in the input set of target sequences. Then it matches each target sequence to a background sequence with a similar %GC distribution (mean +/- sd stdev over the sliding windows, default sd = 2.6.
+This module should be run when the user aims at selecting genuine genomic background sequences from a pool of provided genomic sequences to match the local distribution of mononucleotide for each target sequence.
 
 .. figure:: img/module_c.png
    :alt: BiasAway - %GC distribution and %GC composition within a sliding window
@@ -61,7 +61,7 @@ This module should be run when the user aims at selecting genuine genomic backgr
 Example result page and QC plots
 =================================
 
-BiasAway provides quality control (QC) plots and metrics to assess the similarity of the mono- and di-nucleotide, and length distributions for the foreground and background sequences. Specifically, four plots are provided to visualize how similar the foreground and background sequences are when considering.
+BiasAway provides quality control (QC) plots and metrics to assess the similarity of the mono- and di-nucleotide, and length distributions for the foreground and background sequences. Specifically, four plots are provided to visualize how similar the foreground and background sequences are when considering 
 (2) their distributions of %GC content using density plots, 
 (2) their dinucleotide contents considering all IUPAC nucleotides using a heatmap, 
 (3) their dinucleotide contents considering adenine, cytosine, guanine, and thymine nucleotides using a heatmap, and 
