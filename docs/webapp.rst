@@ -10,8 +10,9 @@ precomputed genomic partitions of 100, 250, 500, 750, and 1000 bp bins for the
 genome of nine species (*Arabidopsis thaliana*; *Caenorhabditis elegans*;
 *Danio rerio*; *Drosophila melanogaster*; *Homo sapiens*; *Mus musculus*;
 *Rattus norvegicus*; *Saccharomyces cerevisiae*; and *Schizosaccharomyces
-pombe*). These background sequences are provided through Zenodo at
-XXXXXXXXXXXXX. These background sequences were generated using the script at
+pombe*). These background sequences are provided through Zenodo at `10.5281/zenodo.3923866
+<https://doi.org/10.5281/zenodo.3923866>`_.
+These background sequences were generated using the script at
 https://bitbucket.org/CBGR/biasaway_background_construction, which can be used
 by users to generate their own background sequences. The result page provides
 information about mononucleotide, dinucleotide, and length distributions for
