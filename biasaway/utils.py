@@ -8,6 +8,7 @@ from os.path import splitext
 import gzip
 import itertools
 
+from sklearn.metrics import mean_absolute_error as mae
 
 IUPAC = list(IUPACData.ambiguous_dna_letters)
 IUPAC_DINUC = [''.join(letters) for letters in itertools.product(IUPAC,
@@ -132,7 +133,6 @@ def make_gc_plot(fg_gc, bg_gc, plot_filename):
                         label='generated')
     plt.legend()
     plot.set(xlabel="%GC", ylabel=ylab)
-    from sklearn.metrics import mean_absolute_error as mae
     mean_abs_error = mae(fg_hist, bg_hist)
     chi_stat, chi_pval = power_div(fg_hist, bg_hist)
     gof_stat, gof_pval = power_div(fg_hist, bg_hist, "cressie-read")
@@ -184,7 +184,6 @@ def make_len_plot(fg_len, bg_len, plot_filename):
     plt.xlabel('length')
     plt.ylabel(ylab)
     plt.legend()
-    from sklearn.metrics import mean_absolute_error as mae
     mean_abs_error = mae(fg_hist, bg_hist)
     chi_stat, chi_pval = power_div(fg_hist, bg_hist)
     gof_stat, gof_pval = power_div(fg_hist, bg_hist, "cressie-read")
@@ -248,7 +247,6 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
-    from sklearn.metrics import mean_absolute_error as mae
     mean_abs_error = mae(fg_dinuc, bg_dinuc)
     chi_stat, chi_pval = power_div(fg_dinuc, bg_dinuc)
     gof_stat, gof_pval = power_div(fg_dinuc, bg_dinuc, "cressie-read")
@@ -324,7 +322,6 @@ def make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, plot_filename):
     ax2.tick_params(labelrotation=0)
     fg_dinuc = [item for sublist in fg_dico.values() for item in sublist]
     bg_dinuc = [item for sublist in bg_dico.values() for item in sublist]
-    from sklearn.metrics import mean_absolute_error as mae
     mean_abs_error = mae(fg_dinuc, bg_dinuc)
     chi_stat, chi_pval = power_div(fg_dinuc, bg_dinuc)
     gof_stat, gof_pval = power_div(fg_dinuc, bg_dinuc, "cressie-read")
