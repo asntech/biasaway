@@ -97,6 +97,8 @@ Please note that some genome fasta files are separated by chromosomes in their
 original repositories. In that case, please make sure to concatenate all
 chromosome fasta files in one single genome fasta file.
 
+We also provide a collection of precomputed background repositories for the nine organisms mentioned above using k-mers of size 100, 250, 500, 750 and 1000 base pairs. They can be found as individual compressed files in our `Zenodo repository <https://zenodo.org/record/3923866>`_
+
 Availability
 ============
 The BiasAway web-server is freely available at:
