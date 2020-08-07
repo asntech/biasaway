@@ -7,6 +7,7 @@ from Bio.Data import IUPACData
 from os.path import splitext
 import gzip
 import itertools
+import seaborn as sns
 
 from sklearn.metrics import mean_absolute_error as mae
 
@@ -124,7 +125,6 @@ def make_gc_plot(fg_gc, bg_gc, plot_filename):
         ylab = "frequency"
     import matplotlib.pyplot as plt
     plt.figure()
-    import seaborn as sns
     plot = sns.distplot(fg_gc, hist=plot_hist, kde=plot_kde,
                         kde_kws={'shade': True, 'linewidth': 3},
                         label='input')
@@ -157,7 +157,6 @@ def make_len_plot(fg_len, bg_len, plot_filename):
     from numpy import hstack
     import matplotlib
     matplotlib.use('Agg')
-    import seaborn as sns
     import matplotlib.pyplot as plt
     min_len = min(min(fg_len), min(bg_len))
     max_len = max(max(fg_len), max(bg_len))
@@ -220,7 +219,6 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
     import pandas as pd
     import matplotlib
     matplotlib.use('Agg')
-    import seaborn as sns
     import matplotlib.pyplot as plt
     fg_total = sum(fg_dinuc)
     fg_dinuc = [val / fg_total for val in fg_dinuc]
@@ -292,7 +290,6 @@ def make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, plot_filename):
     import pandas as pd
     import matplotlib
     matplotlib.use('Agg')
-    import seaborn as sns
     import matplotlib.pyplot as plt
     acgt = ['A', 'C', 'G', 'T']
     fg_total = sum(fg_dinuc)
