@@ -87,14 +87,31 @@ def dinuc_count(seq):
     return map(seq.count, IUPAC_DINUC)
 
 
+def above_threshold(the_list, threshold):
+    """
+    Checks if all values in the_list are strictly above the given threshold.
+    """
+    return(all(val > threshold for val in the_list))
+
+
 def power_div(fg_dist, bg_dist, lambda_="pearson"):
     """
     Compute the power divergence between two distributions.
+    Need to test for statistical power first. Given scipy documentation:
+        This test is invalid when the observed or expected frequencies in each
+        category are too small. A typical rule is that all of the observed and
+        expected frequencies should be at least 5.
     """
-    from scipy.stats import power_divergence
     # We add 1 to all values to avoid division by 0
     f_exp = [val + 1 for val in fg_dist]
     f_obs = [val + 1 for val in bg_dist]
+    print("f_exp:")
+    print(f_exp)
+    print("f_obs:")
+    print(f_obs)
+    if(not(above_threshold(f_exp, 4)) or not(above_threshold(f_obs, 4))):
+        return None, None
+    from scipy.stats import power_divergence
     return power_divergence(f_exp=f_exp, f_obs=f_obs, lambda_=lambda_)
 
 
@@ -104,6 +121,33 @@ def single_value(the_array):
     """
     import numpy as np
     return len(np.unique(the_array)) == 1
+
+
+def QC_info(fg_hist, bg_hist, out_filename):
+    """
+    Compute QC metrics and print info to out_filename.
+    Return the text to write in QC plots.
+    """
+    mean_abs_error = mae(fg_hist, bg_hist)
+    chi_stat, chi_pval = power_div(fg_hist, bg_hist)
+    gof_stat, gof_pval = power_div(fg_hist, bg_hist, "cressie-read")
+    with open(out_filename, 'w') as stream:
+        if not chi_stat or not gof_stat:
+            the_text = "QC tests cannot be "
+            the_text += "computed due to low frequencies present (<5)."
+            stream.write(the_text)
+        else:
+            the_text = "mean absolute error: %.2f; " % mean_abs_error
+            the_text += "chisquare: %.2f, p-val: %.2f; " % (chi_stat, chi_pval)
+            the_text += "cressie-read: "
+            the_text += "%.2f, p-val: %.2f" % (gof_stat, gof_pval)
+            stream.write("mean_absolute_error\t%f\n" % mean_abs_error)
+            stream.write("chi-square(statistic, pvalue)\t(%f, %f)\n" %
+                         (chi_stat, chi_pval))
+            cressie_text = "cressie-read goodness_of_fit(statistic, pvalue)"
+            cressie_text += "\t(%f, %f)\n" % (gof_stat, gof_pval)
+            stream.write(the_text)
+    return the_text
 
 
 def make_gc_plot(fg_gc, bg_gc, plot_filename):
@@ -133,18 +177,9 @@ def make_gc_plot(fg_gc, bg_gc, plot_filename):
                         label='generated')
     plt.legend()
     plot.set(xlabel="%GC", ylabel=ylab)
-    mean_abs_error = mae(fg_hist, bg_hist)
-    chi_stat, chi_pval = power_div(fg_hist, bg_hist)
-    gof_stat, gof_pval = power_div(fg_hist, bg_hist, "cressie-read")
-    the_text = "mean absolute error: %.2f; " % mean_abs_error
-    the_text += "chisquare: %.2f, p-val: %.2f; " % (chi_stat, chi_pval)
-    the_text += "cressie-read: %.2f, p-val: %.2f" % (gof_stat, gof_pval)
-    plt.figtext(.5, .97, the_text, ha='center', va='center')
-    with open("{0}_gc_plot_stats.txt".format(plot_filename), 'w') as stream:
-        stream.write("mean_absolute_error\t%f\n" % mean_abs_error)
-        stream.write("chi-square\t%f,%f\n" % (chi_stat, chi_pval))
-        stream.write("goodness_of_fit(cressie-read)\t%f,%f\n" % (gof_stat,
-                                                                 gof_pval))
+    the_text = QC_info(fg_hist, bg_hist,
+                       "{0}_gc_plot_stats.txt".format(plot_filename))
+    # plt.figtext(.5, .97, the_text, ha='center', va='center')
     plt.savefig("{0}_gc_plot.png".format(plot_filename))
 
 
@@ -183,20 +218,10 @@ def make_len_plot(fg_len, bg_len, plot_filename):
     plt.xlabel('length')
     plt.ylabel(ylab)
     plt.legend()
-    mean_abs_error = mae(fg_hist, bg_hist)
-    chi_stat, chi_pval = power_div(fg_hist, bg_hist)
-    gof_stat, gof_pval = power_div(fg_hist, bg_hist, "cressie-read")
-    the_text = "mean absolute error: %.2f; " % mean_abs_error
-    the_text += "chisquare: %.2f, p-val: %.2f; " % (chi_stat, chi_pval)
-    the_text += "cressie-read: %.2f, p-val: %.2f" % (gof_stat, gof_pval)
-    plt.figtext(.5, .97, the_text, ha='center', va='center')
     basename = "{0}_length_plot".format(plot_filename)
+    the_text = QC_info(fg_hist, bg_hist, "{0}_stats.txt".format(basename))
+    # plt.figtext(.5, .97, the_text, ha='center', va='center')
     plt.savefig("{0}.png".format(basename))
-    with open("{0}_stats.txt".format(basename), 'w') as stream:
-        stream.write("mean_absolute_error\t%f\n" % mean_abs_error)
-        stream.write("chi-square\t%f,%f\n" % (chi_stat, chi_pval))
-        stream.write("goodness_of_fit(cressie-read)\t%f,%f\n" % (gof_stat,
-                                                                 gof_pval))
 
 
 def make_dinuc_dico(dinuc_counts):
@@ -220,6 +245,8 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
+    the_text = QC_info(fg_dinuc, bg_dinuc,
+                       "{0}_dinuc_plot_stats.txt".format(plot_filename))
     fg_total = sum(fg_dinuc)
     fg_dinuc = [val / fg_total for val in fg_dinuc]
     dico = make_dinuc_dico(fg_dinuc)
@@ -245,19 +272,8 @@ def make_dinuc_plot(fg_dinuc, bg_dinuc, plot_filename):
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
-    mean_abs_error = mae(fg_dinuc, bg_dinuc)
-    chi_stat, chi_pval = power_div(fg_dinuc, bg_dinuc)
-    gof_stat, gof_pval = power_div(fg_dinuc, bg_dinuc, "cressie-read")
-    the_text = "mean absolute error: %.2f; " % mean_abs_error
-    the_text += "chisquare: %.2f, p-val: %.2f; " % (chi_stat, chi_pval)
-    the_text += "cressie-read: %.2f, p-val: %.2f" % (gof_stat, gof_pval)
-    plt.figtext(.5, .97, the_text, ha='center', va='center')
+    # plt.figtext(.5, .97, the_text, ha='center', va='center')
     plt.savefig("{0}_dinuc_plot.png".format(plot_filename))
-    with open("{0}_dinuc_plot_stats.txt".format(plot_filename), 'w') as stream:
-        stream.write("mean_absolute_error\t%f\n" % mean_abs_error)
-        stream.write("chi-square\t%f,%f\n" % (chi_stat, chi_pval))
-        stream.write("goodness_of_fit(cressie-read)\t%f,%f\n" % (gof_stat,
-                                                                 gof_pval))
 
 
 def make_dinuc_acgt_only_dico(dinuc_counts):
@@ -292,6 +308,13 @@ def make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, plot_filename):
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     acgt = ['A', 'C', 'G', 'T']
+    fg_dico = make_dinuc_acgt_only_dico(fg_dinuc)
+    fg_dinuc_count = [item for sublist in fg_dico.values() for item in sublist]
+    bg_dico = make_dinuc_acgt_only_dico(bg_dinuc)
+    bg_dinuc_count = [item for sublist in bg_dico.values() for item in sublist]
+    basename = "{0}_dinuc_acgt_only_plot".format(plot_filename)
+    the_text = QC_info(fg_dinuc_count, bg_dinuc_count,
+                       "{0}_stats.txt".format(basename))
     fg_total = sum(fg_dinuc)
     fg_dinuc = [val / fg_total for val in fg_dinuc]
     fg_dico = make_dinuc_acgt_only_dico(fg_dinuc)
@@ -317,19 +340,5 @@ def make_dinuc_acgt_only_plot(fg_dinuc, bg_dinuc, plot_filename):
                  use_gridspec=False, pad=0.2)
     ax2.yaxis.tick_right()
     ax2.tick_params(labelrotation=0)
-    fg_dinuc = [item for sublist in fg_dico.values() for item in sublist]
-    bg_dinuc = [item for sublist in bg_dico.values() for item in sublist]
-    mean_abs_error = mae(fg_dinuc, bg_dinuc)
-    chi_stat, chi_pval = power_div(fg_dinuc, bg_dinuc)
-    gof_stat, gof_pval = power_div(fg_dinuc, bg_dinuc, "cressie-read")
-    the_text = "mean absolute error: %.2f; " % mean_abs_error
-    the_text += "chisquare: %.2f, p-val: %.2f; " % (chi_stat, chi_pval)
-    the_text += "cressie-read: %.2f, p-val: %.2f" % (gof_stat, gof_pval)
-    plt.figtext(.5, .97, the_text, ha='center', va='center')
-    basename = "{0}_dinuc_acgt_only_plot".format(plot_filename)
+    # plt.figtext(.5, .97, the_text, ha='center', va='center')
     plt.savefig("{0}.png".format(basename))
-    with open("{0}_stats.txt".format(basename), 'w') as stream:
-        stream.write("mean_absolute_error\t%f\n" % mean_abs_error)
-        stream.write("chi-square\t%f,%f\n" % (chi_stat, chi_pval))
-        stream.write("goodness_of_fit(cressie-read)\t%f,%f\n" % (gof_stat,
-                                                                 gof_pval))
