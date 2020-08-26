@@ -84,7 +84,7 @@ def dinuc_count(seq):
     Calculate dinucleotide composition of a sequence.
     We consider the IUPAC alphabet here.
     """
-    return map(seq.count, IUPAC_DINUC)
+    return map(seq.count_overlap, IUPAC_DINUC)
 
 
 def above_threshold(the_list, threshold):
@@ -105,10 +105,10 @@ def power_div(fg_dist, bg_dist, lambda_="pearson"):
     # We add 1 to all values to avoid division by 0
     f_exp = [val + 1 for val in fg_dist]
     f_obs = [val + 1 for val in bg_dist]
-    print("f_exp:")
-    print(f_exp)
-    print("f_obs:")
-    print(f_obs)
+    # print("f_exp:")
+    # print(f_exp)
+    # print("f_obs:")
+    # print(f_obs)
     if(not(above_threshold(f_exp, 4)) or not(above_threshold(f_obs, 4))):
         return None, None
     from scipy.stats import power_divergence

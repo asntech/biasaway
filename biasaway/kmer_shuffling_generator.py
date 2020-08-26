@@ -30,6 +30,7 @@ def generate_sequences(seqs, kmer, nfold, random_seed):
             print(new_seq.format("fasta"), end='')
             bg_gc_list.append(GC(new_sequence))
             bg_lengths.append(len(new_sequence))
-            dinuc = [x + y for x, y in zip(dinuc, dinuc_count(new_sequence))]
+            dinuc = [x + y for x, y in zip(dinuc,
+                                           dinuc_count(Seq(new_sequence)))]
             cpt += 1
     return bg_gc_list, bg_lengths, dinuc
