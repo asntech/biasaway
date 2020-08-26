@@ -110,13 +110,8 @@ def power_div(fg_dist, bg_dist, lambda_="pearson"):
     f_exp = np.array(fg_dist)
     f_obs = np.array(bg_dist)[f_exp != 0].tolist()
     f_exp = f_exp[f_exp != 0].tolist()
-    # print(f_exp)
-    # print(f_obs)
-    # print(above_threshold(f_exp, 4) > 0.2)
-    # print(above_threshold(f_obs, 4))
-    # print(above_threshold(f_obs, 4) > 0.2)
-    if ((above_threshold(f_exp, 4) > 0.2) or
-       (above_threshold(f_obs, 4) > 0.2)):
+    if ((above_threshold(f_exp, 5) > 0.2) or
+       (above_threshold(f_obs, 5) > 0.2)):
         return None, -1
     from scipy.stats import power_divergence
     return power_divergence(f_exp=f_exp, f_obs=f_obs, lambda_=lambda_)
@@ -214,9 +209,13 @@ def make_len_plot(fg_len, bg_len, plot_filename):
         plt.hist(fg_len, bins=bins, align='right', alpha=.5, label='input')
         plt.hist(bg_len, bins=bins, align='right', alpha=.5, label='generated')
     else:
-        sns.distplot(fg_len, kde=True, kde_kws={'shade': True, 'linewidth': 3},
+        sns.distplot(fg_len, hist=plot_hist, kde=True, kde_kws={'shade': True,
+                                                                'linewidth':
+                                                                3},
                      label='input')
-        sns.distplot(bg_len, kde=True, kde_kws={'shade': True, 'linewidth': 3},
+        sns.distplot(bg_len, hist=plot_hist, kde=True, kde_kws={'shade': True,
+                                                                'linewidth':
+                                                                3},
                      label='generated')
     plt.xlabel('length')
     plt.ylabel(ylab)
