@@ -41,7 +41,7 @@ def kmer_shuffling_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = kmer_shuff.generate_sequences(
         seqs, argu.kmer, argu.nfold, argu.random_seed)
-    if(argu.plot_filename):
+    if(argu.plot_filename and len(bg_lengths) > 0):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
@@ -52,7 +52,7 @@ def kmer_shuffling_window_generator(argu):
     seqs, fg_gc_list, fg_lengths, fg_dinuc = get_seqs(argu.fg_file)
     bg_gc_list, bg_lengths, bg_dinuc = kmer_win_shuff.generate_sequences(
         seqs, argu.kmer, argu.winlen, argu.step, argu.nfold, argu.random_seed)
-    if(argu.plot_filename):
+    if(argu.plot_filename and len(bg_lengths) > 0):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
@@ -100,7 +100,7 @@ def gc_compo_generator_no_len(argu):
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_sequences(
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.nfold, argu.random_seed)
-    if(argu.plot_filename):
+    if(argu.plot_filename and len(bg_lengths) > 0):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
@@ -118,7 +118,7 @@ def gc_compo_len_generator(argu):
         test_non_empty_bg_dir(argu.bg_dir)
     bg_gc_list, bg_lengths, bg_dinuc = GC_compo.generate_len_sequences(
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.nfold, argu.random_seed)
-    if(argu.plot_filename):
+    if(argu.plot_filename and len(bg_lengths) > 0):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
@@ -145,7 +145,7 @@ def gc_compo_len_window_generator(argu):
     bg_gc_list, bg_lengths, bg_dinuc = GC_window_compo.generate_len_sequences(
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.deviation, argu.winlen,
         argu.step, argu.nfold, argu.random_seed)
-    if(argu.plot_filename):
+    if(argu.plot_filename and len(bg_lengths) > 0):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
@@ -164,7 +164,7 @@ def gc_compo_window_generator_no_len(argu):
     bg_gc_list, bg_lengths, bg_dinuc = GC_window_compo.generate_sequences(
         fg_gc_bins, bg_gc_bins, argu.bg_dir, argu.deviation, argu.winlen,
         argu.step, argu.nfold, argu.random_seed)
-    if(argu.plot_filename):
+    if(argu.plot_filename and len(bg_lengths) > 0):
         make_gc_plot(fg_gc_list, bg_gc_list, argu.plot_filename)
         make_len_plot(fg_lengths, bg_lengths, argu.plot_filename)
         make_dinuc_plot(fg_dinuc, bg_dinuc, argu.plot_filename)
