@@ -107,13 +107,18 @@ def power_div(fg_dist, bg_dist, lambda_="pearson"):
     """
     import numpy as np
     # Removing 0-values in the expectation
-    f_exp = np.array(fg_dist)
-    f_obs = np.array(bg_dist)[f_exp != 0].tolist()
-    f_exp = f_exp[f_exp != 0].tolist()
+    f_exp = np.asanyarray(fg_dist)
+    f_obs = np.asanyarray(bg_dist)[f_exp != 0]
+    f_exp = f_exp[f_exp != 0]
     if ((above_threshold(f_exp, 5) > 0.2) or
        (above_threshold(f_obs, 5) > 0.2)):
         return None, -1
     from scipy.stats import power_divergence
+    # With the scipy implementation, it is expected that the number of
+    # observation and expected counts are the same! Hence, we need to computed
+    # the proportion of expected counts in each category to estimate the
+    # expected numbers of observations.
+    f_exp = sum(f_obs) * (f_exp / sum(f_exp))
     return power_divergence(f_exp=f_exp, f_obs=f_obs, lambda_=lambda_)
 
 
@@ -132,6 +137,7 @@ def QC_info(fg_hist, bg_hist, out_filename):
     mean_abs_error = mae(fg_hist, bg_hist)
     chi_stat, chi_pval = power_div(fg_hist, bg_hist)
     gof_stat, gof_pval = power_div(fg_hist, bg_hist, "cressie-read")
+    gte_stat, gte_pval = power_div(fg_hist, bg_hist, "log-likelihood")
     with open(out_filename, 'w') as stream:
         if sum(fg_hist) < 1000 or sum(bg_hist) < 1000:
             stream.write("QC tests cannot be ")
@@ -148,6 +154,8 @@ def QC_info(fg_hist, bg_hist, out_filename):
                          (chi_stat, chi_pval))
             stream.write("cressie-read goodness_of_fit(statistic, pvalue)")
             stream.write("\t(%f, %f)\n" % (gof_stat, gof_pval))
+            stream.write("G-test goodness_of_fit(statistic, pvalue)")
+            stream.write("\t(%f, %f)\n" % (gte_stat, gte_pval))
 
 
 def make_gc_plot(fg_gc, bg_gc, plot_filename):
