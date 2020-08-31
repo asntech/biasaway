@@ -20,7 +20,7 @@ preserving the k-mer composition of the input sequences. The 2nd approach
 applies the same method as the 1st approach but within a sliding window along
 the user-provided sequences. For the 3rd and 4th approaches, the background
 sequences are selected from a pool of provided genomic sequences to match the
-distribution of mononucleotide for each target sequence. The 5th approach
+distribution of mononucleotide for each target sequence. The 4th approach
 considers the mean and standard deviation of %GC computed within the sliding
 window along the user-provided sequences to match as closely as possible the
 distribution for each user-provided sequence.

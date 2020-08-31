@@ -4,7 +4,7 @@ Citation
 
 If you used BiasAway, please cite:
 
-    - A. Khan, R. Riudavets Puig, and A. Mathelier. BiasAway: command-line and
+    - A. Khan, R. Riudavets Puig, P. Boddie, and A. Mathelier. BiasAway: command-line and
       web server to generate nucleotide composition-matched DNA background
       sequences, 2020.
     - R. Worsley-Hunt *et al.* Improving analysis of transcription factor
